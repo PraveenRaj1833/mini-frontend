@@ -1,0 +1,53 @@
+.home-header-section
+{
+    background-color:rgb(12, 155, 238);
+    height: 7%;
+    background-size: cover;
+}
+.set-logo-shape
+{
+    height: 45px;
+    width: 40px;
+}
+.set-headings
+{
+    font-size: 25px;
+    padding-left: 5px;
+    color: red;
+    font-weight: bold;
+}
+.carousel-set-prop
+{
+    height: 400px;
+    width:auto;
+    margin:auto;
+}
+#head-of-a1
+{
+    color:red;
+    /* display: none; */
+}
+
+.notify{
+    background-color: #218838;
+}
+
+@media screen and  (max-width:440px){
+    .carousel-set-prop
+    {
+        width:100%;
+    }
+    .set-headings
+    {
+        display: none;
+    }
+    #head-of-a1
+    {
+        display:block;
+    }
+
+}
+.carousel-background
+{
+    background-color:khaki;
+}
