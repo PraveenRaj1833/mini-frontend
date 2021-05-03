@@ -86,7 +86,7 @@ class Login extends Component {
                 <h1 className="m-3 mb-4">{localStorage.getItem('role')==='student'?"Student":"Faculty"} Login</h1>
                 <div>
                 <FormGroup className="form-inline ">
-                    <FormLabel className="form-label">Email</FormLabel>
+                    <FormLabel className="form-label">Id</FormLabel>
                     <FormControl
                     type="text"
                     name="userId"
