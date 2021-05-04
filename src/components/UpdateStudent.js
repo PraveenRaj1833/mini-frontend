@@ -38,6 +38,13 @@ class UpdateStudent extends Component {
         }
     }
 
+    handleChange = (e)=>{
+        const value = e.target.value;
+        this.setState({
+            [e.target.name] : value
+        })
+    }
+
     handleSubmit = () => {
         this.setState({
             loader : true
@@ -45,6 +52,10 @@ class UpdateStudent extends Component {
         const role = localStorage.getItem('role')
         fetch(`https://online-exam-back.herokuapp.com/student/updateStudent`,{
             method : 'post',
+            headers : {
+                'Content-Type': 'application/json',
+                 Authorization : localStorage.getItem('token')
+            },
             body : JSON.stringify({
                 studentId : this.state.studentId,
                 name : this.state.name,
@@ -61,11 +72,7 @@ class UpdateStudent extends Component {
                 year : this.state.year,
                 class : this.state.class,
                 password : this.state.password
-            }),
-            headers : {
-                'Content-Type': 'application/json',
-                 'token' : localStorage.getItem('token')
-            }
+            })
         }).then(res => {
             console.log(res)
             return res.json();
