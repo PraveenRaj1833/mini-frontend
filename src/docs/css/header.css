@@ -32,6 +32,10 @@
     background-color: #218838;
 }
 
+.course{
+    cursor: pointer;
+}
+
 @media screen and  (max-width:440px){
     .carousel-set-prop
     {

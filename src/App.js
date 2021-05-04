@@ -8,6 +8,8 @@ import Login from './components/Login';
 import Register from './components/Register';
 import Dashboard from './components/Dashboard';
 import './docs/css/header.css'
+import Course from './components/Course';
+import UpdateStudent from './components/UpdateStudent';
 
 
 class App extends Component {
@@ -31,6 +33,12 @@ class App extends Component {
               </Route>
               <Route exact path="/student/dashboard">
                 <Dashboard/>
+              </Route>
+              <Route exact path="/course">
+                <Course/>
+              </Route>
+              <Route exact path="/student/updateProfile">
+                <UpdateStudent/>
               </Route>
             </Switch>
           </div>

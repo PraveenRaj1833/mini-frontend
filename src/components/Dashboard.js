@@ -1,8 +1,18 @@
 // import { json } from 'express'
 import { Table, Thead, Tbody, Tr, Th, Td } from 'react-super-responsive-table';
 import {Carousel,Navbar,Nav,NavDropdown,OverlayTrigger,Popover} from 'react-bootstrap'
+import {
+    Container,
+    Row,
+    Form,
+    FormGroup,
+    FormControl,
+    FormLabel,
+    Alert
+  } from 'react-bootstrap';
 import React, { Component } from 'react'
 import { Button } from 'react-bootstrap';
+import {withRouter} from 'react-router-dom'
 
 export class Dashboard extends Component {
     
@@ -134,7 +144,12 @@ export class Dashboard extends Component {
                 <h1>Courses</h1>
                 <ul>
                     {this.state.courses.map((course,index)=>{
-                        return <li>{course.courseName}</li>
+                        return <li className="mask rgba-red-strong text-primary course" 
+                        onClick={()=>{
+                            this.props.history.push("/course");
+                        }}>{course.courseName}
+                        </li>
+                        //return <li><a href="/course">{course.courseName} </a></li>
                     })}
                 </ul>
                 <div className="justify-content-center text-center m-2">
@@ -146,9 +161,10 @@ export class Dashboard extends Component {
                     <br></br>
                     <Button className="m-1" onClick={()=>this.startTimer()}>Start</Button>
                 </div>
+                <Button className="m-1" onClick={()=>this.props.history.push('/student/updateProfile')}>Update Profile</Button>
             </div>
         )
     }
 }
 
-export default Dashboard
+export default withRouter(Dashboard)
