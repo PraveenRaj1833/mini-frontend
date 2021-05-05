@@ -110,7 +110,7 @@ class Login extends Component {
                 </FormGroup>
                 <p id="login" className="warning"/>
                 <Button className="m-2" onClick={() => this.handleSubmit()}>SignIn</Button>
-                <Button className="m-2" onClick={() => this.props.history.push ('/register')}>
+                <Button className="m-2" onClick={() => this.props.history.push (`/${localStorage.getItem('role')}/register`)}>
                     SignUp
                 </Button>
                 </div>

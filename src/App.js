@@ -6,10 +6,13 @@ import {Component} from 'react'
 import Student from './components/Student';
 import Login from './components/Login';
 import Register from './components/Register';
+import TeacherRegister from './components/TeacherRegister';
 import Dashboard from './components/Dashboard';
+import TeacherDashboard from './components/TeacherDashboard'
 import './docs/css/header.css'
 import Course from './components/Course';
 import UpdateStudent from './components/UpdateStudent';
+import UpdateTeacher from './components/UpdateTeacher';
 
 
 class App extends Component {
@@ -28,11 +31,20 @@ class App extends Component {
               <Route exact path="/login">
                 <Login/>
               </Route>
-              <Route exact path="/register">
+              <Route exact path="/student/register">
                 <Register/>
+              </Route>
+              <Route exact path="/teacher/register">
+                <TeacherRegister/>
               </Route>
               <Route exact path="/student/dashboard">
                 <Dashboard/>
+              </Route>
+              <Route exact path="/teacher/dashboard">
+                <TeacherDashboard/>
+              </Route>
+              <Route exact path="/teacher/updateProfile">
+                <UpdateTeacher/>
               </Route>
               <Route exact path="/course">
                 <Course/>
