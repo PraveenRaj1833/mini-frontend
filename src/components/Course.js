@@ -1,4 +1,6 @@
+import { Button } from 'react-bootstrap'
 import React, { Component } from 'react'
+import {withRouter} from 'react-router-dom'
 
 export class Course extends Component {
     constructor(props) {
@@ -13,9 +15,12 @@ export class Course extends Component {
         return (
             <div>
                 <h1>Course </h1>
+                <Button onClick={()=>{
+                    this.props.history.push('/teacher/createTest');
+                }}>Create Test</Button>
             </div>
         )
     }
 }
 
-export default Course
+export default withRouter(Course)

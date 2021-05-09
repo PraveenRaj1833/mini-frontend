@@ -62,6 +62,12 @@ export class TeacherDashboard extends Component {
         }
     }
 
+    logout = ()=>{
+        console.log("logout called");
+        localStorage.clear();
+        this.props.history.push('/');
+    }
+
     componentDidMount(){
         let timeLeft = this.secondsToTime(this.state.seconds);
         this.setState({
@@ -146,8 +152,9 @@ export class TeacherDashboard extends Component {
                     {this.state.courses.map((course,index)=>{
                         return <li className="mask rgba-red-strong text-primary course" 
                         onClick={()=>{
+                            localStorage.setItem('courseId',course.courseId)
                             this.props.history.push("/course");
-                        }}>{course.courseName}
+                        }}>{course.courseId}
                         </li>
                         //return <li><a href="/course">{course.courseName} </a></li>
                     })}

@@ -49,6 +49,12 @@ export class Dashboard extends Component {
         }
     }
 
+    logout = ()=>{
+        console.log("logout called");
+        localStorage.clear();
+        this.props.history.push('/');
+    }
+
     countDown = ()=>{
         const seconds = this.state.seconds-1;
         this.setState({
@@ -128,7 +134,7 @@ export class Dashboard extends Component {
     
     
     
-                        <button className="float-right mr-2 mt-1 inline btn btn-success border border-1 green" onClick={this.logout}>Logout</button>
+                        <button className="float-right mr-2 mt-1 inline btn btn-success border border-1 green" onClick={()=>this.logout()}>Logout</button>
                         <button className="small ui icon button float-right mr-2 btn-success notify mt-1 border border-1" width="20" height="20">
                             <i className="bell icon " ></i>
                         </button>
@@ -146,6 +152,7 @@ export class Dashboard extends Component {
                     {this.state.courses.map((course,index)=>{
                         return <li className="mask rgba-red-strong text-primary course" 
                         onClick={()=>{
+                            localStorage.setItem('courseId',course.courseId);
                             this.props.history.push("/course");
                         }}>{course.courseName}
                         </li>

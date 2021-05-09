@@ -32,6 +32,10 @@
     background-color: #218838;
 }
 
+.qd{
+    width: 80%;
+}
+
 .course{
     cursor: pointer;
 }

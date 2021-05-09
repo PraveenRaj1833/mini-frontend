@@ -13,6 +13,7 @@ import './docs/css/header.css'
 import Course from './components/Course';
 import UpdateStudent from './components/UpdateStudent';
 import UpdateTeacher from './components/UpdateTeacher';
+import { CreateTest } from './components/CreateTest';
 
 
 class App extends Component {
@@ -51,6 +52,9 @@ class App extends Component {
               </Route>
               <Route exact path="/student/updateProfile">
                 <UpdateStudent/>
+              </Route>
+              <Route exact path="/teacher/createTest">
+                <CreateTest/>
               </Route>
             </Switch>
           </div>
