@@ -173,7 +173,7 @@ export class CreateTest extends Component {
                 else{
                     const options = questions[i].options;
                     for(var j=0;j<questions[i].options.length;j++){
-                        if(options[i].desc===""){
+                        if(options[j].desc===""){
                             alert("option description cannot be null at question "+i+ " option "+j);
                             f=1;
                         }
@@ -196,7 +196,7 @@ export class CreateTest extends Component {
                     questions : this.state.questions
                 }))
                 // 'https://online-exam-back.herokuapp.com/teacher/createTest'
-                fetch('http://localhost:4000/teacher/createTest',{
+                fetch('https://online-exam-back.herokuapp.com/teacher/createTest',{
                     method : 'post',
                     headers : {
                         'Content-Type' : 'application/json',
@@ -270,7 +270,7 @@ export class CreateTest extends Component {
                     <FormGroup className="form-inline col-sm-6 col-md-3">
                         <FormLabel className="m-1">time</FormLabel>
                         <FormControl
-                        type="time"
+                        type="text"
                         className="col-6 m-2"
                         name="time"
                         value = {this.state.time}
