@@ -50,7 +50,7 @@ export class Dashboard extends Component {
     }
 
     logout = ()=>{
-        console.log("logout called");
+        //console.log("logout called");
         localStorage.clear();
         this.props.history.push('/');
     }

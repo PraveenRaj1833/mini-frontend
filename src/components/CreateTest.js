@@ -54,7 +54,7 @@ export class CreateTest extends Component {
             options : [],
             marks : 1,
             desc : "",
-            right : "9"
+            right : ""
         });
         // console.log(Questions);
         this.setState({
@@ -270,7 +270,7 @@ export class CreateTest extends Component {
                     <FormGroup className="form-inline col-sm-6 col-md-3">
                         <FormLabel className="m-1">time</FormLabel>
                         <FormControl
-                        type="text"
+                        type="time"
                         className="col-6 m-2"
                         name="time"
                         value = {this.state.time}

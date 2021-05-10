@@ -23,6 +23,12 @@ export class Course extends Component {
         }
     }
     
+    logout = ()=>{
+        //console.log("logout called");
+        localStorage.clear();
+        this.props.history.push('/');
+    }
+
     componentDidMount = ()=>{
         fetch('https://online-exam-back.herokuapp.com/course/getById',{
             method : 'post',
@@ -58,6 +64,10 @@ export class Course extends Component {
                         this.setState({
                             tests : res1.results
                         })
+                    }
+                    else if(res.status==402){
+                        alert("Session Expired, please login again");
+                        this.logout();
                     }
                 }).catch(err=>{
                     console.log(err);
