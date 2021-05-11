@@ -13,6 +13,8 @@ import './docs/css/header.css'
 import Course from './components/Course';
 import UpdateStudent from './components/UpdateStudent';
 import UpdateTeacher from './components/UpdateTeacher';
+import UpdateTeacherPassword from './components/UpdateTeacherPassword';
+import UpdatePassword from './components/UpdatePassword';
 import { CreateTest } from './components/CreateTest';
 
 
@@ -47,6 +49,9 @@ class App extends Component {
               <Route exact path="/teacher/updateProfile">
                 <UpdateTeacher/>
               </Route>
+              <Route exact path="/teacher/updateTeacherPassword">
+                <UpdateTeacherPassword/>
+              </Route>
               <Route exact path="/course">
                 <Course/>
               </Route>
@@ -55,6 +60,9 @@ class App extends Component {
               </Route>
               <Route exact path="/teacher/createTest">
                 <CreateTest/>
+              </Route>
+              <Route exact path="/student/updatePassword">
+                <UpdatePassword/>
               </Route>
             </Switch>
           </div>

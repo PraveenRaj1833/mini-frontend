@@ -169,7 +169,8 @@ export class Dashboard extends Component {
                     <Button className="m-1" onClick={()=>this.startTimer()}>Start</Button>
                 </div>
                 <Button className="m-1" onClick={()=>this.props.history.push('/student/updateProfile')}>Update Profile</Button>
-            </div>
+                <Button className="m-1" onClick={()=>this.props.history.push('/student/updatePassword')}>Update Password</Button>
+               </div>
         )
     }
 }

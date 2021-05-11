@@ -169,6 +169,7 @@ export class TeacherDashboard extends Component {
                     <Button className="m-1" onClick={()=>this.startTimer()}>Start</Button>
                 </div>
                 <Button className="m-1" onClick={()=>this.props.history.push('/teacher/updateProfile')}>Update Profile</Button>
+                <Button className="m-1" onClick={()=>this.props.history.push('/teacher/updateTeacherPassword')}>Update Password</Button>
             </div>
         )
     }
