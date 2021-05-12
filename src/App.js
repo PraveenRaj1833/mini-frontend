@@ -15,7 +15,12 @@ import UpdateStudent from './components/UpdateStudent';
 import UpdateTeacher from './components/UpdateTeacher';
 import UpdateTeacherPassword from './components/UpdateTeacherPassword';
 import UpdatePassword from './components/UpdatePassword';
-import { CreateTest } from './components/CreateTest';
+import CreateTest from './components/CreateTest';
+import ViewTest from './components/ViewTest';
+import EditTest from './components/EditTest';
+import StudentViewTest from './components/StudentViewTest';
+import StudentCourse from './components/StudentCourse'
+import AttempTest from './components/AttempTest';
 
 
 class App extends Component {
@@ -52,14 +57,29 @@ class App extends Component {
               <Route exact path="/teacher/updateTeacherPassword">
                 <UpdateTeacherPassword/>
               </Route>
-              <Route exact path="/course">
+              <Route exact path="/teacher/course">
                 <Course/>
+              </Route>
+              <Route exact path="/student/course">
+                <StudentCourse/>
               </Route>
               <Route exact path="/student/updateProfile">
                 <UpdateStudent/>
               </Route>
               <Route exact path="/teacher/createTest">
                 <CreateTest/>
+              </Route>
+              <Route exact path="/teacher/viewTest">
+                <ViewTest/>
+              </Route>
+              <Route exact path="/teacher/editTest">
+                <EditTest/>
+              </Route>
+              <Route exact path="/student/viewTest">
+                <StudentViewTest/>
+              </Route>
+              <Route exact path="/student/attemptTest">
+                <AttempTest/>
               </Route>
               <Route exact path="/student/updatePassword">
                 <UpdatePassword/>

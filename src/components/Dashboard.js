@@ -153,7 +153,7 @@ export class Dashboard extends Component {
                         return <li className="mask rgba-red-strong text-primary course" 
                         onClick={()=>{
                             localStorage.setItem('courseId',course.courseId);
-                            this.props.history.push("/course");
+                            this.props.history.push("/student/course");
                         }}>{course.courseName}
                         </li>
                         //return <li><a href="/course">{course.courseName} </a></li>

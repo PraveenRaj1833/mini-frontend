@@ -40,6 +40,21 @@
     cursor: pointer;
 }
 
+.test{
+    cursor: pointer;
+}
+
+.options{
+    display: flex;
+    justify-content: start;
+    margin-left: 30px;
+}
+
+.test:hover{
+    text-decoration: underline;
+}
+
+
 @media screen and  (max-width:440px){
     .carousel-set-prop
     {

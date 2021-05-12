@@ -78,6 +78,12 @@ export class Course extends Component {
         })
     }
 
+    openTest = (test,index)=>{
+        localStorage.setItem("testIndex",index);
+        localStorage.setItem("testId",test.testId);
+        this.props.history.push('/teacher/viewTest');
+    }
+
     render() {
         return (
             <div>
@@ -97,10 +103,10 @@ export class Course extends Component {
                                     console.log(new Date(test.dateTime))
                                     return (
                                         <Tr key={test.testId}>
-                                            <Td>{`Test ${index}`}</Td>
-                                            <Td>{dt}</Td>
-                                            <Td>{test.duration}</Td>
-                                            <Td>{test.totalMarks}</Td>
+                                            <Td onClick={()=>this.openTest(test,index)}>{`Test ${index}`}</Td>
+                                            <Td onClick={()=>this.openTest(test,index)}>{dt}</Td>
+                                            <Td onClick={()=>this.openTest(test,index)}>{test.duration}</Td>
+                                            <Td onClick={()=>this.openTest(test,index)}>{test.totalMarks}</Td>
                                             <Td className="text-center">
                                             <span
                                                 variant="info"

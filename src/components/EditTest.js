@@ -3,226 +3,75 @@ import React, { Component } from 'react'
 import { Button } from 'reactstrap'
 // import {RadioGroup,Radio} from 'react-radio-group'
 import { FormGroup,FormControl,FormLabel,FormCheck } from 'react-bootstrap'
-import 'bootstrap/dist/css/bootstrap.css'
-// import './testCreate.css'
-// import DateTimePicker from 'react-datetime-picker';
-import { Form } from 'reactstrap'
 
-class CreateTest extends Component {
+class EditTest extends Component {
+
     constructor(props) {
         super(props)
     
         this.state = {
-             totalMarks : '',
-             duration : '',
-             date : '',
-             courseId : localStorage.getItem('courseId'),
-             time : '',
-             dateTime : '',
-             questions : [
-                 {
-                     qType : "mcqs",
-                     options : [],
-                     marks : 1,
-                     right : "",
-                     desc : ""
-                 }
-             ]
+            totalMarks : '',
+            duration : '',
+            date : '',
+            courseId : localStorage.getItem('courseId'),
+            time : '',
+            dateTime : '',
+            questions : []
         }
     }
 
-
-
-    handleQuestionChange = (e,index) => {
-        const Questions = this.state.questions;
-        // console.log(e.target.name + " "+ e.target.value)
-        Questions[index]={
-            ...Questions[index],
-            [e.target.name] : e.target.value
-        }; 
-        this.setState({
-            ...this.state,
-            questions : Questions
-        });
-        // ,()=>console.log(this.state.questions)
-    }
-    
-    addQuestion = () => {
-        const Questions = this.state.questions;
-        Questions.push({
-            qType : "mcqs",
-            options : [],
-            marks : 1,
-            desc : "",
-            right : ""
-        });
-        // console.log(Questions);
-        this.setState({
-            ...this.state,
-            questions : Questions
-        });
-    }
-
-    addOption = (index) => {
-        const Options = this.state.questions[index].options;
-        Options.push({
-            desc : "",
-        });
-        const Questions = this.state.questions;
-        Questions[index].options = Options;
-        this.setState({
-            ...this.state,
-            questions : Questions
-        }) 
-    }
-
-    handleOptionChange = (index,optIndex,e)=>{
-        const Questions = this.state.questions;
-        Questions[index].options[optIndex].desc = e.target.value;
-        // console.log(Questions[index].options)
-        this.setState({
-            ...this.state,
-            questions : Questions
-        })         
-    }
-
-    handleChange = (e) =>{
-        const value = e.target.value;
-        // console.log(e.target.value);
-        if(e.target.name==='time' || e.target.name==="date"){
-            // console.log(value);
-            this.setState({
-                [e.target.name] : value
-            },()=>{
-                    // console.log(this.state.time);
-                    // console.log(this.state.date);
-                    if(this.state.date!=="" && this.state.date!==null && this.state.time!=="" && this.state.time!==null){
-                        const datee = this.state.date.split("-");
-                        const timee = this.state.time.split(":");
-                        // const now = new Date();
-                        const d = new Date(datee[0],datee[1]-1,datee[2],timee[0],timee[1]);
-                        console.log(d);
-                        // console.log(now);
-                        if(d==="Invalid Date"){
-                            console.log("ok")
-                        }
-                        // console.log(new Date("2021-06-06T11:15:00.000Z"))
-                        this.setState({
-                            dateTime : d
-                        });
-                    }else{
-                        this.setState({
-                            dateTime : ''
-                        });
-                    }    
+    componentDidMount = ()=>{
+        fetch('https://online-exam-back.herokuapp.com/teacher/getTestDetails',{
+            method : 'post',
+            headers : {
+                'Content-type' : 'application/json',
+                Authorization : localStorage.getItem('token')
+            },
+            body : JSON.stringify({
+                testId : localStorage.getItem('testId')
             })
-        }else{
-            // console.log(value);
-            this.setState({
-                [e.target.name] : value
-            });
-        }
-    }
-
-    deleteQuestion = (delIndex)=>{
-        const questions = this.state.questions.filter((question,index)=>{
-                                return delIndex!==index;
-                            });
-        this.setState({
-            questions : questions
-        });
-    }
-
-    deleteOption = (index,delOptIndex)=>{
-        console.log(index,delOptIndex);
-        console.log(this.state.questions[index].options)
-        const options = this.state.questions[index].options.filter((opt,optIndex)=>{
-                                return optIndex!==delOptIndex;
-                            });
-        console.log(options)
-        const Questions = this.state.questions;
-        Questions[index].options = options;
-        this.setState({
-            questions : Questions
-        })
-    }
-
-    handleSubmit = ()=>{
-        var f=0;
-        console.log(this.state);
-        if(this.state.totalMarks==='' || this.state.duration==='' || this.state.dateTime==="" )
-        {
-            alert("Fields cannot be empty");
-            f=1;
-        }
-        else{
-            const questions = this.state.questions;
-            for(var i=0;i<this.state.questions.length;i++){
-                if(questions[i].desc===''){
-                    alert("question Description cannot be empty");
-                    f=1;
-                }
-                else if(questions[i].options.length!==0 && questions[i].right===""){
-                    alert("please mention right answer for question "+i);
-                    f=1;
-                }
-                else if(questions[i].marks===""){
-                    alert("please mention marks for question "+i);
-                    f=1;
-                }
-                else{
-                    const options = questions[i].options;
-                    for(var j=0;j<questions[i].options.length;j++){
-                        if(options[j].desc===""){
-                            alert("option description cannot be null at question "+i+ " option "+j);
-                            f=1;
+        }).then(res=>{
+            return res.json();
+        }).then(res=>{
+            console.log(res);
+            console.log(res.result.questions);
+            if(res.status==200){
+                console.log("success")
+                this.setState({
+                    testId : res.result.testId,
+                    totalMarks : res.result.totalMarks,
+                    dateTime : res.result.dateTime,
+                    duration : res.result.duration,
+                    courseId : res.result.courseId,
+                    questions : res.result.questions
+                },()=>{
+                    // console.log('done');
+                    // console.log(this.state);
+                    var i,j;
+                    const questions = this.state.questions;
+                    for(i=0;i<questions.length;i++){
+                        for(j=0;j<questions[i].options.length;j++){
+                            if(questions[i].right===questions[i].options[j].optionId){
+                                questions[i].right=j;
+                                break;
+                            }
                         }
                     }
-                }
+                    this.setState({
+                        questions : questions
+                    });
+                });
             }
-            console.log(JSON.stringify({
-                totalMarks : this.state.totalMarks,
-                duration : this.state.duration,
-                courseId : this.state.courseId,
-                dateTime : this.state.dateTime,
-                questions : this.state.questions
-            }))
-            if(f===0){
-                console.log(JSON.stringify({
-                    totalMarks : this.state.totalMarks,
-                    duration : this.state.duration,
-                    courseId : this.state.courseId,
-                    dateTime : this.state.dateTime,
-                    questions : this.state.questions
-                }))
-                // 'https://online-exam-back.herokuapp.com/teacher/createTest'
-                fetch('https://online-exam-back.herokuapp.com/teacher/createTest',{
-                    method : 'post',
-                    headers : {
-                        'Content-Type' : 'application/json',
-                        Authorization : localStorage.getItem('token')    
-                    },
-                    body : JSON.stringify({
-                        totalMarks : this.state.totalMarks,
-                        duration : this.state.duration,
-                        courseId : this.state.courseId,
-                        dateTime : this.state.dateTime,
-                        questions : this.state.questions
-                    }),
-                }).then(res=>{
-                    console.log(res);
-                    return res.json();
-                }).then(res=>{
-                    console.log(res);
-                })
+            else{
+                alert(res.message);
             }
-        }
+        })
     }
 
     render() {
         return (
-            <div className="m-3 mb-5">
-                <h2>Create Test</h2>
+            <div>
+                <h1>Edit Test </h1>
                 <div className="row">
                     <FormGroup className="form-inline col-sm-6 col-md-2">
                         <FormLabel className="m-1">Total Marks</FormLabel>
@@ -242,20 +91,7 @@ class CreateTest extends Component {
                         placeholder = "in minutes"
                         onChange={(e)=>this.handleChange(e)}
                         />    
-                    </FormGroup >    
-                    {/* <FormGroup className="form-inline col-md-5">
-                        <FormLabel className="m-1">Schedule At</FormLabel>
-                        <DateTimePicker
-                          name = "dateTime"
-                          onChange={(value)=>{
-                              console.log(value);
-                              this.setState({
-                                  dateTime:value
-                              })
-                            }}
-                          value={this.state.dateTime}
-                        />
-                    </FormGroup > */}
+                    </FormGroup >   
                     <FormGroup className="form-inline col-sm-6 col-md-4">
                         <FormLabel className="m-1">Date</FormLabel>
                         <FormControl
@@ -364,4 +200,4 @@ class CreateTest extends Component {
     }
 }
 
-export default withRouter(CreateTest)
+export default withRouter(EditTest)
