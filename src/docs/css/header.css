@@ -47,7 +47,7 @@
 .options{
     display: flex;
     justify-content: start;
-    margin-left: 30px;
+    margin-left: 50px;
 }
 
 .test:hover{

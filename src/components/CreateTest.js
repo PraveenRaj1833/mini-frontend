@@ -1,8 +1,9 @@
 import {withRouter} from 'react-router-dom'
 import React, { Component } from 'react'
-import { Button } from 'reactstrap'
+// import { Button } from 'reactstrap'
 // import {RadioGroup,Radio} from 'react-radio-group'
-import { FormGroup,FormControl,FormLabel,FormCheck } from 'react-bootstrap'
+import { FormGroup,FormControl,FormLabel,FormCheck,Button } from 'react-bootstrap'
+import {Modal,ListGroup,Badge} from 'react-bootstrap'
 import 'bootstrap/dist/css/bootstrap.css'
 // import './testCreate.css'
 // import DateTimePicker from 'react-datetime-picker';
@@ -18,7 +19,10 @@ class CreateTest extends Component {
              date : '',
              courseId : localStorage.getItem('courseId'),
              time : '',
+             testType : 'mcqs',
+             testName : '',
              dateTime : '',
+             addQue : false,
              questions : [
                  {
                      qType : "mcqs",
@@ -35,32 +39,75 @@ class CreateTest extends Component {
 
     handleQuestionChange = (e,index) => {
         const Questions = this.state.questions;
-        // console.log(e.target.name + " "+ e.target.value)
-        Questions[index]={
-            ...Questions[index],
-            [e.target.name] : e.target.value
-        }; 
-        this.setState({
-            ...this.state,
-            questions : Questions
-        });
-        // ,()=>console.log(this.state.questions)
+        if(e.target.name==="right"){
+            if(Questions[index].qType==="mcqs"){
+                Questions[index]={
+                    ...Questions[index],
+                    [e.target.name] : parseInt(e.target.value.trim())
+                }; 
+            }
+            else if(Questions[index].qType==="checkBox"){
+                const right = e.target.value.split(",").map((r,i)=>{
+                    return parseInt(r);
+                });
+                Questions[index]={
+                    ...Questions[index],
+                    [e.target.name] : right
+                }; 
+            }
+            this.setState({
+                ...this.state,
+                questions : Questions
+            });
+        }
+        else{
+            // console.log(e.target.name + " "+ e.target.value)
+            Questions[index]={
+                ...Questions[index],
+                [e.target.name] : e.target.value
+            }; 
+            this.setState({
+                ...this.state,
+                questions : Questions
+            });
+            // ,()=>console.log(this.state.questions)
+        }
     }
     
-    addQuestion = () => {
+    addQuestion = (type) => {
         const Questions = this.state.questions;
-        Questions.push({
-            qType : "mcqs",
-            options : [],
-            marks : 1,
-            desc : "",
-            right : ""
-        });
+        if(type==="mcqs"){
+            Questions.push({
+                qType : "mcqs",
+                options : [],
+                marks : 1,
+                desc : "",
+                right : ""
+            });
+        }
+        else if(type==="checkBox"){
+            Questions.push({
+                qType : "checkBox",
+                options : [],
+                marks : 1,
+                desc : "",
+                right : []
+            });
+        }
+        else{
+            Questions.push({
+                qType : "desc",
+                marks : 1,
+                desc : "",
+            });
+        }
+        
         // console.log(Questions);
         this.setState({
             ...this.state,
             questions : Questions
         });
+        this.closeModal();
     }
 
     addOption = (index) => {
@@ -155,27 +202,45 @@ class CreateTest extends Component {
             alert("Fields cannot be empty");
             f=1;
         }
+        else if(this.state.testName===""){
+            alert("please give a Name to test");
+            f=1;
+        }
         else{
             const questions = this.state.questions;
+            var desc = false;
             for(var i=0;i<this.state.questions.length;i++){
+                if(questions[i].qType==="desc"){
+                    desc = true;
+                }
                 if(questions[i].desc===''){
                     alert("question Description cannot be empty");
                     f=1;
                 }
-                else if(questions[i].options.length!==0 && questions[i].right===""){
-                    alert("please mention right answer for question "+i);
+                else if((questions[i].qType==="mcqs" || questions[i].qType==="checkBox") && questions[i].options.length===0){
+                    alert("please mention options for question "+i);
                     f=1;
                 }
-                else if(questions[i].marks===""){
+                else if(questions[i].qType==="mcqs" && questions[i].right===""){
+                    alert("please mention right option for question "+i);
+                    f=1;
+                }
+                else if(questions[i].qType==="checkBox" && questions[i].right.length===0){
+                    alert("please mention right options for question "+i);
+                    f=1;
+                }
+                else if(questions[i].marks==="" || questions[i].marks===0){
                     alert("please mention marks for question "+i);
                     f=1;
                 }
                 else{
-                    const options = questions[i].options;
-                    for(var j=0;j<questions[i].options.length;j++){
-                        if(options[j].desc===""){
-                            alert("option description cannot be null at question "+i+ " option "+j);
-                            f=1;
+                    if(questions[i].qType==="mcqs" || questions[i].qType==="checkBox"){
+                        const options = questions[i].options;
+                        for(var j=0;j<questions[i].options.length;j++){
+                            if(options[j].desc===""){
+                                alert("option description cannot be null at question "+i+ " option "+j);
+                                f=1;
+                            }
                         }
                     }
                 }
@@ -185,7 +250,9 @@ class CreateTest extends Component {
                 duration : this.state.duration,
                 courseId : this.state.courseId,
                 dateTime : this.state.dateTime,
-                questions : this.state.questions
+                questions : this.state.questions,
+                testName : this.state.testName,
+                testType : desc===true?"desc":"mcqs"
             }))
             if(f===0){
                 console.log(JSON.stringify({
@@ -193,7 +260,9 @@ class CreateTest extends Component {
                     duration : this.state.duration,
                     courseId : this.state.courseId,
                     dateTime : this.state.dateTime,
-                    questions : this.state.questions
+                    questions : this.state.questions,
+                    testName : this.state.testName,
+                    testType : desc===true?"desc":"mcqs"
                 }))
                 // 'https://online-exam-back.herokuapp.com/teacher/createTest'
                 fetch('https://online-exam-back.herokuapp.com/teacher/createTest',{
@@ -207,7 +276,9 @@ class CreateTest extends Component {
                         duration : this.state.duration,
                         courseId : this.state.courseId,
                         dateTime : this.state.dateTime,
-                        questions : this.state.questions
+                        questions : this.state.questions,
+                        testName : this.state.testName,
+                        testType : desc===true?"desc":"mcqs"
                     }),
                 }).then(res=>{
                     console.log(res);
@@ -219,10 +290,56 @@ class CreateTest extends Component {
         }
     }
 
+    openModal = ()=>{
+        this.setState({
+            addQue : true
+        })
+    }
+
+    closeModal = ()=>{
+        this.setState({
+            addQue : false
+        })
+    }
+
     render() {
         return (
-            <div className="m-3 mb-5">
+            <div className="m-2 mb-5">
+
+                <Modal show={this.state.addQue} onHide={this.closeModal}>
+                    <Modal.Header closeButton>
+                        <Modal.Title>Add Question</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                        <i>Heyy</i> What type of question do you want to add?
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Button variant="primary" onClick={()=>this.addQuestion("mcqs")}>
+                            MCQ 
+                            <i class="circle icon"></i>
+                        </Button>
+                        <Button variant="primary" onClick={()=>this.addQuestion("checkBox")}>
+                            Check Box 
+                            <i class="check square icon"></i>
+                        </Button>
+                        <Button variant="primary" onClick={()=>this.addQuestion("desc")}>
+                            Descriptive
+                            <i class="edit icon"></i>
+                        </Button>
+                    </Modal.Footer>
+                </Modal>
+
                 <h2>Create Test</h2>
+                    <FormGroup className="form-inline col-12">
+                        <FormLabel className="m-1">Test Name</FormLabel>
+                        <FormControl
+                        className="col-6 m-2"
+                        name="testName"
+                        value = {this.state.testName}
+                        placeholder = "enter test name"
+                        onChange={(e)=>this.handleChange(e)}
+                        />    
+                    </FormGroup >
                 <div className="row">
                     <FormGroup className="form-inline col-sm-6 col-md-2">
                         <FormLabel className="m-1">Total Marks</FormLabel>
@@ -283,30 +400,37 @@ class CreateTest extends Component {
                     {
                         this.state.questions.map((question,index)=>{
                             return (
-                                <div className="row text-center">
-                                    <div className="col-md-11 border border-3 border-dark ml-2 mr-2 mt-2">
-                                        <div className="row">
-                                        <FormGroup className="form-inline col-md-11 row" key={index}>
-                                            <FormLabel className="m-1">Q{index+1}</FormLabel>
-                                            <FormControl
-                                            className="col-md-10 m-2"
-                                            as="textarea"
-                                            rows={3}
-                                            name="desc"
-                                            width={300}
-                                            columns = {200}
-                                            value = {question.desc}
-                                            placeholder="Description"
-                                            onChange={(e)=>this.handleQuestionChange(e,index)}
-                                            //   value={product.description}
-                                            //   className="col-lg-4 col-md-3 col-sm-3" 
-                                            
-                                            />
-                                            <i className="col-md-1 float-right">{question.marks}M</i>
-                                        </FormGroup >
+                                <div className="text-center row">
+                                    <div className="col-xm-9 col-sm-9 col-md-10 border border-3 border-dark ml-2 mr-2 mt-2">
+                                        <div className="row mt-1">
+                                            <FormGroup className="form-inline col-md-9" key={index}>
+                                                <FormLabel className="col-xm-2 col-md-1 ml-1">Q{index+1}</FormLabel>
+                                                <FormControl
+                                                className="col-9 mr-1 mt-1 mb-1"
+                                                as="textarea"
+                                                rows={3}
+                                                name="desc"
+                                                width={300}
+                                                columns = {200}
+                                                value = {question.desc}
+                                                placeholder="Description"
+                                                onChange={(e)=>this.handleQuestionChange(e,index)}
+                                                />
+                                                {/* <i className="col-md-1 float-right">{question.marks}M</i> */}
+                                            </FormGroup >
+                                            <FormGroup className="form-inline col-md-3 float-right">
+                                                <FormLabel className="ml-1">Marks</FormLabel>
+                                                <FormControl
+                                                className="col-4 mr-1"
+                                                name="marks"
+                                                value = {question.marks}
+                                                onChange={(e)=>this.handleQuestionChange(e,index)}
+                                                />    
+                                            </FormGroup >
                                         </div>  
                                         {/* <i className="trash alternate icon col-1"></i> */}
-                                        {/* <ul className="list-unstyled"> */}
+                                        {question.qType!=="desc"?
+                                         <div>
                                             {
                                                 question.options.map((opt,optIndex)=>{ return (
                                                     <div key={optIndex} className="row ">
@@ -332,15 +456,16 @@ class CreateTest extends Component {
                                                 type="text"
                                                 className="col-lg-6 m-2"
                                                 name="right"
-                                                value = {question.right}
+                                                //value = {question.right}
                                                 placeholder = "index from 0..."
                                                 onChange={(e)=>this.handleQuestionChange(e,index)}
                                                 /> 
                                             </FormGroup>
                                             :null}
-                                    <div className="d-flex flex-row-reverse">
-                                        <Button className="mb-2" onClick={()=>{this.addOption(index)}}>Add Option</Button>
-                                    </div>
+                                            <div className="d-flex flex-row-reverse">
+                                                <Button className="mb-2" onClick={()=>{this.addOption(index)}}>Add Option</Button>
+                                            </div>
+                                        </div>:null}
                                     </div>
                                     {index!==0 || this.state.questions.length!==1?
                                     <i class="trash alternate icon red big ml-2 my-auto" 
@@ -356,7 +481,7 @@ class CreateTest extends Component {
                     }
                     <br></br>
                     <br></br>
-                    <Button className="float-right mt-1 mb-3 mr-3" onClick={()=>{this.addQuestion()}}>Add Question</Button>
+                    <Button className="float-right mt-1 mb-3 mr-3" onClick={()=>{this.openModal()}}>Add Question</Button>
                 </div>
                 <Button className="btn button-primary m-5" onClick={()=>this.handleSubmit()}>Create</Button>
             </div>

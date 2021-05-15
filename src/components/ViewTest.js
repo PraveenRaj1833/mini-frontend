@@ -14,7 +14,7 @@ class ViewTest extends Component {
             courseId : localStorage.getItem('courseId'),
             time : '',
             dateTime : '',
-            questions : []
+            questions : [{}]
         }
     }
     
@@ -37,6 +37,8 @@ class ViewTest extends Component {
                 console.log("success")
                 this.setState({
                     testId : res.result.testId,
+                    testType : res.result.testType,
+                    testName : res.result.testName,
                     totalMarks : res.result.totalMarks,
                     dateTime : res.result.dateTime,
                     duration : res.result.duration,
@@ -58,7 +60,7 @@ class ViewTest extends Component {
         const dt = date.toString().split("G")[0];
         return (
             
-            <div className="m-4">
+            <div className="m-4 mb-5">
                 <Button className="btn btn-light text-primary float-right m-2 mr-5" 
                 onClick={()=>{this.props.history.push('/teacher/editTest');}}>Edit &nbsp; 
                 <svg className="m-1 p-1" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="blue" class="bi bi-pencil-square" viewBox="0 0 16 16">
@@ -67,6 +69,8 @@ class ViewTest extends Component {
                 </svg>
                 </Button>
                 <h1>Test {localStorage.getItem('testIndex')}</h1>
+                <span className="col-xm-12 col-md-6 col-lg-3 m-2">Test Name : <i className="border border-1 p-1">{this.state.testName}</i></span>
+                    
                 <div className="row m-2 mb-4">
                     <span className="col-xm-12 col-md-6 col-lg-3 m-2">Total Marks : <i className="border border-1 p-1">{this.state.totalMarks}</i></span>
                     <span className="col-xm-12 col-md-6 col-lg-3 m-2">Duration : <i className="border border-1 p-1">{this.state.duration}</i></span>
@@ -95,21 +99,43 @@ class ViewTest extends Component {
                                     <i className="col-md-1 float-right">{question.marks}M</i>
                                 </FormGroup >
                             </div>
-                            {question.options.map((option,optIndex)=>{
-                                return (
-                                    <div key={optIndex} className="ml-5">
-                                        <label>
-                                            <input type="radio" value={option.optionId} readOnly
-                                                checked={option.optionId===question.right} />
-                                            {option.desc}
-                                        </label>
+                            {
+                                question.qType==="mcqs"?
+                                <div>
+                                    {question.options.map((option,optIndex)=>{
+                                        return (
+                                            <div key={optIndex} className="ml-5">
+                                                <label>
+                                                    <input type="radio" value={option.optionId} readOnly
+                                                        checked={option.optionId===question.right} className="p-1"/>
+                                                    &nbsp;{option.desc}
+                                                </label>
+                                            </div>
+                                        )
+                                    })}
+                                </div>
+                                :question.qType==="checkBox"?
+                                    <div>
+                                        {question.options.map((option,optIndex)=>{
+                                            return (
+                                                <div key={optIndex} className="ml-5">
+                                                    <label>
+                                                        <input type="checkbox" value={option.optionId} readOnly
+                                                            checked={question.right.includes(option.optionId)} className="p-1"/>
+                                                        &nbsp;{option.desc}
+                                                    </label>
+                                                </div>
+                                            )
+                                        })}
                                     </div>
-                                )
-                            })}
+                                :null
+                            }
+            
                         </div>
                     )
                 })
                 }
+                <br></br>
             </div>
         )
     }

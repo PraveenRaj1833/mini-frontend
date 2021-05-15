@@ -86,7 +86,7 @@ export class Course extends Component {
 
     render() {
         return (
-            <div>
+            <div className="m-2">
                 <h1>{this.state.course.courseName} </h1>
                 <Button className="float-right" onClick={()=>{
                     this.props.history.push('/teacher/createTest');
