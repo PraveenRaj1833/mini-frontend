@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import Spinner from './Spinner'
-import {withRouter} from 'react-router-dom'
+import {withRouter, Prompt} from 'react-router-dom'
 import { FormGroup,FormControl,FormLabel,FormCheck,Form } from 'react-bootstrap'
 import { Button } from 'react-bootstrap'
 import {Modal,ListGroup,Badge} from 'react-bootstrap'
@@ -30,7 +30,8 @@ class AttempTest extends Component {
             endDate : '',
             showSubmitModel : false,
             loader : true,
-            msg : 'loading...'
+            msg : 'loading...',
+            submit : false
         }
         this.timer = 0;
         this.countDown = this.countDown.bind(this);
@@ -55,6 +56,9 @@ class AttempTest extends Component {
     }
 
     componentDidMount = ()=>{
+        console.log("Did mount called...");
+        window.addEventListener('beforeunload',this.saveTime);
+        console.log(this.props.router);
         fetch('https://online-exam-back.herokuapp.com/student/attemptTest',{
             method : 'post',
             headers : {
@@ -80,7 +84,7 @@ class AttempTest extends Component {
                     testName : res.result.testName,
                     testType : res.result.testType
                 },()=>{
-                    const answers = [];
+                    var answers = [];
                     var i;
                     for(i=0;i<this.state.questions.length;i++){
                         if(this.state.questions[i].qType==="mcqs"){
@@ -112,18 +116,32 @@ class AttempTest extends Component {
                     }
                     console.log("check");
                     console.log(answers);
+                    var stDate = new Date();
                     let timeLeft;
-                    if(localStorage.getItem('time')===null)
+                    var seconds=this.state.seconds;
+                    if(localStorage.getItem('time')===null || Object.entries(JSON.parse(localStorage.getItem('time'))).length===0){
                         timeLeft= this.secondsToTime(this.state.seconds);
-                    else
+                        console.log("newer");
+                    }
+                    else{
+                        console.log("older");
+                        stDate = localStorage.getItem("startTime");
+                        answers = JSON.parse(localStorage.getItem("answers"))
                         timeLeft = JSON.parse(localStorage.getItem('time'));
+                        seconds = this.timeToSeconds(timeLeft);
+                    }
+                    // console.log("heree");
+                    // console.log(timeLeft);
                     this.setState({
                         answers : answers,
                         time : timeLeft,
                         loader:false,
-                        stDate : new Date()
+                        stDate : new Date(),
+                        seconds : seconds
                     },()=>{
                         this.startTimer();
+                        console.log("heree");
+                        console.log(this.state);
                     })
                 })
             }
@@ -163,6 +181,32 @@ class AttempTest extends Component {
         })
     }
 
+    saveTime = ()=>{
+        console.log("refresh called");
+        localStorage.setItem("currentTest",this.state.testId);
+        localStorage.setItem("answers",JSON.stringify(this.state.answers));
+        localStorage.setItem("startTime",this.state.stDate);
+        localStorage.setItem("stopTime",new Date());
+        localStorage.setItem('time',JSON.stringify(this.state.time));
+        clearInterval(this.timer);
+    }
+
+    componentWillUnmount = ()=>{
+        // alert("unmounting");
+        if(this.state.submit===false)
+            this.submitTest();
+        // else{
+        //     localStorage.setItem("currentTest",this.state.testId);
+        //     localStorage.setItem("answers",this.state.answers);
+        //     localStorage.setItem("startTime",this.state.stDate);
+        //     localStorage.setItem("stopTime",new Date());
+        //     localStorage.setItem('time',JSON.stringify(this.state.time));
+        // }
+        clearInterval(this.timer);
+        console.log("unmounted succesfully");
+        window.removeEventListener('beforeunload',this.saveTime);
+    }
+
     handleChange = (e,index)=>{
         const answers = this.state.answers;
         var value = e.target.value;
@@ -195,6 +239,10 @@ class AttempTest extends Component {
             console.log("answers")
             console.log(this.state.answers);
         });
+    }
+
+    timeToSeconds(time){
+        return time.h*60*60+time.m*60+time.s;
     }
 
     secondsToTime(secs){
@@ -231,16 +279,13 @@ class AttempTest extends Component {
         }
     }
 
-    componentWillUnmount = ()=>{
-        localStorage.setItem('time',JSON.stringify(this.state.time));
-        clearInterval(this.timer);
-    }
 
     submitTest = ()=>{
-        this.setState({
-            msg : "Submitting Test...",
-            loader : true
-        })
+        // this.setState({
+        //     msg : "Submitting Test...",
+        //     loader : true,
+        //     submit : true
+        // })
         const user = JSON.parse(localStorage.getItem('user'));
         this.handleModelHide();
         clearInterval(this.timer);
@@ -282,8 +327,16 @@ class AttempTest extends Component {
     }
 
     render = ()=> {
+        // console.log(localStorage.getItem("time"));
+        // console.log(this.state.time);
         return (
             <div className="m-3 text-center">
+                <Prompt when={this.state.submit===false} message={()=>{
+                    // this.setState({
+                    //     submit : true
+                    // })
+                    return "Do you want to submit?"
+                    }}></Prompt>
                 {this.state.loader===true?<Spinner text={this.state.msg}></Spinner>:null}
                 
                 <Modal show={this.state.showSubmitModel} onHide={this.handleModelHide}>
@@ -315,7 +368,14 @@ class AttempTest extends Component {
                     <Button variant="secondary" onClick={()=>this.handleModelHide()}>
                         Back to test
                     </Button>
-                    <Button variant="primary" onClick={()=>this.submitTest()}>
+                    <Button variant="primary" onClick={()=>{
+                        this.setState({
+                            msg : "Submitting Test...",
+                            loader : true,
+                            submit : true
+                        },()=>this.submitTest());
+                        
+                        }}>
                         Submit and Finish Test
                     </Button>
                     </Modal.Footer>
@@ -424,7 +484,7 @@ class AttempTest extends Component {
                             )
                         })
                     }
-                    <Button onClick={()=>this.handleModelShow()}>Finish Test</Button>
+                    <Button className="mb-5" onClick={()=>this.handleModelShow()}>Finish Test</Button>
                 </div>
             }
                 

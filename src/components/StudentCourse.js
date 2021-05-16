@@ -105,8 +105,8 @@ class StudentCourse extends Component {
                             console.log(new Date(test.dateTime))
                             return (
                                 <Tr key={test.testId}>
-                                        <Td onClick={()=>this.openTest(test,index)}>{test.testName}</Td>
-                                        <Td onClick={()=>this.openTest(test,index)}>{dt}</Td>
+                                        <Td>{test.testName}</Td>
+                                        <Td>{dt}</Td>
                                         <Td className="text-center"><button className="btn btn-secondary " onClick={()=>{
                                             localStorage.setItem('testId',test.testId);
                                             localStorage.setItem('testIndex',index+1);

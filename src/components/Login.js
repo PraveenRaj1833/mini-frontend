@@ -24,6 +24,13 @@ class Login extends Component {
              loader : false
         }
     }
+
+    componentDidMount = ()=>{
+        const role = localStorage.getItem("role");
+        localStorage.clear();
+        localStorage.setItem("role",role);
+        console.log("login haha");
+    }
     
     handleChange = (e)=>{
         const value = e.target.value;
@@ -69,6 +76,9 @@ class Login extends Component {
                 // })
                 // alert("login succesful");
                 this.props.history.push(`/${role}/dashboard`);
+            }
+            else{
+                alert(res.msg);
             }
             this.setState({
                 loader : false

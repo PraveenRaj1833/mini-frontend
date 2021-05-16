@@ -10,6 +10,11 @@ class Home extends Component{
         }
         
     }  
+
+    componentDidMount = ()=>{
+        console.log("hom4");
+        localStorage.clear();
+    }
    
     render()
     {

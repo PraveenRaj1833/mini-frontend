@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import {withRouter} from 'react-router-dom'
 import { Table, Thead, Tbody, Tr, Th, Td } from 'react-super-responsive-table';
-import { FormGroup,FormControl,FormLabel,FormCheck,Form,Row,Jumbotron,Container } from 'react-bootstrap'
+import { FormGroup,FormControl,FormLabel,FormCheck,Form,Row,Jumbotron,Container, Button } from 'react-bootstrap'
 import '../docs/css/review.css'
 import Spinner from './Spinner';
 
@@ -38,6 +38,7 @@ class StudentReview extends Component {
     componentDidMount = ()=>{
         const user = JSON.parse(localStorage.getItem('user'));
         // http://localhost:4000
+        // https://online-exam-back.herokuapp.com
         fetch('https://online-exam-back.herokuapp.com/student/reviewTest',{
             method : 'post',
             body : JSON.stringify({
@@ -325,6 +326,9 @@ class StudentReview extends Component {
                             )
                         })                 
                     }
+                </div>
+                <div className="text-center m-4">
+                    <Button className="mb-5" onClick={()=>this.props.history.goBack()}>Finish Review</Button>
                 </div>
             </div>
         )

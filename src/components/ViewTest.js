@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import {withRouter} from 'react-router-dom'
 import { Button } from 'reactstrap'
+import Spinner from './Spinner'
 import { FormGroup,FormControl,FormLabel,FormCheck } from 'react-bootstrap'
 
 class ViewTest extends Component {
@@ -14,7 +15,8 @@ class ViewTest extends Component {
             courseId : localStorage.getItem('courseId'),
             time : '',
             dateTime : '',
-            questions : [{}]
+            questions : [],
+            loader : true
         }
     }
     
@@ -43,7 +45,8 @@ class ViewTest extends Component {
                     dateTime : res.result.dateTime,
                     duration : res.result.duration,
                     courseId : res.result.courseId,
-                    questions : res.result.questions
+                    questions : res.result.questions,
+                    loader : false
                 },()=>{
                     console.log('done');
                     console.log(this.state);
@@ -51,7 +54,15 @@ class ViewTest extends Component {
             }
             else{
                 alert(res.message);
+                this.setState({
+                    loader : false
+                })
             }
+        }).catch(err=>{
+            console.log(err);
+            this.setState({
+                loader : false
+            })
         })
     }
 
@@ -61,6 +72,7 @@ class ViewTest extends Component {
         return (
             
             <div className="m-4 mb-5">
+                {this.state.loader===true?<Spinner></Spinner>:null}
                 <Button className="btn btn-light text-primary float-right m-2 mr-5" 
                 onClick={()=>{this.props.history.push('/teacher/editTest');}}>Edit &nbsp; 
                 <svg className="m-1 p-1" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="blue" class="bi bi-pencil-square" viewBox="0 0 16 16">

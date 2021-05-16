@@ -12,7 +12,7 @@ import {
   } from 'react-bootstrap';
 import React, { Component } from 'react'
 import { Button } from 'react-bootstrap';
-import {withRouter} from 'react-router-dom'
+import {withRouter,Prompt} from 'react-router-dom'
 
 export class TeacherDashboard extends Component {
     
@@ -62,6 +62,9 @@ export class TeacherDashboard extends Component {
     render() {
         return (
             <div>
+                <Prompt message={(location,action)=>{
+                        return location.pathname==='/login'?"Do you want to logout?":true;
+                    }}></Prompt>
                 <div className="home-header-section p-2">
                        { 
                        (localStorage.getItem('token'))?<span>

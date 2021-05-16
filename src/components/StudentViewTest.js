@@ -178,6 +178,7 @@ class StudentViewTest extends Component {
                     this.state.stage===0 ? <Button onClick={()=>this.props.history.push("/student/attemptTest")}>Attempt Quiz Now</Button> : 
                     <div>
                         <span>Test was closed at {compDate}</span>
+                        <br/>
                         <Button onClick={()=>{
                                     this.props.history.push('/student/review');
                         }}>View Questions</Button>

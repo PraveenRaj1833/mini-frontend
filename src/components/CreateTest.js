@@ -330,7 +330,8 @@ class CreateTest extends Component {
                         console.log("success");
                         localStorage.setItem('testId',res.result.testId);
                         console.log(localStorage.getItem('testId'));
-                        this.props.history.push('/teacher/viewTest');
+                        // this.props.history.push('/teacher/viewTest');
+                        this.props.history.goBack();
                     }
                     else if(res.status===402){
                         alert("session Expired , please login again");
