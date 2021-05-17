@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import Spinner from './Spinner'
 import {withRouter} from 'react-router-dom'
 import { FormGroup,FormControl,FormLabel,FormCheck,Form } from 'react-bootstrap'
 import { Button } from 'react-bootstrap'
@@ -18,10 +19,14 @@ class AttempTest extends Component {
             time : {},
             dateTime : '',
             //stage : -1,
+            testName : '',
+            testType : '',
+            attemped : false,
             questions : [],
             answers : [],
             seconds : 300,
-            showSubmitModel : false
+            showSubmitModel : false,
+            loader : true
         }
         this.timer = 0;
         this.countDown = this.countDown.bind(this);
@@ -67,7 +72,9 @@ class AttempTest extends Component {
                     duration : res.result.duration,
                     courseId : res.result.courseId,
                     questions : res.result.questions,
-                    seconds : res.result.duration*60
+                    seconds : res.result.duration*60,
+                    testName : res.result.testName,
+                    testType : res.result.testType
                 },()=>{
                     const answers = [];
                     var i;
@@ -77,7 +84,8 @@ class AttempTest extends Component {
                                 questionId : this.state.questions[i].questionId,
                                 qType : this.state.questions[i].qType,
                                 optionId : '',
-                                answer : ''
+                                answer : '',
+                                marks : this.state.questions[i].marks
                             })
                         }
                         else if(this.state.questions[i].qType==="checkBox"){
@@ -85,31 +93,59 @@ class AttempTest extends Component {
                                 questionId : this.state.questions[i].questionId,
                                 qType : this.state.questions[i].qType,
                                 options : [],
-                                answer : ''
+                                answer : '',
+                                marks : this.state.questions[i].marks
                             })
                         }else{
                             answers.push({
                                 questionId : this.state.questions[i].questionId,
                                 qType : this.state.questions[i].qType,
-                                answer : ''
+                                answer : '',
+                                marks : this.state.questions[i].marks
                             })
                         }
                         
                     }
+                    console.log("check");
+                    console.log(answers);
                     let timeLeft = this.secondsToTime(this.state.seconds);
                     this.setState({
                         answers : answers,
-                        time : timeLeft
+                        time : timeLeft,
+                        loader:false
                     },()=>{
                         this.startTimer();
                     })
                 })
             }
             else if(res.status==402){
+                this.setState({
+                    loader : false
+                })
                 alert("Session Expired, please login again");
                 this.logout();
             }
+            else if(res.status===203){
+                this.setState({
+                    testId : res.result.testId,
+                    totalMarks : res.result.totalMarks,
+                    dateTime : res.result.dateTime,
+                    duration : res.result.duration,
+                    courseId : res.result.courseId,
+                    //questions : res.result.questions,
+                    seconds : res.result.duration*60,
+                    testName : res.result.testName,
+                    testType : res.result.testType,
+                    attempted : true,
+                    loader : false
+                });
+                alert(res.msg);
+                this.props.history.goBack();
+            }
         }).catch(err=>{
+            this.setState({
+                loader : false
+            })
             console.log(err);
             alert(err.msg);
         })
@@ -202,7 +238,9 @@ class AttempTest extends Component {
             },
             body : JSON.stringify({
                 studentId : user.studentId,
-                answers : this.state.answers
+                answers : this.state.answers,
+                testType : this.state.testType,
+                testId : this.state.testId
             })
         }).then(res=>{
             return res.json();
@@ -210,7 +248,7 @@ class AttempTest extends Component {
             console.log(res);
             if(res.status===200){
                 alert("Test Submitted Succesfully");
-                this.props.history.push("/student/course");
+                this.props.history.goBack();
             }
             else if(res.status==402){
                 alert("Session Expired, please login again");
@@ -226,10 +264,11 @@ class AttempTest extends Component {
     render = ()=> {
         return (
             <div className="m-3 text-center">
-
+                {this.state.loader===true?<Spinner></Spinner>:null}
+                
                 <Modal show={this.state.showSubmitModel} onHide={this.handleModelHide}>
                     <Modal.Header closeButton>
-                    <Modal.Title>Modal heading</Modal.Title>
+                    <Modal.Title>Submit Test</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
                         <i>Heyy</i> Are you sure you want to submit?
@@ -262,62 +301,42 @@ class AttempTest extends Component {
                     </Modal.Footer>
                 </Modal>
 
-                <h1>Test {localStorage.getItem('testIndex')}</h1>
-                <i className="h2">Your test will end in </i>
-                <span className="text-primary bg-warning mx-auto my-auto h4 m-1">
-                        {String(this.state.time.h).padStart(2,0)}
-                        :{String(this.state.time.m).padStart(2,0)}:
-                        {String(this.state.time.s).padStart(2,0)}
-                </span>
-                {
-                    this.state.questions.map((question,index)=>{
-                        return(
-                            <div className="m-2 border border-3">
-                                <div className="row">
-                                    <FormGroup className="form-inline col-md-11" key={index}>
-                                        <FormLabel className="m-1">Q{index+1}</FormLabel>
-                                        <FormControl
-                                        className="col-xm-12 col-md-9 m-2"
-                                        as="textarea"
-                                        readOnly
-                                        rows={3}
-                                        name="desc"
-                                        width={300}
-                                        columns = {200}
-                                        value = {question.desc}
-                                        //placeholder="Description"
-                                        //onChange={(e)=>this.handleQuestionChange(e,index)}
-                                        />
-                                        <i className="col-md-1 float-right">{question.marks}M</i>
-                                    </FormGroup >
-                                </div>
-                                <div>
-                                {
-                                    question.qType==="mcqs"?
-                                    <FormGroup className="options ml-5 text-start">
-                                        {/* <FormLabel id="label1">Gender</FormLabel> */}
-                                        <fieldset >
-                                        <Form.Group className="input ml-5">
-                                            {question.options.map((option,optIndex)=>{
-                                                const namee="question"+index;
-                                                return (
-                                                    
-                                                        <Form.Check 
-                                                        key={optIndex}
-                                                        type="radio"
-                                                        label={option.desc}
-                                                        name={namee}
-                                                        onChange={(e)=>this.handleChange(e,index)}
-                                                        value={option.optionId}
-                                                        />
-                                                    
-                                                )
-                                            })}
-                                        </Form.Group>
-                                        </fieldset>
-                                    </FormGroup>
-                                    : question.qType==="checkBox"?
-                                        <FormGroup className="options ml-5 text-start">
+                <h1>{this.state.testName}</h1>
+                {this.state.attemped===true?
+                <h3>You Have already attempted the test<br></br>No More attempts Allowed </h3>:
+                <div>
+                    <i className="h2">Your test will end in </i>
+                    <span className="text-primary bg-warning mx-auto my-auto h4 m-1">
+                            {String(this.state.time.h).padStart(2,0)}
+                            :{String(this.state.time.m).padStart(2,0)}:
+                            {String(this.state.time.s).padStart(2,0)}
+                    </span>
+                    {
+                        this.state.questions.map((question,index)=>{
+                            return(
+                                <div className="m-2 border border-3">
+                                    <div className="row">
+                                        <FormGroup className="form-inline col-md-11" key={index}>
+                                            <FormLabel className="m-1">Q{index+1}</FormLabel>
+                                            <FormControl
+                                            className="col-xm-12 col-md-9 m-2"
+                                            as="textarea"
+                                            readOnly
+                                            rows={3}
+                                            name="desc"
+                                            width={300}
+                                            columns = {200}
+                                            value = {question.desc}
+                                            //placeholder="Description"
+                                            //onChange={(e)=>this.handleQuestionChange(e,index)}
+                                            />
+                                            <i className="col-md-1 float-right">{question.marks}M</i>
+                                        </FormGroup >
+                                    </div>
+                                    <div>
+                                    {
+                                        question.qType==="mcqs"?
+                                        <FormGroup className=" ml-5 text-left">
                                             {/* <FormLabel id="label1">Gender</FormLabel> */}
                                             <fieldset >
                                             <Form.Group className="input ml-5">
@@ -327,7 +346,7 @@ class AttempTest extends Component {
                                                         
                                                             <Form.Check 
                                                             key={optIndex}
-                                                            type="checkbox"
+                                                            type="radio"
                                                             label={option.desc}
                                                             name={namee}
                                                             onChange={(e)=>this.handleChange(e,index)}
@@ -339,27 +358,53 @@ class AttempTest extends Component {
                                             </Form.Group>
                                             </fieldset>
                                         </FormGroup>
-                                        :<FormGroup className="form-inline col-md-11 text-start">
-                                            <FormLabel className="m-1">Ans</FormLabel>
-                                            <FormControl
-                                            className="col-xm-12 col-md-9 m-2"
-                                            as="textarea"
-                                            rows={3}
-                                            name="answer"
-                                            width={300}
-                                            columns = {200}
-                                            //value = {this.state.answers[index].answer}
-                                            placeholder="Write your answer here"
-                                            onChange={(e)=>this.handleChange(e,index)}
-                                            />
-                                        </FormGroup >
-                                }
-                               </div> 
-                            </div>
-                        )
-                    })
-                }
-                <Button onClick={()=>this.handleModelShow()}>Finish Test</Button>
+                                        : question.qType==="checkBox"?
+                                            <FormGroup className="options ml-5 text-left">
+                                                {/* <FormLabel id="label1">Gender</FormLabel> */}
+                                                <fieldset >
+                                                <Form.Group className="input ml-5">
+                                                    {question.options.map((option,optIndex)=>{
+                                                        const namee="question"+index;
+                                                        return (
+                                                            
+                                                                <Form.Check 
+                                                                key={optIndex}
+                                                                type="checkbox"
+                                                                label={option.desc}
+                                                                name={namee}
+                                                                onChange={(e)=>this.handleChange(e,index)}
+                                                                value={option.optionId}
+                                                                />
+                                                            
+                                                        )
+                                                    })}
+                                                </Form.Group>
+                                                </fieldset>
+                                            </FormGroup>
+                                            :<FormGroup className="form-inline col-md-11 text-left">
+                                                <FormLabel className="m-1">Ans</FormLabel>
+                                                <FormControl
+                                                className="col-xm-12 col-md-9 m-2"
+                                                as="textarea"
+                                                rows={3}
+                                                name="answer"
+                                                width={300}
+                                                columns = {200}
+                                                //value = {this.state.answers[index].answer}
+                                                placeholder="Write your answer here"
+                                                onChange={(e)=>this.handleChange(e,index)}
+                                                />
+                                            </FormGroup >
+                                    }
+                                </div> 
+                                </div>
+                            )
+                        })
+                    }
+                    <Button onClick={()=>this.handleModelShow()}>Finish Test</Button>
+                </div>
+            }
+                
             </div>
         )
     }

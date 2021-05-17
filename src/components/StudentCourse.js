@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import {withRouter} from 'react-router-dom'
+import Spinner from './Spinner'
 
 class StudentCourse extends Component {
     constructor(props) {
@@ -7,7 +8,8 @@ class StudentCourse extends Component {
     
         this.state = {
              course : {},
-             tests : [{}]
+             tests : [{}],
+             loader : true
         }
     }
     
@@ -54,18 +56,28 @@ class StudentCourse extends Component {
                     console.log(res1);
                     if(res1.status==200){
                         this.setState({
-                            tests : res1.results
+                            tests : res1.results,
+                            loader : false
                         })
                     }
                     else if(res.status==402){
+                        this.setState({
+                            loader : false
+                        })
                         alert("Session Expired, please login again");
                         this.logout();
                     }
                 }).catch(err=>{
+                    this.setState({
+                        loader : false
+                    })
                     console.log(err);
                 })
             }
         }).catch(err1=>{
+            this.setState({
+                loader : false
+            })
             console.log(err1);
         })
     }
@@ -73,6 +85,7 @@ class StudentCourse extends Component {
     render() {
         return (
             <div className="m-4">
+                {this.state.loader===true?<Spinner></Spinner>:null}
                 <h1 className="m-5">{this.state.course.courseName} </h1>
                 <ul>
                     {this.state.tests.map((test,index)=>{
@@ -84,7 +97,7 @@ class StudentCourse extends Component {
                                     localStorage.setItem('testIndex',index+1);
                                     localStorage.setItem('test',JSON.stringify(test));
                                     this.props.history.push("/student/viewTest");
-                                }}>Test {index+1} &nbsp; -
+                                }}>{test.testName} &nbsp; -
                                 <i className="ml-5">{date.toString()}</i>
                             </li>
                         )

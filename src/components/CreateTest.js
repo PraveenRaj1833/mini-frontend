@@ -265,6 +265,7 @@ class CreateTest extends Component {
                     testType : desc===true?"desc":"mcqs"
                 }))
                 // 'https://online-exam-back.herokuapp.com/teacher/createTest'
+                // http://localhost:4000
                 fetch('https://online-exam-back.herokuapp.com/teacher/createTest',{
                     method : 'post',
                     headers : {

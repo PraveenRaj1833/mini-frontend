@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import {withRouter} from 'react-router-dom'
 import { Table, Thead, Tbody, Tr, Th, Td } from 'react-super-responsive-table';
+import Spinner from './Spinner'
 import 'react-super-responsive-table/dist/SuperResponsiveTableStyle.css';
 import {
   Container,
@@ -19,7 +20,8 @@ export class Course extends Component {
     
         this.state = {
              course : {},
-             tests : [{}]
+             tests : [{}],
+             loader : true
         }
     }
     
@@ -62,19 +64,29 @@ export class Course extends Component {
                     console.log(res1);
                     if(res1.status==200){
                         this.setState({
-                            tests : res1.results
+                            tests : res1.results,
+                            loader:false
                         })
                     }
                     else if(res.status==402){
+                        this.setState({
+                            loader : false
+                        })
                         alert("Session Expired, please login again");
                         this.logout();
                     }
                 }).catch(err=>{
                     console.log(err);
+                    this.setState({
+                        loader : false
+                    })
                 })
             }
         }).catch(err1=>{
             console.log(err1);
+            this.setState({
+                loader : false
+            })
         })
     }
 
@@ -85,8 +97,11 @@ export class Course extends Component {
     }
 
     render() {
+        const pdate = new Date();
         return (
             <div className="m-2">
+                {this.state.loader===true?<Spinner></Spinner>:null}
+
                 <h1>{this.state.course.courseName} </h1>
                 <Button className="float-right" onClick={()=>{
                     this.props.history.push('/teacher/createTest');
@@ -95,28 +110,54 @@ export class Course extends Component {
                 <div className="m-4">
                     <Row>
                         <Table  striped bordered hover size="sm" id="users" className="m-2 w-100 table table-striped table-bordered dt-responsive nowrap">
+                            <Thead>
+                                <Tr>
+                                    <Th>Test Name</Th>
+                                    <Th>Scheduled At</Th>
+                                    <Th>Duration</Th>
+                                    <Th>Marks</Th>
+                                    <Th colspan="2"></Th>
+                                    <Th colspan="2" className=" text-center">Actions</Th>
+                                </Tr>
+                            </Thead>
                             <Tbody>
                             {
                                 this.state.tests.map((test,index)=>{
                                     const date = new Date(test.dateTime);
                                     const dt = date.toString().split("G")[0]
                                     console.log(new Date(test.dateTime))
+                                    const compDate = new Date(test.dateTime);
+                                    compDate.setMinutes(compDate.getMinutes()+test.duration);
+                                    const sub = pdate.getTime()<compDate.getTime();
+                                    var subTitle='';
+                                    var resTitle='';
+                                    if(sub===true){
+                                        subTitle = "Cannot view submissions before completion of test";
+                                        resTitle = "results will be available after completion of test";
+                                    }
+                                    else{
+                                        subTitle = "click to view submissions";
+                                        resTitle = "click to view results";
+                                    }
                                     return (
                                         <Tr key={test.testId}>
-                                            <Td onClick={()=>this.openTest(test,index)}>{`Test ${index}`}</Td>
+                                            <Td onClick={()=>this.openTest(test,index)}>{test.testName}</Td>
                                             <Td onClick={()=>this.openTest(test,index)}>{dt}</Td>
                                             <Td onClick={()=>this.openTest(test,index)}>{test.duration}</Td>
                                             <Td onClick={()=>this.openTest(test,index)}>{test.totalMarks}</Td>
+                                            <Td>
+                                                <Button disabled={sub} title={subTitle} variant="primary">View Submissions</Button>
+                                            </Td>
+                                            <Td>
+                                                <Button disabled={sub} title={resTitle} variant="primary">View Results</Button>
+                                            </Td>
                                             <Td className="text-center">
                                             <span
                                                 variant="info"
-                                                onClick={() =>
-                                                // this.props.history.push ('/users/create', {update: true,  user,})
-                                                {
-                                                    localStorage.setItem('update',true);
-                                                    //this.props.history.push({pathname:"/users/create"})
-                                                    alert("Edit test "+(index))
-                                                }
+                                                onClick={() =>{
+                                                        localStorage.setItem('testId',test.testId);
+                                                        this.props.history.push('teacher/editTest');
+                                                    }
                                                 }
                                                 
                                             >
@@ -126,7 +167,7 @@ export class Course extends Component {
                                                 </svg>
                                             </span>
                                             </Td>
-                                            <Td>
+                                            <Td className="text-center">
                                             <span
                                                 variant="danger"
                                                 onClick={() => {
