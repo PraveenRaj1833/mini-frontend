@@ -105,11 +105,13 @@ class StudentViewTest extends Component {
                     }).then(res=>{
                         console.log(res);
                         if(res.status===200){
-                            if(res.eval===true){
-                                this.setState({
-                                    result : true,
-                                    marks : parseInt(res.result.marks)
-                                })
+                            if(res.attempt===true){
+                                if(res.eval===true){
+                                    this.setState({
+                                        result : true,
+                                        marks : parseInt(res.result.marks)
+                                    })
+                                }
                             }
                             
                         }
@@ -174,7 +176,12 @@ class StudentViewTest extends Component {
                     this.state.stage==-1 ? 
                     <span>Test will open at {date}</span>:
                     this.state.stage===0 ? <Button onClick={()=>this.props.history.push("/student/attemptTest")}>Attempt Quiz Now</Button> : 
-                    <span>Test was closed at {compDate}</span>
+                    <div>
+                        <span>Test was closed at {compDate}</span>
+                        <Button onClick={()=>{
+                                    this.props.history.push('/student/review');
+                        }}>View Questions</Button>
+                    </div>
                     }
                 </div>
             </div>

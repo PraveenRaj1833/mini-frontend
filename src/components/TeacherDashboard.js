@@ -22,43 +22,8 @@ export class TeacherDashboard extends Component {
         this.state = {
             user : JSON.parse(localStorage.getItem('user')),
             courses : [],
-            time : {},
-            seconds : 200
-        }
-        this.timer = 0;
-        this.countDown = this.countDown.bind(this);
-    }
-
-    secondsToTime(secs){
-        let hours = Math.floor(secs / (60*60));
-        let divisor_for_min = secs % (60*60);
-        let minutes = Math.floor(divisor_for_min/60);
-        let divisor_for_sec = divisor_for_min % 60;
-        let seconds = Math.ceil(divisor_for_sec);
-        let obj = {
-            'h' : hours,
-            'm' : minutes,
-            's' : seconds
-        };
-        return obj;
-    }
-
-    startTimer = ()=>{
-        if(this.timer==0 && this.state.seconds>0){
-            this.timer = setInterval(this.countDown,1000);
-        }
-    }
-
-    countDown = ()=>{
-        const seconds = this.state.seconds-1;
-        this.setState({
-            time : this.secondsToTime(seconds),
-            seconds : seconds
-        });
-
-        if(seconds == 0){
-            clearInterval(this.timer);
-            alert("time is up");
+            // time : {},
+            // seconds : 200
         }
     }
 
@@ -69,10 +34,7 @@ export class TeacherDashboard extends Component {
     }
 
     componentDidMount(){
-        let timeLeft = this.secondsToTime(this.state.seconds);
-        this.setState({
-            time : timeLeft
-        })
+    
         console.log(localStorage.getItem('user'))
         fetch('https://online-exam-back.herokuapp.com/teacher/getCourses',{
             method : 'post',
@@ -159,15 +121,6 @@ export class TeacherDashboard extends Component {
                         //return <li><a href="/course">{course.courseName} </a></li>
                     })}
                 </ul>
-                <div className="justify-content-center text-center m-2">
-                    <span className="text-primary bg-warning mx-auto my-auto h4 m-1">
-                        {String(this.state.time.h).padStart(2,0)}
-                        :{String(this.state.time.m).padStart(2,0)}:
-                        {String(this.state.time.s).padStart(2,0)}
-                    </span>
-                    <br></br>
-                    <Button className="m-1" onClick={()=>this.startTimer()}>Start</Button>
-                </div>
                 <Button className="m-1" onClick={()=>this.props.history.push('/teacher/updateProfile')}>Update Profile</Button>
                 <Button className="m-1" onClick={()=>this.props.history.push('/teacher/updateTeacherPassword')}>Update Password</Button>
             </div>

@@ -44,7 +44,7 @@ class StudentCourse extends Component {
                     method : 'post',
                     headers : {
                         'Content-type' : 'application/json',
-                        Authorization : localStorage.getItem('token')
+                         Authorization : localStorage.getItem('token')
                     },
                     body : JSON.stringify({
                         courseId : localStorage.getItem('courseId')
@@ -60,7 +60,7 @@ class StudentCourse extends Component {
                             loader : false
                         })
                     }
-                    else if(res.status==402){
+                    else if(res.status===402){
                         this.setState({
                             loader : false
                         })

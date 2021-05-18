@@ -26,6 +26,9 @@ class StudentReview extends Component {
             questions : [{}],
             answers : [{}],
             marks : '',
+            attemped : true,
+            attemptDate : null,
+            submitDate : null,
             // seconds : 300,
             // showSubmitModel : false,
             loader : true
@@ -62,6 +65,9 @@ class StudentReview extends Component {
                     questions : res.result.questions,
                     answers : res.result.answers,
                     marks : parseInt(res.result.marks),
+                    attemped : res.result.attempt,
+                    attemptDate : res.result.attemptDate,
+                    submitDate : res.result.submitDate,
                     loader : false
                 },()=>{
                     console.log("state");
@@ -82,6 +88,16 @@ class StudentReview extends Component {
     render() {
         const date = new Date(this.state.dateTime);
         const dt = date.toString().split("G")[0];
+        var atDate;
+        if(this.state.attemptDate!==null && this.state.attemptDate!==''){
+            atDate = new Date(this.state.attemptDate);
+            atDate = atDate.toString().split("G")[0];
+        }
+        var sDate;
+        if(this.state.submitDate!==null && this.state.submitDate!==''){
+            sDate = new Date(this.state.submitDate);
+            sDate = sDate.toString().split("G")[0];
+        }
         return (
             <div className="m-3">
                 {this.state.loader===true?<Spinner></Spinner>:null}
@@ -93,8 +109,16 @@ class StudentReview extends Component {
                             <td className="w-50">{dt}</td>
                         </tr>
                         <tr>
+                            <th>Start Time </th>
+                            <td>{atDate}</td>
+                        </tr>
+                        <tr>
+                            <th>Finish Time </th>
+                            <td>{sDate}</td>
+                        </tr>
+                        <tr>
                             <th>State </th>
-                            <td>Finished</td>
+                            <td>{this.state.attemped===true?"Finished":"Not Attempted"}</td>
                         </tr>
                         <tr>
                             <th>Score</th>
@@ -172,7 +196,8 @@ class StudentReview extends Component {
                                             <div className={rightCount===0?(wrongCount===0?"unattempted p-2 mr-2":"wrong p-2 mr-2"):"right p-2 mr-2"}>
                                                 {rightCount===0?(wrongCount===0?
                                                 <div>
-                                                    <p>You Have Not attempted this question</p>
+                                                    {this.state.attemped===true?
+                                                    <p>You Have Not attempted this question</p>:null}
                                                     <p>The Correct Answer is <b>{correctOne}</b></p>
                                                 </div>:
                                                 <div>
@@ -251,7 +276,8 @@ class StudentReview extends Component {
                                                         })}</p>
                                                     </div>):(rightCount===0 && wrongCount===0?
                                                             <div>
-                                                                <p>You Have Not attempted this question</p>
+                                                                {this.state.attemped===true?
+                                                                    <p>You Have Not attempted this question</p>:null}
                                                                 <p>The Correct Answers are {correctAns.map((ans,ansIndex)=>{
                                                                     if(ansIndex!==correctAns.length-1)
                                                                         return <b>{ans} , </b>
@@ -272,23 +298,27 @@ class StudentReview extends Component {
                                                  }
                                                 </div>
                                             </FormGroup>
-                                            :<FormGroup className="form-inline col-md-11 text-left">
-                                                <FormLabel className="m-1">Ans</FormLabel>
-                                                <FormControl
-                                                className="col-xm-12 col-md-9 m-2"
-                                                as="textarea"
-                                                rows={3}
-                                                name="answer"
-                                                width={300}
-                                                readOnly
-                                                columns = {200}
-                                                value = {this.state.answers[index].answer}
-                                                placeholder="Write your answer here"
-                                                />
-                                                <div>
-                                                    <p>Your score is {this.state.answers[index].marks} out of {question.marks}</p>
-                                                </div>
-                                            </FormGroup >
+                                            :   <div>
+                                                    {this.state.attemped===true?
+                                                        <FormGroup className="form-inline col-md-11 text-left">
+                                                            <FormLabel className="m-1">Ans</FormLabel>
+                                                            <FormControl
+                                                            className="col-xm-12 col-md-9 m-2"
+                                                            as="textarea"
+                                                            rows={3}
+                                                            name="answer"
+                                                            width={300}
+                                                            readOnly
+                                                            columns = {200}
+                                                            value = {this.state.answers[index].answer}
+                                                            placeholder="Write your answer here"
+                                                            />
+                                                            <div>
+                                                                <p>Your score is {this.state.answers[index].marks} out of {question.marks}</p>
+                                                            </div>
+                                                        </FormGroup > : null
+                                                    }
+                                                </div> 
                                     }
                                 </div> 
                             </div>

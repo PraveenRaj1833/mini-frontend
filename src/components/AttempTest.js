@@ -4,6 +4,7 @@ import {withRouter} from 'react-router-dom'
 import { FormGroup,FormControl,FormLabel,FormCheck,Form } from 'react-bootstrap'
 import { Button } from 'react-bootstrap'
 import {Modal,ListGroup,Badge} from 'react-bootstrap'
+import '../docs/css/attemptTest.css'
 import '../docs/css/header.css'
 
 class AttempTest extends Component {
@@ -26,7 +27,8 @@ class AttempTest extends Component {
             answers : [],
             seconds : 300,
             showSubmitModel : false,
-            loader : true
+            loader : true,
+            msg : 'loading...'
         }
         this.timer = 0;
         this.countDown = this.countDown.bind(this);
@@ -34,7 +36,7 @@ class AttempTest extends Component {
 
     logout = ()=>{
         //console.log("logout called");
-        localStorage.clear();
+        // localStorage.clear();
         this.props.history.push('/');
     }
 
@@ -108,7 +110,11 @@ class AttempTest extends Component {
                     }
                     console.log("check");
                     console.log(answers);
-                    let timeLeft = this.secondsToTime(this.state.seconds);
+                    let timeLeft;
+                    if(localStorage.getItem('time')===null)
+                        timeLeft= this.secondsToTime(this.state.seconds);
+                    else
+                        timeLeft = JSON.parse(localStorage.getItem('time'));
                     this.setState({
                         answers : answers,
                         time : timeLeft,
@@ -123,6 +129,9 @@ class AttempTest extends Component {
                     loader : false
                 })
                 alert("Session Expired, please login again");
+                if(this.state.time!={} && this.state.time!=''){
+                    localStorage.setItem('time',this.state.time);
+                }
                 this.logout();
             }
             else if(res.status===203){
@@ -215,14 +224,20 @@ class AttempTest extends Component {
         if(seconds == 0){
             clearInterval(this.timer);
             alert("time is up");
+            this.submitTest();
         }
     }
 
     componentWillUnmount = ()=>{
+        localStorage.setItem('time',JSON.stringify(this.state.time));
         clearInterval(this.timer);
     }
 
     submitTest = ()=>{
+        this.setState({
+            msg : "Submitting Test...",
+            loader : true
+        })
         const user = JSON.parse(localStorage.getItem('user'));
         this.handleModelHide();
         clearInterval(this.timer);
@@ -264,7 +279,7 @@ class AttempTest extends Component {
     render = ()=> {
         return (
             <div className="m-3 text-center">
-                {this.state.loader===true?<Spinner></Spinner>:null}
+                {this.state.loader===true?<Spinner text={this.state.msg}></Spinner>:null}
                 
                 <Modal show={this.state.showSubmitModel} onHide={this.handleModelHide}>
                     <Modal.Header closeButton>
@@ -305,12 +320,15 @@ class AttempTest extends Component {
                 {this.state.attemped===true?
                 <h3>You Have already attempted the test<br></br>No More attempts Allowed </h3>:
                 <div>
-                    <i className="h2">Your test will end in </i>
-                    <span className="text-primary bg-warning mx-auto my-auto h4 m-1">
-                            {String(this.state.time.h).padStart(2,0)}
-                            :{String(this.state.time.m).padStart(2,0)}:
-                            {String(this.state.time.s).padStart(2,0)}
-                    </span>
+                    <div className="sticky">
+                        <i className="h2">Your test will end in </i>
+                        <span className="text-primary bg-warning mx-auto my-auto h4 m-1">
+                                {String(this.state.time.h).padStart(2,0)}
+                                :{String(this.state.time.m).padStart(2,0)}:
+                                {String(this.state.time.s).padStart(2,0)}
+                        </span>
+                    </div>
+                    
                     {
                         this.state.questions.map((question,index)=>{
                             return(

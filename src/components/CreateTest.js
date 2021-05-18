@@ -2,9 +2,10 @@ import {withRouter} from 'react-router-dom'
 import React, { Component } from 'react'
 // import { Button } from 'reactstrap'
 // import {RadioGroup,Radio} from 'react-radio-group'
-import { FormGroup,FormControl,FormLabel,FormCheck,Button } from 'react-bootstrap'
+import { FormGroup,FormControl,FormLabel,FormCheck,Button} from 'react-bootstrap'
 import {Modal,ListGroup,Badge} from 'react-bootstrap'
 import 'bootstrap/dist/css/bootstrap.css'
+import Spinner from './Spinner';
 // import './testCreate.css'
 // import DateTimePicker from 'react-datetime-picker';
 import { Form } from 'reactstrap'
@@ -16,6 +17,7 @@ class CreateTest extends Component {
         this.state = {
              totalMarks : '',
              duration : '',
+             loader : false,
              date : '',
              courseId : localStorage.getItem('courseId'),
              time : '',
@@ -31,11 +33,16 @@ class CreateTest extends Component {
                      right : "",
                      desc : ""
                  }
-             ]
+             ],
         }
+        this.inputRefs = [React.createRef()];
     }
 
-
+    logout = ()=>{
+        //console.log("logout called");
+        localStorage.clear();
+        this.props.history.push('/');
+    }
 
     handleQuestionChange = (e,index) => {
         const Questions = this.state.questions;
@@ -72,10 +79,16 @@ class CreateTest extends Component {
             });
             // ,()=>console.log(this.state.questions)
         }
+        if(this.inputRefs[index].current.className.includes("border-danger") && e.target.value!==''){
+            this.inputRefs[index].current.className = this.inputRefs[index].current.className.split("border-danger")[0]
+                                        +this.inputRefs[index].current.className.split("border-danger")[1];
+            this.inputRefs[index].current.className = this.inputRefs[index].current.className + " border-dark"
+        }
     }
     
     addQuestion = (type) => {
         const Questions = this.state.questions;
+        this.inputRefs.push(React.createRef());
         if(type==="mcqs"){
             Questions.push({
                 qType : "mcqs",
@@ -178,6 +191,9 @@ class CreateTest extends Component {
         this.setState({
             questions : questions
         });
+        this.inputRefs = this.inputRefs.filter((ref,index)=>{
+                            return index!==delIndex;
+                        })
     }
 
     deleteOption = (index,delOptIndex)=>{
@@ -209,40 +225,60 @@ class CreateTest extends Component {
         else{
             const questions = this.state.questions;
             var desc = false;
+            var marks = 0;
             for(var i=0;i<this.state.questions.length;i++){
                 if(questions[i].qType==="desc"){
                     desc = true;
                 }
                 if(questions[i].desc===''){
-                    alert("question Description cannot be empty");
+                    alert("question Description cannot be empty- Question "+(i+1));
                     f=1;
+                    this.inputRefs[i].current.focus();
+                    console.log(this.inputRefs[i].current);
+                    this.inputRefs[i].current.className =this.inputRefs[i].current.className.split("border-dark")[0]+this.inputRefs[i].current.className.split("border-dark")[1];
+                    this.inputRefs[i].current.className = this.inputRefs[i].current.className + " border-danger";
+                    // this.inputRefs[i].current.style['border-color']="red";
                 }
                 else if((questions[i].qType==="mcqs" || questions[i].qType==="checkBox") && questions[i].options.length===0){
                     alert("please mention options for question "+i);
                     f=1;
+                    this.inputRefs[i].current.focus();
                 }
                 else if(questions[i].qType==="mcqs" && questions[i].right===""){
                     alert("please mention right option for question "+i);
                     f=1;
+                    this.inputRefs[i].current.focus();
                 }
                 else if(questions[i].qType==="checkBox" && questions[i].right.length===0){
                     alert("please mention right options for question "+i);
                     f=1;
+                    this.inputRefs[i].current.focus();
                 }
                 else if(questions[i].marks==="" || questions[i].marks===0){
                     alert("please mention marks for question "+i);
                     f=1;
+                    this.inputRefs[i].current.focus();
                 }
                 else{
+                    marks+=parseInt(questions[i].marks);
                     if(questions[i].qType==="mcqs" || questions[i].qType==="checkBox"){
                         const options = questions[i].options;
                         for(var j=0;j<questions[i].options.length;j++){
                             if(options[j].desc===""){
                                 alert("option description cannot be null at question "+i+ " option "+j);
                                 f=1;
+                                this.inputRefs[i].current.focus();
+                                break;
                             }
                         }
                     }
+                }
+            }
+            if(f===0){
+                if(marks!==parseInt(this.state.totalMarks))
+                {
+                    f=1;
+                    alert(`Sum of marks doesn't tally with total Marks! sum is ${marks}`);    
                 }
             }
             console.log(JSON.stringify({
@@ -255,6 +291,9 @@ class CreateTest extends Component {
                 testType : desc===true?"desc":"mcqs"
             }))
             if(f===0){
+                this.setState({
+                    loader : true
+                });
                 console.log(JSON.stringify({
                     totalMarks : this.state.totalMarks,
                     duration : this.state.duration,
@@ -286,6 +325,23 @@ class CreateTest extends Component {
                     return res.json();
                 }).then(res=>{
                     console.log(res);
+                    if(res.status===200){
+                        alert(res.msg);
+                        console.log("success");
+                        localStorage.setItem('testId',res.result.testId);
+                        console.log(localStorage.getItem('testId'));
+                        this.props.history.push('/teacher/viewTest');
+                    }
+                    else if(res.status===402){
+                        alert("session Expired , please login again");
+                        this.logout();
+                    }
+                    else{
+                        alert(res.msg);
+                    }
+                    this.setState({
+                        loader : false
+                    })
                 })
             }
         }
@@ -306,7 +362,7 @@ class CreateTest extends Component {
     render() {
         return (
             <div className="m-2 mb-5">
-
+                {this.state.loader===true?<Spinner></Spinner>:null}
                 <Modal show={this.state.addQue} onHide={this.closeModal}>
                     <Modal.Header closeButton>
                         <Modal.Title>Add Question</Modal.Title>
@@ -401,8 +457,8 @@ class CreateTest extends Component {
                     {
                         this.state.questions.map((question,index)=>{
                             return (
-                                <div className="text-center row">
-                                    <div className="col-xm-9 col-sm-9 col-md-10 border border-3 border-dark ml-2 mr-2 mt-2">
+                                <div className="text-center row" >
+                                    <div ref={this.inputRefs[index]} tabIndex="0" className="col-xm-9 col-sm-9 col-md-10 border border-3 border-dark ml-2 mr-2 mt-2">
                                         <div className="row mt-1">
                                             <FormGroup className="form-inline col-md-9" key={index}>
                                                 <FormLabel className="col-xm-2 col-md-1 ml-1">Q{index+1}</FormLabel>
