@@ -1,0 +1,21 @@
+.right{
+    background-color: deepskyblue;
+}
+
+.wrong{
+    background-color: tomato;
+}
+
+.unattempted{
+    background-color: khaki;
+}
+
+.options{
+    margin-left: 50px;
+}
+
+@media only screen and (max-width: 615px) {
+    .options {
+       margin-left: 5px;
+    }
+  }

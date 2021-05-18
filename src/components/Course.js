@@ -96,6 +96,31 @@ export class Course extends Component {
         this.props.history.push('/teacher/viewTest');
     }
 
+    deleteTest = (testId,testName)=>{
+        fetch(`https://online-exam-back.herokuapp.com/teacher/deleteTest/${testId}`,{
+            method : 'delete',
+            headers : {
+                'Content-type' : 'application/json',
+                Authorization : localStorage.getItem('token')
+            },
+            body : JSON.stringify({
+                testId : testId
+            })
+        }).then(res=>{
+            return res.json();
+        }).then(res=>{
+            console.log(res);
+            if(res.status===200){
+                alert(`Deleted test ${testName} successfully`);
+            }
+            else{
+                alert(res.msg);
+            }
+        }).catch(err=>{
+            console.log(err);
+        })
+    }
+
     render() {
         const pdate = new Date();
         return (
@@ -171,10 +196,10 @@ export class Course extends Component {
                                             <span
                                                 variant="danger"
                                                 onClick={() => {
-                                                if(window.confirm("Do you want to really delete this Test")==true)
+                                                if(window.confirm("Do you want to really delete this Test, all details of the test wil be permanently deleted?")==true)
                                                 {
+                                                    this.deleteTest(test.testId , test.testName);
                                                     
-                                                    alert(`Deleted test ${index} successfully`)
                                                 }
                                                 }
                                                 }

@@ -44,11 +44,11 @@
     cursor: pointer;
 }
 
-.options{
+/* .options{
     display: flex;
     justify-content: start;
     margin-left: 50px;
-}
+} */
 
 .test:hover{
     text-decoration: underline;

@@ -17,7 +17,9 @@ class StudentViewTest extends Component {
             stage : -1,
             testName : '',
             testType : '',
-            attempted : false
+            attempted : false,
+            result : false,
+            marks : 0
             //questions : []
         }
     }
@@ -84,6 +86,42 @@ class StudentViewTest extends Component {
                 this.setState({
                     attempted : true
                 });
+                const pDate = new Date();
+                const compDate = new Date(res.result.dateTime);
+                compDate.setMinutes(compDate.getMinutes()+res.result.duration);
+                if(pDate.getTime()>=compDate.getTime()){
+                    fetch('https://online-exam-back.herokuapp.com/student/getResult',{
+                        method : 'post',
+                        body : JSON.stringify({
+                            testId : localStorage.getItem("testId"),
+                            studentId : user.studentId
+                        }),
+                        headers : {
+                            'Content-type' : 'application/json',
+                            Authorization : localStorage.getItem('token')
+                        }
+                    }).then(res=>{
+                        return res.json();
+                    }).then(res=>{
+                        console.log(res);
+                        if(res.status===200){
+                            if(res.eval===true){
+                                this.setState({
+                                    result : true,
+                                    marks : parseInt(res.result.marks)
+                                })
+                            }
+                            
+                        }
+                        else{
+                            console.log(res.msg);
+                            alert(res.msg);
+                        }
+                    }).catch(err=>{
+                        console.log(err);
+                    })
+                }
+                
             }
         })
         .catch(err=>{
@@ -120,7 +158,18 @@ class StudentViewTest extends Component {
                     <br></br>
 
                     {this.state.attempted===true?
-                        <h4>You Have already attempted the test<br></br>No More attempts Allowed </h4>
+                        <div>
+                            <h4>You Have already attempted the test<br></br>No More attempts Allowed </h4>
+                            {this.state.result===true?
+                            <div>
+                                <h4>Your Score is {this.state.marks}/{this.state.totalMarks}</h4>
+                                <Button onClick={()=>{
+                                    this.props.history.push('/student/review');
+                                }}>Review</Button>
+                            </div>
+                            : <h4>Results will be declared soon</h4>}
+                        </div>
+                        
                     :
                     this.state.stage==-1 ? 
                     <span>Test will open at {date}</span>:

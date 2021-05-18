@@ -54,6 +54,12 @@ class Login extends Component {
             if(res.status===200) {
                 localStorage.setItem('token',`Bearer ${res.token}`);
                 localStorage.setItem('user',JSON.stringify(res[role]));
+                if(role==="student")
+                    localStorage.setItem('userId',res[role]['studentId']);
+                else
+                    localStorage.setItem('userId',res[role]['teacherId']);
+                console.log(localStorage.getItem('userId'));
+
                 // console.log("in login")
                 // console.log(res[role])
                 // console.log(localStorage.getItem('user'))

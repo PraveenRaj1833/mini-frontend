@@ -22,6 +22,7 @@ import EditTest from './components/EditTest';
 import StudentViewTest from './components/StudentViewTest';
 import StudentCourse from './components/StudentCourse'
 import AttempTest from './components/AttempTest';
+import StudentReview from './components/StudentReview';
 
 
 class App extends Component {
@@ -86,6 +87,9 @@ class App extends Component {
                   </Route>
                   <Route exact path="/student/updatePassword">
                     <UpdatePassword/>
+                  </Route>
+                  <Route exact path="/student/review">
+                    <StudentReview/>
                   </Route>
                 </Switch>
               </div>
