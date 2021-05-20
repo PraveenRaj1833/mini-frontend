@@ -285,9 +285,10 @@ class UpdateStudent extends Component {
                 </FormGroup>
                 <p id="login" className="warning"/>
                 <Button className="m-2" onClick={() => this.handleSubmit()}>Update</Button>
-                <Button className="m-2" onClick={() => this.props.history.goback()}>
+                <Button className="m-2" onClick={this.props.history.goBack}>Cancel</Button>
+                {/* <Button className="m-2" onClick={() => this.props.history.goBack}>
                     Cancel
-                </Button>
+                </Button> */}
                 </div>
 
             </div>

@@ -23,6 +23,10 @@ import StudentViewTest from './components/StudentViewTest';
 import StudentCourse from './components/StudentCourse'
 import AttempTest from './components/AttempTest';
 import StudentReview from './components/StudentReview';
+import ViewSubmissions from './components/ViewSubmissions';
+import ReviewTest from './components/ReviewTest';
+import ViewProfile from './components/ViewProfile';
+import TeacherProfile from './components/TeacherProfile';
 
 
 class App extends Component {
@@ -55,6 +59,9 @@ class App extends Component {
                   <Route exact path="/teacher/dashboard">
                     <TeacherDashboard/>
                   </Route>
+                  <Route exact path="/teacher/ViewProfile">
+                    <TeacherProfile/>
+                  </Route>
                   <Route exact path="/teacher/updateProfile">
                     <UpdateTeacher/>
                   </Route>
@@ -70,11 +77,20 @@ class App extends Component {
                   <Route exact path="/student/updateProfile">
                     <UpdateStudent/>
                   </Route>
+                  <Route exact path="/student/ViewProfile">
+                    <ViewProfile/>
+                  </Route>
                   <Route exact path="/teacher/createTest">
                     <CreateTest/>
                   </Route>
                   <Route exact path="/teacher/viewTest">
                     <ViewTest/>
+                  </Route>
+                  <Route exact path="/teacher/viewSubmissions">
+                    <ViewSubmissions/>
+                  </Route>
+                  <Route exact path="/teacher/reviewTest">
+                    <ReviewTest/>
                   </Route>
                   <Route exact path="/teacher/editTest">
                     <EditTest/>

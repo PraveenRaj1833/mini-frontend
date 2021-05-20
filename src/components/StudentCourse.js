@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import {withRouter} from 'react-router-dom'
+import { Table, Thead, Tbody, Tr, Th, Td } from 'react-super-responsive-table';
 import Spinner from './Spinner'
+import 'react-super-responsive-table/dist/SuperResponsiveTableStyle.css';
 
 class StudentCourse extends Component {
     constructor(props) {
@@ -44,7 +46,7 @@ class StudentCourse extends Component {
                     method : 'post',
                     headers : {
                         'Content-type' : 'application/json',
-                         Authorization : localStorage.getItem('token')
+                        Authorization : localStorage.getItem('token')
                     },
                     body : JSON.stringify({
                         courseId : localStorage.getItem('courseId')
@@ -60,7 +62,7 @@ class StudentCourse extends Component {
                             loader : false
                         })
                     }
-                    else if(res.status===402){
+                    else if(res.status==402){
                         this.setState({
                             loader : false
                         })
@@ -86,23 +88,36 @@ class StudentCourse extends Component {
         return (
             <div className="m-4">
                 {this.state.loader===true?<Spinner></Spinner>:null}
-                <h1 className="m-5">{this.state.course.courseName} </h1>
-                <ul>
-                    {this.state.tests.map((test,index)=>{
-                        const date = new Date(test.dateTime);
-                        return (
-                            <li className="mask rgba-red-strong text-primary test m-1" 
-                                onClick={()=>{
-                                    localStorage.setItem('testId',test.testId);
-                                    localStorage.setItem('testIndex',index+1);
-                                    localStorage.setItem('test',JSON.stringify(test));
-                                    this.props.history.push("/student/viewTest");
-                                }}>{test.testName} &nbsp; -
-                                <i className="ml-5">{date.toString()}</i>
-                            </li>
-                        )
-                    })}
-                </ul>
+                <h1 className=" text-center m-5">{this.state.course.courseName} </h1>
+                    <Table  striped bordered hover size="sm" id="users" className="m-2 w-100 table table-striped table-bordered dt-responsive nowrap">
+                        <Thead>
+                            <Tr>
+                                <Th>Test Name</Th>
+                                <Th>Scheduled At</Th>
+                                <Th>Attempt/View Test</Th>
+                            </Tr>
+                        </Thead>
+                        <Tbody>
+                        {this.state.tests.map((test,index)=>{
+
+                            const date = new Date(test.dateTime);
+                            const dt = date.toString().split("G")[0]
+                            console.log(new Date(test.dateTime))
+                            return (
+                                <Tr key={test.testId}>
+                                        <Td onClick={()=>this.openTest(test,index)}>{test.testName}</Td>
+                                        <Td onClick={()=>this.openTest(test,index)}>{dt}</Td>
+                                        <Td className="text-center"><button className="btn btn-secondary " onClick={()=>{
+                                            localStorage.setItem('testId',test.testId);
+                                            localStorage.setItem('testIndex',index+1);
+                                            localStorage.setItem('test',JSON.stringify(test));
+                                            this.props.history.push("/student/viewTest");
+                                        }}>View Test</button></Td>
+                                </Tr>        
+                            )
+                        })}
+                        </Tbody>
+                    </Table>
                 
             </div>
         )

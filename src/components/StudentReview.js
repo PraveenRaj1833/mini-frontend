@@ -218,7 +218,7 @@ class StudentReview extends Component {
                                                 <Form.Group className="options input">
                                                     {question.options.map((option,optIndex)=>{
                                                         const namee="question"+index;
-                                                        const checked = this.state.answers[index].options.includes(option.optionId.toString());
+                                                        const checked = this.state.answers[index].options.includes(option.optionId);
                                                         var correct; 
                                                         if(question.right.includes(option.optionId))
                                                             correctAns.push(option.desc);

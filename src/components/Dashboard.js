@@ -122,8 +122,7 @@ export class Dashboard extends Component {
                         //return <li><a href="/course">{course.courseName} </a></li>
                     })}
                 </ul>
-                <Button className="m-1" onClick={()=>this.props.history.push('/student/updateProfile')}>Update Profile</Button>
-                <Button className="m-1" onClick={()=>this.props.history.push('/student/updatePassword')}>Update Password</Button>
+                <Button className="m-1" onClick={()=>this.props.history.push('/student/ViewProfile')}>View Profile</Button>
                </div>
         )
     }

@@ -26,6 +26,8 @@ class AttempTest extends Component {
             questions : [],
             answers : [],
             seconds : 300,
+            stDate : '',
+            endDate : '',
             showSubmitModel : false,
             loader : true,
             msg : 'loading...'
@@ -118,7 +120,8 @@ class AttempTest extends Component {
                     this.setState({
                         answers : answers,
                         time : timeLeft,
-                        loader:false
+                        loader:false,
+                        stDate : new Date()
                     },()=>{
                         this.startTimer();
                     })
@@ -255,7 +258,9 @@ class AttempTest extends Component {
                 studentId : user.studentId,
                 answers : this.state.answers,
                 testType : this.state.testType,
-                testId : this.state.testId
+                testId : this.state.testId,
+                attemptDate : this.state.stDate,
+                submitDate : new Date()
             })
         }).then(res=>{
             return res.json();

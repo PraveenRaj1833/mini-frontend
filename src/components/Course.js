@@ -127,7 +127,7 @@ export class Course extends Component {
             <div className="m-2">
                 {this.state.loader===true?<Spinner></Spinner>:null}
 
-                <h1>{this.state.course.courseName} </h1>
+                <h1 className="m-1">{this.state.course.courseName} </h1>
                 <Button className="float-right" onClick={()=>{
                     this.props.history.push('/teacher/createTest');
                 }}>Create Test</Button>
@@ -171,7 +171,12 @@ export class Course extends Component {
                                             <Td onClick={()=>this.openTest(test,index)}>{test.duration}</Td>
                                             <Td onClick={()=>this.openTest(test,index)}>{test.totalMarks}</Td>
                                             <Td>
-                                                <Button disabled={sub} title={subTitle} variant="primary">View Submissions</Button>
+                                                <Button disabled={sub} title={subTitle} variant="primary"
+                                                    onClick={()=>{
+                                                        localStorage.setItem('testId',test.testId);
+                                                        localStorage.setItem('test',JSON.stringify(test));
+                                                        this.props.history.push('/teacher/viewSubmissions');
+                                                    }} >View Submissions</Button>
                                             </Td>
                                             <Td>
                                                 <Button disabled={sub} title={resTitle} variant="primary">View Results</Button>

@@ -134,9 +134,10 @@ class UpdatePassword extends Component {
                 </FormGroup>
                 {/* <p id="login" className="warning"/> */}
                 <Button className="m-2" onClick={() => this.handleSubmit()}>Updatepassword</Button>
-                <Button className="m-2" onClick={() => this.props.history.goback()}>
+                <Button className="m-2" onClick={this.props.history.goBack}>Cancel</Button>
+                {/* <Button className="m-2" onClick={() => this.props.history.goback()}>
                     Cancel
-                </Button>
+                </Button> */}
                 </div>
 
             </div>

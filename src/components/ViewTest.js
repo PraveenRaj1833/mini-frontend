@@ -69,7 +69,7 @@ class ViewTest extends Component {
                 </svg>
                 </Button>
                 <h1>{this.state.testName}</h1>
-                <span className="col-xm-12 col-md-6 col-lg-3 m-2">Test Name : <i className="border border-1 p-1">{this.state.testName}</i></span>
+                {/* <span className="col-xm-12 col-md-6 col-lg-3 m-2">Test Name : <i className="border border-1 p-1">{this.state.testName}</i></span> */}
                     
                 <div className="row m-2 mb-4">
                     <span className="col-xm-12 col-md-6 col-lg-3 m-2">Total Marks : <i className="border border-1 p-1">{this.state.totalMarks}</i></span>
