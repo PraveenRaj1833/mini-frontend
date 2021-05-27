@@ -9,6 +9,7 @@ const Spinner = (props) => {
     );
 };
 
+
 Spinner.defaultProps = {
     text: "Loading..."
 };
