@@ -68,18 +68,21 @@ class ViewTest extends Component {
 
     render=()=> {
         const date = new Date(this.state.dateTime);
+        const pdate = new Date();
+        var edit = pdate.getTime()<date.getTime()
         const dt = date.toString().split("G")[0];
         return (
             
             <div className="m-4 mb-5">
                 {this.state.loader===true?<Spinner></Spinner>:null}
+                {edit===true?
                 <Button className="btn btn-light text-primary float-right m-2 mr-5" 
                 onClick={()=>{this.props.history.push('/teacher/editTest');}}>Edit &nbsp; 
                 <svg className="m-1 p-1" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="blue" class="bi bi-pencil-square" viewBox="0 0 16 16">
                 <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456l-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
                 <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"/>
                 </svg>
-                </Button>
+                </Button> : null}
                 <h1>{this.state.testName}</h1>
                 {/* <span className="col-xm-12 col-md-6 col-lg-3 m-2">Test Name : <i className="border border-1 p-1">{this.state.testName}</i></span> */}
                     

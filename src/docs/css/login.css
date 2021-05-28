@@ -1,19 +1,39 @@
 .form-label{
-    width : 100px
+  width : 100px;
+  /* background-image: url('./clsimg.png'); */
 }
 
 .form{
-  position: static;
-  /* margin-top: 2.5cm;
-  margin-left: 9cm; */
-  /* align-self: center; */
-  margin: auto;
-  margin-top: 3cm;
-  border:  solid black;
-  width: 600px;
-  height: auto;
-  text-align: center;
-  border-radius:30px;
-  
+position: static;
+/* margin-top: 2.5cm;
+margin-left: 9cm; */
+/* align-self: center; */
+margin: auto;
+margin-top: 3cm;
+border:  solid black;
+width: 600px;
+height: auto;
+text-align: center;
+border-radius:30px;
+
+
+}
+#form{
+margin-top: 100px;
+background-color: rgb(243, 242, 242);
 }
 
+
+#fbb{
+background-image: url('../imgs/clsimgg.png');
+background-repeat: no-repeat;
+height: 100vh;
+background-size: cover;
+opacity:0.9;
+}
+
+#fb{
+padding-top: 150px;
+opacity: 1;
+z-index: 1;
+}

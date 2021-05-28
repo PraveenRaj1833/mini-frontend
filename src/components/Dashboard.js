@@ -13,6 +13,7 @@ import {
 import React, { Component } from 'react'
 import { Button } from 'react-bootstrap';
 import {withRouter,Prompt} from 'react-router-dom'
+import WebcamStreamCapture from './WebcamStreamCapture';
 
 export class Dashboard extends Component {
     
@@ -61,44 +62,33 @@ export class Dashboard extends Component {
     }
 
     render() {
+        const user = JSON.parse(localStorage.getItem('user'));
+        const popover = (
+            <Popover id="popover-basic">
+              <Popover.Title as="h3">{localStorage.getItem("role")==="student"?"Student":"Teacher"} Details</Popover.Title>
+              <Popover.Content>
+                <b className="h5">{user.studentId}</b> <br/>
+                {user.name} <br/>
+                <Button onClick={()=>this.props.history.push("/student/ViewProfile")} className="w-100 m-1">View Profile</Button>
+                <Button onClick={()=>this.props.history.push("/student/updateProfile")} className="w-100 m-1">Edit Profile</Button>
+                <Button onClick={()=>this.props.history.push("/student/updatePassword")} className="w-100 m-1"> Edit Password </Button>
+              </Popover.Content>
+            </Popover>
+          );
         return (
             <div>
                 <div className="home-header-section p-2">
+                
                     <Prompt message={(location,action)=>{
                         return location.pathname==='/login'?"Do you want to logout?":true;
                     }}></Prompt>
                        { 
+                       
                        (localStorage.getItem('token'))?<span>
-                        <OverlayTrigger
-                            trigger="hover"
-                            placement="bottom"
-                            overlay={
-                                <Popover>
-                                <Popover.Title as="h3"><strong>{this.state.name}</strong></Popover.Title>
-                                <Popover.Content>
-                                    <Table>
-                                        <Tr>
-                                            <Th>Email</Th>
-                                            <Td>:{this.state.email}</Td>
-                                        </Tr>
-                                        <Tr>
-                                            <Th>Role</Th>
-                                            <Td>:Admin</Td>
-                                        </Tr>
-                                    </Table>
-                                </Popover.Content>
-                                </Popover>
-                            }
-                            >
-                            {/* <Button variant="secondary">Popover on {placement}</Button> */}
-                            <button className="float-right mr-2 mt-1 inline btn btn-success border border-1" >
-                       <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="black" className="bi bi-person-circle" viewBox="0 0 16 16">
-                        <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
-                        <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/>
-                        </svg>{this.state.name}</button>
-                            </OverlayTrigger>
-    
-    
+                        
+                        <OverlayTrigger trigger="click" placement="bottom" className="float-right inline mt-1 mr-2 border border-1" overlay={popover}>
+                            <Button variant="success" className="float-right inline mt-1 mr-2 border border-1"><i class="user icon"></i></Button>
+                        </OverlayTrigger>
     
                         <button className="float-right mr-2 mt-1 inline btn btn-success border border-1 green" onClick={()=>this.logout()}>Logout</button>
                         <button className="small ui icon button float-right mr-2 btn-success notify mt-1 border border-1" width="20" height="20">
@@ -114,6 +104,7 @@ export class Dashboard extends Component {
                         <h3 id="head-of-a1" className="mt-1">Examination</h3>
                     </div>
                 <h1>Courses</h1>
+                {/* <WebcamStreamCapture></WebcamStreamCapture> */}
                 <ul>
                     {this.state.courses.map((course,index)=>{
                         return <li className="mask rgba-red-strong text-primary course" key={index}
@@ -125,7 +116,7 @@ export class Dashboard extends Component {
                         //return <li><a href="/course">{course.courseName} </a></li>
                     })}
                 </ul>
-                <Button className="m-1" onClick={()=>this.props.history.push('/student/ViewProfile')}>View Profile</Button>
+                {/* <Button className="m-1" onClick={()=>this.props.history.push('/student/ViewProfile')}>View Profile</Button> */}
                </div>
         )
     }

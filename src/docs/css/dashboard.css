@@ -1,0 +1,70 @@
+#dh{
+    text-align: center;
+    color: rgb(119, 99, 119);
+}
+#dh span{
+    padding: 57px;
+    text-decoration-color: rgb(140, 6, 145);
+    
+}
+
+#dc{
+    padding-top: 50px;
+    padding-left: 30px;
+    padding-bottom: 50px;
+    /* text-decoration-color: rgb(235, 231, 226); */
+    color: rgb(255, 255, 255);
+    font-weight: bolder;
+}
+#dc h1{
+    color: rgb(255, 255, 255);
+    font-weight: bolder;
+}
+
+#dashbutton{
+    align-content: center;
+    text-align: center;
+    padding: 32px 16px;
+}
+/* .Button{
+    font-size: 100px;
+    font-weight: bold;
+    padding: 32px 16px;
+} */
+#dpic{
+    background-image: url(../imgs/tdashpicc.png);
+    background-repeat: no-repeat;
+    /* width: 100vh; */
+    height: 100vh;
+    background-size: cover;
+}
+img {
+    opacity: 0.3;
+}
+
+#tdpic{
+    background-image: url(../imgs/tdashpicc.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 100vh;
+}
+
+#tdc{
+    padding-top: 50px;
+    padding-left: 30px;
+    padding-bottom: 50px;
+    
+    color: rgb(0, 0, 0);
+}
+#tdc h1{
+    color: rgb(0, 0, 0);
+    /* font-weight: bold; */
+}
+
+.webcam{
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    width: 40%;
+    height: 20%;
+}

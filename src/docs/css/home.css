@@ -1,0 +1,22 @@
+#home{
+    background-image: url('../imgs/backgroud.png');
+     height: 100vh; 
+    /* float: left; */
+    /* width: 100vh; */
+    /* image-resolution: 100vh; */
+    /* position: relative; */
+    /* margin-top: 90px; */
+    margin-top: 1px;
+    padding-top: 150px;
+    border-top: 20px;
+    background-repeat: no-repeat;
+    /* background-position: top center;
+    background-size: 100vh;  */
+    padding-bottom: 60px;
+    padding-bottom: 52px;
+    /* background-color: #369ee6; */
+}
+#headi{
+/* background-color: rgb(155, 224, 236); */
+font-weight: bolder;
+}

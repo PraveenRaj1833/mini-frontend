@@ -1,0 +1,14 @@
+#svt{
+    background-image: url('../imgs/clsimg.jpg');
+    background-repeat: no-repeat;
+    height: 100vh;
+    background-size: cover;
+    align-items: center;
+}
+
+#board{
+    color: azure;
+}
+#vth1{
+    font-weight: bolder;
+}

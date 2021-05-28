@@ -13,6 +13,7 @@ import {
     Alert
   } from 'react-bootstrap';
 import '../docs/css/login.css'
+// import e from 'express';
 
 class Login extends Component {
     constructor(props) {
@@ -91,50 +92,63 @@ class Login extends Component {
         })
     }
 
+    handleKeyPress = (e)=>{
+        // console.log("key pressed");
+        // console.log(e);
+        if(e.charCode===13){
+            this.handleSubmit();
+        }
+    }
+
     render() {
         return (
-           
-            <div className="text-center mt-5">
-                
-                 {this.state.loader?<Spinner></Spinner>:null}
-            <div className="form  col-xl-4 col-lg-5 col-md-6 col-sm-8 col-10 m-auto my-auto">
-                {/* col-xl-5 col-lg-6 col-md-7 col-sm-8 col-10 */}
-                <h1 className="m-3 mb-4">{localStorage.getItem('role')==='student'?"Student":"Faculty"} Login</h1>
-                <div>
-                <FormGroup className="form-inline ">
-                    <FormLabel className="form-label">Id</FormLabel>
-                    <FormControl
-                    type="text"
-                    name="userId"
-                    placeholder="Id"
-                    onChange={this.handleChange}
-                    value={this.state.userId}
-                    className="input1 col-xl-8 m-2"
-                    />
-                </FormGroup >
-                <p id="mail" className="warning"></p>
-                <FormGroup className="form-inline">
-                    <FormLabel className="form-label">Password</FormLabel>
-                    <FormControl
-                    type="password"
-                    name="password"
-                    value={this.state.password}
-                    onChange={this.handleChange}
-                    placeholder="Password"
-                    className="input col-xl-8 m-2"
-                    />
-                </FormGroup>
-                <p id="login" className="warning"/>
-                <Button className="m-2" onClick={() => this.handleSubmit()}>SignIn</Button>
-                <Button className="m-2" onClick={() => this.props.history.push (`/${localStorage.getItem('role')}/register`)}>
-                    SignUp
-                </Button>
-                </div>
+            <div id="fbb">
+                <div id="fb" className="text-center mt-5">
+                      
+                    {this.state.loader?<Spinner></Spinner>:null}
+                <div id="form" className="form  col-xl-4 col-lg-5 col-md-6 col-sm-8 col-10 m-auto my-auto">
+                    {/* col-xl-5 col-lg-6 col-md-7 col-sm-8 col-10 */}
+                    <h1 className="m-3 mb-4">{localStorage.getItem('role')==='student'?"Student":"Faculty"} Login</h1>
+                    <div>
+                    <FormGroup className="form-inline ">
+                        <FormLabel className="form-label">Id</FormLabel>
+                        <FormControl
+                        type="text"
+                        name="userId"
+                        placeholder="Id"
+                        onChange={this.handleChange}
+                        onKeyPress = {(e)=>this.handleKeyPress(e)}
+                        value={this.state.userId}
+                        className="input1 col-xl-8 m-2"
+                        />
+                    </FormGroup >
+                    <p id="mail" className="warning"></p>
+                    <FormGroup className="form-inline">
+                        <FormLabel className="form-label">Password</FormLabel>
+                        <FormControl
+                        type="password"
+                        name="password"
+                        value={this.state.password}
+                        onChange={this.handleChange}
+                        placeholder="Password"
+                        onKeyPress = {(e)=>this.handleKeyPress(e)}
+                        className="input col-xl-8 m-2"
+                        />
+                    </FormGroup>
+                    <p id="login" className="warning"/>
+                    <FormGroup>
+                        <Button type="submit" value="submit" className="m-2" onClick={() => this.handleSubmit()}>SignIn</Button>
+                        <Button className="m-2" onClick={() => this.props.history.push (`/${localStorage.getItem('role')}/register`)}>
+                            SignUp
+                        </Button>
+                    </FormGroup>
+                    </div>
 
-            </div>
-                <div className="text-center m-2">
-                    <button className="btn btn-secondary" onClick={this.props.history.goBack}>Back</button>
                 </div>
+                    <div className="text-center m-2">
+                        <button className="btn btn-secondary" onClick={this.props.history.goBack}>Back</button>
+                    </div>
+        </div>
       </div>
         )
     }

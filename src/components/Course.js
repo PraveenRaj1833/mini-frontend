@@ -154,6 +154,10 @@ export class Course extends Component {
                                     const compDate = new Date(test.dateTime);
                                     compDate.setMinutes(compDate.getMinutes()+test.duration);
                                     const sub = pdate.getTime()<compDate.getTime();
+                                    const edit = pdate.getTime()>date.getTime();
+                                    var editTitle = 'Click to Edit The Test';
+                                    if(edit===true)
+                                        editTitle = "You can't edit the test now";
                                     var subTitle='';
                                     var resTitle='';
                                     if(sub===true){
@@ -183,10 +187,14 @@ export class Course extends Component {
                                             </Td>
                                             <Td className="text-center">
                                             <span
+                                                title={editTitle}
+                                                disabled={edit}
                                                 variant="info"
                                                 onClick={() =>{
-                                                        localStorage.setItem('testId',test.testId);
-                                                        this.props.history.push('teacher/editTest');
+                                                        if(edit===false){
+                                                            localStorage.setItem('testId',test.testId);
+                                                            this.props.history.push('/teacher/editTest');
+                                                        }     
                                                     }
                                                 }
                                                 

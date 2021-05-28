@@ -4,6 +4,7 @@ import { Table, Thead, Tbody, Tr, Th, Td } from 'react-super-responsive-table';
 import Spinner from './Spinner'
 import 'react-super-responsive-table/dist/SuperResponsiveTableStyle.css';
 
+
 class StudentCourse extends Component {
     constructor(props) {
         super(props)
@@ -87,6 +88,7 @@ class StudentCourse extends Component {
     render() {
         return (
             <div className="m-4">
+                
                 {this.state.loader===true?<Spinner></Spinner>:null}
                 <h1 className=" text-center m-5">{this.state.course.courseName} </h1>
                     <Table  striped bordered hover size="sm" id="users" className="m-2 w-100 table table-striped table-bordered dt-responsive nowrap">
