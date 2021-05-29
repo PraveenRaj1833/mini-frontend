@@ -103,10 +103,10 @@ class Login extends Component {
     render() {
         return (
             <div id="fbb">
-                <div id="fb" className="text-center mt-5">
+                <div id="fb" className="text-center">
                       
                     {this.state.loader?<Spinner></Spinner>:null}
-                <div id="form" className="form  col-xl-4 col-lg-5 col-md-6 col-sm-8 col-10 m-auto my-auto">
+                <div id="form" className="form  col-xl-5 col-lg-5 col-md-6 col-sm-8 col-10 m-auto my-auto">
                     {/* col-xl-5 col-lg-6 col-md-7 col-sm-8 col-10 */}
                     <h1 className="m-3 mb-4">{localStorage.getItem('role')==='student'?"Student":"Faculty"} Login</h1>
                     <div>
@@ -119,7 +119,7 @@ class Login extends Component {
                         onChange={this.handleChange}
                         onKeyPress = {(e)=>this.handleKeyPress(e)}
                         value={this.state.userId}
-                        className="input1 col-xl-8 m-2"
+                        className="input1 col-xl-8 m-2 border border-dark"
                         />
                     </FormGroup >
                     <p id="mail" className="warning"></p>
@@ -132,7 +132,7 @@ class Login extends Component {
                         onChange={this.handleChange}
                         placeholder="Password"
                         onKeyPress = {(e)=>this.handleKeyPress(e)}
-                        className="input col-xl-8 m-2"
+                        className="input col-xl-8 m-2 border border-dark"
                         />
                     </FormGroup>
                     <p id="login" className="warning"/>

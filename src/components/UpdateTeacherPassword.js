@@ -12,7 +12,7 @@ import {
     Button,
     Alert
   } from 'react-bootstrap';
-import '../docs/css/login.css'
+  import '../docs/css/viewProfile.css'
 
 class UpdateTeacherPassword extends Component {
 
@@ -85,10 +85,11 @@ class UpdateTeacherPassword extends Component {
 
     render() {
         return (
-            <div className="text-center mt-5">
+            <div id="tfbb">
+            <div id="tfb" className="text-center mt-5">
                 
                  {this.state.loader?<Spinner></Spinner>:null}
-            <div className="form  col-xl-4 col-lg-5 col-md-6 col-sm-8 col-10 m-auto my-auto">
+            <div id="tform" className="form  col-xl-4 col-lg-5 col-md-6 col-sm-8 col-10 m-auto my-auto">
                 {/* col-xl-5 col-lg-6 col-md-7 col-sm-8 col-10 */}
                 <h1 className="m-3 mb-4">{localStorage.getItem('role')==='student'?"Student":"Faculty"} Password Update</h1>
                 <div>  
@@ -100,7 +101,7 @@ class UpdateTeacherPassword extends Component {
                     placeholder="currentPassword"
                     onChange={this.handleChange}
                     value={this.state.currentPassword}
-                    className="input1 col-xl-8 m-2"
+                    className="input1 col-xl-8 m-2 border border-dark"
                     />
                 </FormGroup >
                 <FormGroup className="form-inline">
@@ -111,7 +112,7 @@ class UpdateTeacherPassword extends Component {
                     value={this.state.newPassword}
                     onChange={this.handleChange}
                     placeholder="newPassword"
-                    className="input col-xl-8 m-2"
+                    className="input col-xl-8 m-2 border border-dark"
                     />
                 </FormGroup>
                 <FormGroup className="form-inline">
@@ -122,7 +123,7 @@ class UpdateTeacherPassword extends Component {
                     value={this.state.confirmPassword}
                     onChange={this.handleChange}
                     placeholder="confirmPassword"
-                    className="input col-xl-8 m-2"
+                    className="input col-xl-8 m-2 border border-dark"
                     />
                 </FormGroup>
                 {/* <p id="login" className="warning"/> */}
@@ -134,6 +135,7 @@ class UpdateTeacherPassword extends Component {
                 <div className="text-center m-2 mb-5">
                     <button className="btn btn-secondary mb-5" onClick={this.props.history.goBack}>Back</button>
                 </div>
+      </div>
       </div>
         )
     }

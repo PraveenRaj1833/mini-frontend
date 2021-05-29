@@ -3,7 +3,7 @@ import {withRouter} from 'react-router-dom'
 import { Table, Thead, Tbody, Tr, Th, Td } from 'react-super-responsive-table';
 import Spinner from './Spinner'
 import 'react-super-responsive-table/dist/SuperResponsiveTableStyle.css';
-
+import '../docs/css/review.css'
 
 class StudentCourse extends Component {
     constructor(props) {
@@ -87,10 +87,13 @@ class StudentCourse extends Component {
 
     render() {
         return (
-            <div className="m-4">
+            <div id="str" className="m-1">
                 
                 {this.state.loader===true?<Spinner></Spinner>:null}
-                <h1 className=" text-center m-5">{this.state.course.courseName} </h1>
+                <br/>
+                <h1 id="sch1" className=" text-center">{this.state.course.courseName} </h1>
+                <br/>
+                <div id="tablepad">
                     <Table  striped bordered hover size="sm" id="users" className="m-2 w-100 table table-striped table-bordered dt-responsive nowrap">
                         <Thead>
                             <Tr>
@@ -120,7 +123,7 @@ class StudentCourse extends Component {
                         })}
                         </Tbody>
                     </Table>
-                
+                </div>
             </div>
         )
     }

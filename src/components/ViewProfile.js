@@ -12,7 +12,7 @@ import {
     Button,
     Alert
   } from 'react-bootstrap';
-import '../docs/css/login.css'
+import '../docs/css/viewProfile.css'
 
 class ViewProfile extends Component {
 
@@ -60,10 +60,11 @@ class ViewProfile extends Component {
 
     render() {
         return (
-            <div className="text-center mt-5">
+            <div id="tfbb">
+            <div id="tfb" className="text-center mt-5">
                 
                  {this.state.loader?<Spinner></Spinner>:null}
-            <div className="form  col-xl-4 col-lg-5 col-md-6 col-sm-8 col-10 m-auto my-auto">
+            <div id="tform" className="form  col-xl-4 col-lg-5 col-md-6 col-sm-8 col-10 m-auto my-auto">
                 {/* col-xl-5 col-lg-6 col-md-7 col-sm-8 col-10 */}
                 <h1 className="m-3 mb-4">{localStorage.getItem('role')==='student'?"Student":"Faculty"} Profile</h1>
                 <div>
@@ -76,7 +77,7 @@ class ViewProfile extends Component {
                     placeholder="studentId"
                     // onChange={this.handleChange}
                     value={this.state.studentId}
-                    className="input1 col-xl-8 m-2"
+                    className="input1 col-xl-8 m-2 border border-dark"
                     />
                 </FormGroup >
                 <FormGroup className="form-inline">
@@ -88,7 +89,7 @@ class ViewProfile extends Component {
                     value={this.state.name}
                    // onChange={this.handleChange}
                     placeholder="name"
-                    className="input col-xl-8 m-2"
+                    className="input col-xl-8 m-2 border border-dark"
                     />
                 </FormGroup>
                 <FormGroup className="form-inline">
@@ -100,7 +101,7 @@ class ViewProfile extends Component {
                     value={this.state.email}
                    // onChange={this.handleChange
                     placeholder="email"
-                    className="input col-xl-8 m-2"
+                    className="input col-xl-8 m-2 border border-dark"
                     />
                 </FormGroup>
                 <FormGroup className="form-inline">
@@ -112,7 +113,7 @@ class ViewProfile extends Component {
                     value={this.state.branchId}
                    // onChange={this.handleChange}
                     placeholder="branchId"
-                    className="input col-xl-8 m-2"
+                    className="input col-xl-8 m-2 border border-dark"
                     />
                 </FormGroup>
                 <FormGroup className="form-inline">
@@ -124,7 +125,7 @@ class ViewProfile extends Component {
                     value={this.state.phone}
                     //onChange={this.handleChange}
                     placeholder="phone"
-                    className="input col-xl-8 m-2"
+                    className="input col-xl-8 m-2 border border-dark"
                     />
                 </FormGroup>
                 <FormGroup className="form-inline">
@@ -140,7 +141,7 @@ class ViewProfile extends Component {
                    // <option value="male"> male</option>
                    // <option value="female">female</option>
                    // </select>
-                    className="input col-xl-8 m-2"
+                    className="input col-xl-8 m-2 border border-dark"
                     />
                 </FormGroup>
                 <FormGroup className="form-inline">
@@ -152,7 +153,7 @@ class ViewProfile extends Component {
                     value={this.state.gender}
                     //onChange={this.handleChange}
                     placeholder="gender"
-                    className="input col-xl-8 m-2"
+                    className="input col-xl-8 m-2 border border-dark"
                     />
                 </FormGroup>
                 <FormGroup className="form-inline">
@@ -164,7 +165,7 @@ class ViewProfile extends Component {
                     value={this.state.year}
                     //onChange={this.handleChange}
                     placeholder="year"
-                    className="input col-xl-8 m-2"
+                    className="input col-xl-8 m-2 border border-dark"
                     />
                 </FormGroup>
                 <FormGroup className="form-inline">
@@ -176,7 +177,7 @@ class ViewProfile extends Component {
                     value={this.state.class}
                    // onChange={this.handleChange}
                     placeholder="class"
-                    className="input col-xl-8 m-2"
+                    className="input col-xl-8 m-2 border border-dark"
                     />
                 </FormGroup>
                 <FormLabel  className="h4 form-label">Address</FormLabel>
@@ -189,7 +190,7 @@ class ViewProfile extends Component {
                     value={this.state.houseNo}
                     //onChange={this.handleChange}
                     placeholder="houseNo"
-                    className="input col-xl-8 m-2"
+                    className="input col-xl-8 m-2 border border-dark"
                     />
                 </FormGroup>
                 <FormGroup className="form-inline">
@@ -201,7 +202,7 @@ class ViewProfile extends Component {
                     value={this.state.city}
                     //onChange={this.handleChange}
                     placeholder="city"
-                    className="input col-xl-8 m-2"
+                    className="input col-xl-8 m-2 border border-dark"
                     />
                 </FormGroup>
                 <FormGroup className="form-inline">
@@ -213,7 +214,7 @@ class ViewProfile extends Component {
                     value={this.state.district}
                    // onChange={this.handleChange}
                     placeholder="district"
-                    className="input col-xl-8 m-2"
+                    className="input col-xl-8 m-2 border border-dark"
                     />
                 </FormGroup>
                 <FormGroup className="form-inline">
@@ -225,7 +226,7 @@ class ViewProfile extends Component {
                     value={this.state.state}
                     //onChange={this.handleChange}
                     placeholder="state"
-                    className="input col-xl-8 m-2"
+                    className="input col-xl-8 m-2 border border-dark"
                     />
                 </FormGroup>
                 <FormGroup className="form-inline">
@@ -237,7 +238,7 @@ class ViewProfile extends Component {
                     value={this.state.pincode}
                     //onChange={this.handleChange}
                     placeholder="pincode"
-                    className="input col-xl-8 m-2"
+                    className="input col-xl-8 m-2 border border-dark"
                     />
                 </FormGroup>
                 <p id="login" className="warning"/>
@@ -250,6 +251,7 @@ class ViewProfile extends Component {
                 <div className="text-center m-2 mb-5">
                     <button className="btn btn-secondary mb-5" onClick={this.props.history.goBack}>Back</button>
                 </div>
+      </div>
       </div>
         )
     }

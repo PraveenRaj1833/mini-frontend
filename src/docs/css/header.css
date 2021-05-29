@@ -1,8 +1,10 @@
 .home-header-section
 {
-    background-color:rgb(12, 155, 238);
+    background-color:rgb(40, 200, 221);
     height: 7%;
     background-size: cover;
+    padding-top: 15px;
+    padding-bottom: 15px;
 }
 .set-logo-shape
 {
@@ -12,9 +14,9 @@
 .set-headings
 {
     font-size: 25px;
-    padding-left: 5px;
-    color: red;
-    font-weight: bold;
+    padding-left: 0px;
+    color: rgb(255, 255, 255);
+    font-weight: bolder;
 }
 .carousel-set-prop
 {
@@ -62,11 +64,17 @@
     }
     .set-headings
     {
-        display: none;
+        font-size: x-large;
+        padding-right: 10px;
+        padding-top: 0px;
     }
     #head-of-a1
     {
         display:block;
+    }
+    .home-header-section{
+        justify-content: flex-start;
+        justify-items: start;
     }
 
 }

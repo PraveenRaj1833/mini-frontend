@@ -9,7 +9,7 @@ import Spinner from './Spinner';
 // import './testCreate.css'
 // import DateTimePicker from 'react-datetime-picker';
 import { Form } from 'reactstrap'
-
+import '../docs/css/review.css'
 class CreateTest extends Component {
     constructor(props) {
         super(props)
@@ -386,10 +386,11 @@ class CreateTest extends Component {
                         </Button>
                     </Modal.Footer>
                 </Modal>
-
-                <h2>Create Test</h2>
+                <br/>
+                <h2 id="cth2" className="m-1 text-center">Create Test</h2>
+                <br/>
                     <FormGroup className="form-inline col-12">
-                        <FormLabel className="m-1">Test Name</FormLabel>
+                        <FormLabel id="needbold" className="m-1">Test Name</FormLabel>
                         <FormControl
                         className="col-6 m-2"
                         name="testName"

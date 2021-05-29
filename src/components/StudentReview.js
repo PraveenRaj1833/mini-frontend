@@ -100,9 +100,11 @@ class StudentReview extends Component {
             sDate = sDate.toString().split("G")[0];
         }
         return (
-            <div className="m-3">
+            <div id="str" className="m-3">
                 {this.state.loader===true?<Spinner></Spinner>:null}
-                <h1>{this.state.testName}</h1>
+                <br/>
+                <h1 id="reh1" className="text-center">{this.state.testName}</h1>
+                <br/>
                 <div className="border border-4">
                     <table>
                         <tr>

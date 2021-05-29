@@ -1,5 +1,6 @@
 import {Component} from 'react'
 import {withRouter} from 'react-router-dom'
+import '../docs/css/home.css'
 
 
 class Home extends Component{
@@ -19,16 +20,18 @@ class Home extends Component{
     render()
     {
         return (
-            <div className="text-center container">
-                <h1 className="m-3">Rajiv Gandhi University Of Knowledge Technologies , Basar</h1>
+            <div id="home" className="text-center">
+                <h1 id="headi" className="m-3">Onilne Examination Management System</h1>
+                <br/>
+                <br/>
                 <button onClick={()=>{
                         localStorage.setItem('role',"student")
                         this.props.history.push('/login')
-                    }}  className="btn btn-primary col-md-4 m-3">Log in as Student</button>
+                    }}  className="btn btn-primary col-md-4 m-3 border border-2">Log in as Student</button>
                 <button onClick={()=>{
                         localStorage.setItem('role',"teacher")
                         this.props.history.push('/login')
-                    }}  className="btn btn-primary col-md-4 m-3">Log in as Faculty</button>
+                    }}  className="btn btn-primary col-md-4 m-3 border border-2">Log in as Faculty</button>
             </div>
         )
     }

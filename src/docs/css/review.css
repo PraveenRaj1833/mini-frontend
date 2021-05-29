@@ -1,3 +1,33 @@
+/* #str{
+    background-color: rgb(246, 248, 228);
+} */
+
+#ctht{
+    font-weight:bolder;
+}
+#needbold{
+    font-weight: bold;
+}
+
+#rth1{
+    font-weight: bolder;
+}
+#vsh1{
+    font-weight: bolder;
+}
+#tch1{
+    font-weight: bolder;
+}
+#tablepad{
+    padding-right: 50px;
+}
+#sch1{
+    font-weight: bolder;
+}
+#reh1{
+    font-weight: bolder;
+}
+
 .right{
     background-color: deepskyblue;
 }

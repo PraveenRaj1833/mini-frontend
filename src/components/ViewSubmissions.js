@@ -3,7 +3,7 @@ import {withRouter} from 'react-router-dom'
 import { Table, Thead, Tbody, Tr, Th, Td } from 'react-super-responsive-table';
 import { Button } from 'react-bootstrap';
 import Spinner from './Spinner'
-
+import '../docs/css/review.css'
 class ViewSubmissions extends Component {
 
     constructor(props) {
@@ -86,7 +86,9 @@ class ViewSubmissions extends Component {
                 {this.state.loader===true?
                 <Spinner></Spinner>:
                 <div>
-                    <h1 className="m-1">{this.state.testName}</h1>
+                    <br/>
+                    <h1 id="vsh1" className="m-1 text-center">{this.state.testName}</h1>
+                    <br/>
                     {/* <span className="col-xm-12 col-md-6 col-lg-3 m-2">Test Name : <i className="border border-1 p-1">{this.state.testName}</i></span> */}
                         
                     <div className="row m-2 mb-4">

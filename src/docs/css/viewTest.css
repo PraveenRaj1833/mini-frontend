@@ -1,5 +1,5 @@
 #svt{
-    background-image: url('../imgs/clsimg.jpg');
+    background-image: url('../imgs/viewtestpic.png');
     background-repeat: no-repeat;
     height: 100vh;
     background-size: cover;
@@ -7,7 +7,8 @@
 }
 
 #board{
-    color: azure;
+    color: rgb(0, 0, 0);
+    font-size: large;
 }
 #vth1{
     font-weight: bolder;

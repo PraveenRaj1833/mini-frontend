@@ -13,6 +13,7 @@ import {
 import React, { Component } from 'react'
 import { Button } from 'react-bootstrap';
 import {withRouter,Prompt} from 'react-router-dom'
+import '../docs/css/dashboard.css'
 
 export class TeacherDashboard extends Component {
     
@@ -78,7 +79,7 @@ export class TeacherDashboard extends Component {
                 <Prompt message={(location,action)=>{
                         return location.pathname==='/login'?"Do you want to logout?":true;
                     }}></Prompt>
-                <div className="home-header-section p-2">
+                <div id="dh" className="home-header-section">
                        { 
                        (localStorage.getItem('token'))?<span>
                         <OverlayTrigger trigger="click" placement="bottom" className="float-right inline mt-1 mr-2 border border-1" overlay={popover}>
@@ -95,22 +96,30 @@ export class TeacherDashboard extends Component {
                             <button className="float-right mr-2 mt-1 inline btn btn-success border border-1" onClick={()=>this.props.history.push('/login')}>Login</button>
                         </span>
                         }
-                        <span className="inline set-headings">Online </span>
-                        <h3 id="head-of-a1" className="mt-1">Examination</h3>
+                        <span className="inline set-headings">Online Examination</span>
+                        
+                        {/* <h3 id="head-of-a1" className="mt-1">Examination</h3> */}
                     </div>
-                <h1>Courses</h1>
+
+                <div id="tdpic">
+                    <div id="tdc">
+                    <h1>Courses</h1>
+                    <br/>
                 <ul>
                     {this.state.courses.map((course,index)=>{
-                        return <li className="mask rgba-red-strong text-primary course" 
+                        return <li className="mask rgba-red-strong course col-xl-5 col-lg-5 col-sm-8 col-10 my-auto" 
                         onClick={()=>{
                             localStorage.setItem('courseId',course.courseId)
                             this.props.history.push("/teacher/course");
-                        }}>{course.courseId}
+                        }}><h3 className="course">{course.courseId}</h3>
+                        <br/>
                         </li>
                         //return <li><a href="/course">{course.courseName} </a></li>
                     })}
                 </ul>
+                </div>
                 {/* <Button className="m-1" onClick={()=>this.props.history.push('/teacher/ViewProfile')}>View Profile</Button> */}
+            </div>
             </div>
         )
     }

@@ -13,6 +13,7 @@ import {
   Button,
   Modal
 } from 'react-bootstrap';
+import '../docs/css/review.css'
 
 export class Course extends Component {
     constructor(props) {
@@ -127,7 +128,7 @@ export class Course extends Component {
             <div className="m-2">
                 {this.state.loader===true?<Spinner></Spinner>:null}
 
-                <h1 className="m-1">{this.state.course.courseName} </h1>
+                <h1 id="tch1" className="m-1 text-center">{this.state.course.courseName} </h1>
                 <Button className="float-right" onClick={()=>{
                     this.props.history.push('/teacher/createTest');
                 }}>Create Test</Button>

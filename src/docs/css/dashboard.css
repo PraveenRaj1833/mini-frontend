@@ -13,11 +13,11 @@
     padding-left: 30px;
     padding-bottom: 50px;
     /* text-decoration-color: rgb(235, 231, 226); */
-    color: rgb(255, 255, 255);
+    color: rgb(0, 0, 0);
     font-weight: bolder;
 }
 #dc h1{
-    color: rgb(255, 255, 255);
+    color: rgb(0, 0, 0);
     font-weight: bolder;
 }
 
@@ -50,7 +50,7 @@ img {
 }
 
 #tdc{
-    padding-top: 50px;
+    padding-top: 30px;
     padding-left: 30px;
     padding-bottom: 50px;
     
@@ -59,6 +59,17 @@ img {
 #tdc h1{
     color: rgb(0, 0, 0);
     /* font-weight: bold; */
+}
+.course{
+    padding-left: 0px;
+}
+.course:hover{
+    text-decoration: underline;
+}
+@media screen and (max-width :500px) {
+    .course{
+        font-size: 20px;
+    }
 }
 
 .webcam{

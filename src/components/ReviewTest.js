@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import {withRouter} from 'react-router-dom'
 import { FormGroup,FormControl,FormLabel,FormCheck,Button,Form} from 'react-bootstrap'
-
+import '../docs/css/review.css'
 class ReviewTest extends Component {
     constructor(props) {
         super(props)
@@ -236,9 +236,10 @@ class ReviewTest extends Component {
             sDate = sDate.toString().split("G")[0];
         }
         return (
-            <div>
-                <h1>Review</h1>
-                <h1>{this.state.testName}</h1>
+            <div className="ml-2">
+                <br/>
+                <h1 id="rth1" className="mx-auto mb-2 text-center">{this.state.testName}</h1>
+                
                 {/* <h2>{this.state.studentId}</h2> */}
                 <div className="border border-4 m-2">
                     <table>

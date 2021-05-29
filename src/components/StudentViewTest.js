@@ -1,6 +1,7 @@
-import { Button } from 'reactstrap'
+import { Button } from 'react-bootstrap'
 import React, { Component } from 'react'
 import {withRouter} from 'react-router-dom'
+import '../docs/css/viewTest.css'
 
 class StudentViewTest extends Component {
     constructor(props) {
@@ -149,16 +150,22 @@ class StudentViewTest extends Component {
             compDate = compDate.toString().split("G")[0];
         }
         return (
+            <div id="svt">
             <div>
-                <h1>{this.state.testName}</h1>
-                <div className="text-center">
+            <br/>
+            <br/>
+                <h1 id="vth1" className="text-center">{this.state.testName}</h1>
+            <br/>
+            <br/>
+
+                <div id="board" className="text-center">
                     <label>Attempts Allowed : </label>
                     <span>1</span>
                     <br></br>
                     <label>Time Limit : </label>
                     <span>{this.state.duration} Min</span>
                     <br></br>
-
+                    <br/>
                     {this.state.attempted===true?
                         <div>
                             <h4>You Have already attempted the test<br></br>No More attempts Allowed </h4>
@@ -179,12 +186,14 @@ class StudentViewTest extends Component {
                     <div>
                         <span>Test was closed at {compDate}</span>
                         <br/>
+                        <br/>
                         <Button onClick={()=>{
                                     this.props.history.push('/student/review');
                         }}>View Questions</Button>
                     </div>
                     }
                 </div>
+            </div>
             </div>
         )
     }

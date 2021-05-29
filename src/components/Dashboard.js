@@ -14,6 +14,7 @@ import React, { Component } from 'react'
 import { Button } from 'react-bootstrap';
 import {withRouter,Prompt} from 'react-router-dom'
 import WebcamStreamCapture from './WebcamStreamCapture';
+import '../docs/css/dashboard.css'
 
 export class Dashboard extends Component {
     
@@ -77,7 +78,7 @@ export class Dashboard extends Component {
           );
         return (
             <div>
-                <div className="home-header-section p-2">
+                <div id="dh" className="home-header-section">
                 
                     <Prompt message={(location,action)=>{
                         return location.pathname==='/login'?"Do you want to logout?":true;
@@ -100,24 +101,31 @@ export class Dashboard extends Component {
                             <button className="float-right mr-2 mt-1 inline btn btn-success border border-1" onClick={()=>this.props.history.push('/login')}>Login</button>
                         </span>
                         }
-                        <span className="inline set-headings">Online </span>
-                        <h3 id="head-of-a1" className="mt-1">Examination</h3>
-                    </div>
+                        <h1 className="inline set-headings">Online Examination</h1>
+                        {/* <h3 id="head-of-a1" className="mt-1">Examination</h3> */}
+                </div>
+            <div id="dpic">
+                <div id="dc">
+
                 <h1>Courses</h1>
+                <br/>
                 {/* <WebcamStreamCapture></WebcamStreamCapture> */}
                 <ul>
                     {this.state.courses.map((course,index)=>{
-                        return <li className="mask rgba-red-strong text-primary course" key={index}
+                        return <li className="mask rgba-red-strong  course col-xl-5 col-lg-5 col-sm-8 col-10 my-auto" key={index}
                         onClick={()=>{
                             localStorage.setItem('courseId',course.courseId);
                             this.props.history.push("/student/course");
-                        }}>{course.courseName}
+                        }}><h2>{course.courseName}</h2>
+                        <br/>
                         </li>
                         //return <li><a href="/course">{course.courseName} </a></li>
                     })}
                 </ul>
+                </div>
                 {/* <Button className="m-1" onClick={()=>this.props.history.push('/student/ViewProfile')}>View Profile</Button> */}
-               </div>
+            </div>
+            </div>
         )
     }
 }
