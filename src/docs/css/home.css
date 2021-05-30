@@ -14,9 +14,22 @@
     background-size: 100vh;  */
     padding-bottom: 60px;
     padding-bottom: 52px;
+    overflow-x: hidden;
     /* background-color: #369ee6; */
 }
 #headi{
 /* background-color: rgb(155, 224, 236); */
 font-weight: bolder;
+font-size: xx-large;
+}
+
+.homebtn{
+    padding: 0px;
+}
+
+@media screen and (max-width:576px){
+    #headi{
+        font-size: large;
+    }
+    
 }

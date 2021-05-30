@@ -1,5 +1,6 @@
 import {Component} from 'react'
 import {withRouter} from 'react-router-dom'
+import {Button} from 'react-bootstrap';
 import '../docs/css/home.css'
 
 
@@ -21,17 +22,17 @@ class Home extends Component{
     {
         return (
             <div id="home" className="text-center">
-                <h1 id="headi" className="m-3">Onilne Examination Management System</h1>
+                <span id="headi" className="m-3">Onilne Examination Management System</span>
                 <br/>
                 <br/>
-                <button onClick={()=>{
+                <Button onClick={()=>{
                         localStorage.setItem('role',"student")
                         this.props.history.push('/login')
-                    }}  className="btn btn-primary col-md-4 m-3 border border-2"> as Student</button>
-                <button onClick={()=>{
+                    }}  className="homebtn btn btn-primary col-xm-6 col-sm-6 col-md-4 col-lg-4 col-xl-4 m-3 border border-2"> As Student</Button>
+                <Button onClick={()=>{
                         localStorage.setItem('role',"teacher")
                         this.props.history.push('/login')
-                    }}  className="btn btn-primary col-md-4 m-3 border border-2"> as Faculty</button>
+                    }}  className="homebtn btn btn-primary col-xm-6 col-sm-6 col-md-4 col-lg-4 col-xl-4 m-3 border border-2"> As Faculty</Button>
             </div>
         )
     }
