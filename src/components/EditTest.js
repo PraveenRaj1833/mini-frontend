@@ -669,7 +669,7 @@ class EditTest extends Component {
                     <br></br>
                     <Button className="float-right mt-1 mb-3 mr-3" onClick={()=>{this.openModal()}}>Add Question</Button>
                 </div>
-                <Button className="btn button-primary m-5" onClick={()=>this.handleSubmit()}>Create</Button>
+                <Button className="btn button-primary m-5" onClick={()=>this.handleSubmit()}>Update</Button>
             </div>
         )
     }

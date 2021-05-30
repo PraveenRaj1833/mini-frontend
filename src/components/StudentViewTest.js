@@ -89,7 +89,7 @@ class StudentViewTest extends Component {
                 });
                 const pDate = new Date();
                 const compDate = new Date(res.result.dateTime);
-                compDate.setMinutes(compDate.getMinutes()+res.result.duration);
+                compDate.setMinutes(compDate.getMinutes()+(2*res.result.duration));
                 if(pDate.getTime()>=compDate.getTime()){
                     fetch('https://online-exam-back.herokuapp.com/student/getResult',{
                         method : 'post',

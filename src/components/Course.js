@@ -142,7 +142,7 @@ export class Course extends Component {
                                     <Th>Scheduled At</Th>
                                     <Th>Duration</Th>
                                     <Th>Marks</Th>
-                                    <Th colspan="2"></Th>
+                                    <Th >Submissions</Th>
                                     <Th colspan="2" className=" text-center">Actions</Th>
                                 </Tr>
                             </Thead>
@@ -182,9 +182,6 @@ export class Course extends Component {
                                                         localStorage.setItem('test',JSON.stringify(test));
                                                         this.props.history.push('/teacher/viewSubmissions');
                                                     }} >View Submissions</Button>
-                                            </Td>
-                                            <Td>
-                                                <Button disabled={sub} title={resTitle} variant="primary">View Results</Button>
                                             </Td>
                                             <Td className="text-center">
                                             <span

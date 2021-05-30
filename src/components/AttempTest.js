@@ -6,6 +6,7 @@ import { Button } from 'react-bootstrap'
 import {Modal,ListGroup,Badge} from 'react-bootstrap'
 import '../docs/css/attemptTest.css'
 import '../docs/css/header.css'
+import Webcam from 'react-webcam'
 
 class AttempTest extends Component {
     constructor(props) {
@@ -31,10 +32,12 @@ class AttempTest extends Component {
             showSubmitModel : false,
             loader : true,
             msg : 'loading...',
-            submit : false
+            submit : false,
+            image : ''
         }
         this.timer = 0;
         this.countDown = this.countDown.bind(this);
+        this.webcam = React.createRef();
     }
 
     logout = ()=>{
@@ -326,9 +329,26 @@ class AttempTest extends Component {
         })
     }
 
+    capture = ()=>{
+        console.log(this.webcam);
+        console.log(window.innerWidth);
+        console.log(window.innerHeight);
+        const imgSrc = this.webcam.current.getScreenshot({width:1920,height:1080});
+        console.log(imgSrc);
+        this.setState({
+            image : imgSrc
+        })
+    }
+
+
     render = ()=> {
         // console.log(localStorage.getItem("time"));
         // console.log(this.state.time);
+        const videoConstratints = {
+            width : 1280,
+            height : 720,
+            facingMode : "user"
+        };
         return (
             <div className="m-3 text-center">
                 <Prompt when={this.state.submit===false} message={()=>{
@@ -393,9 +413,21 @@ class AttempTest extends Component {
                                 {String(this.state.time.s).padStart(2,0)}
                         </span>
                     </div>
-                    
+                    <Webcam audio={false} height={window.innerHeight>660?270:window.innerHeight>500?200:170} 
+                        width={window.innerWidth>750?300:window.innerWidth>500?230:200} ref={this.webcam} screenshotFormat="image/jpeg"
+                        videoConstraints={videoConstratints} className="webcam">
+                    </Webcam>
+                    {/* <Button onClick={()=>this.capture()}>capture</Button>
+                    <a href={"data:image/jpeg;base64,"+this.state.image} download="file2.jpg">Download</a> */}
                     {
                         this.state.questions.map((question,index)=>{
+                            var answer;
+                            // if(question.qType==="mcqs")
+                            //     answer = this.state.answers[index].optionId;
+                            // else if(question.qType==="checkBox")
+                            //     answer = this.state.answers[index].options;
+                            // else 
+                            //     answer = this.state.answers[index].answer;
                             return(
                                 <div className="m-2 border border-3">
                                     <div className="row">
@@ -434,6 +466,8 @@ class AttempTest extends Component {
                                                             name={namee}
                                                             onChange={(e)=>this.handleChange(e,index)}
                                                             value={option.optionId}
+                                                            // checked = {this.state.answers[index]["optionId"]===option.optionId}
+                                                            // checked = {answer === option.optionId}
                                                             />
                                                         
                                                     )
@@ -457,6 +491,8 @@ class AttempTest extends Component {
                                                                 name={namee}
                                                                 onChange={(e)=>this.handleChange(e,index)}
                                                                 value={option.optionId}
+                                                                // checked = {this.state.answers[index]["options"].includes(option.optionId)}
+                                                                // checked = {answer.includes(option.optionId)}
                                                                 />
                                                             
                                                         )
@@ -473,7 +509,7 @@ class AttempTest extends Component {
                                                 name="answer"
                                                 width={300}
                                                 columns = {200}
-                                                //value = {this.state.answers[index].answer}
+                                                // value = {this.state.answers[index]["answer"]}
                                                 placeholder="Write your answer here"
                                                 onChange={(e)=>this.handleChange(e,index)}
                                                 />

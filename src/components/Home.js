@@ -27,11 +27,11 @@ class Home extends Component{
                 <button onClick={()=>{
                         localStorage.setItem('role',"student")
                         this.props.history.push('/login')
-                    }}  className="btn btn-primary col-md-4 m-3 border border-2">Log in as Student</button>
+                    }}  className="btn btn-primary col-md-4 m-3 border border-2"> as Student</button>
                 <button onClick={()=>{
                         localStorage.setItem('role',"teacher")
                         this.props.history.push('/login')
-                    }}  className="btn btn-primary col-md-4 m-3 border border-2">Log in as Faculty</button>
+                    }}  className="btn btn-primary col-md-4 m-3 border border-2"> as Faculty</button>
             </div>
         )
     }

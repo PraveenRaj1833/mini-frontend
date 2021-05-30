@@ -13,7 +13,7 @@ import {
 import React, { Component } from 'react'
 import { Button } from 'react-bootstrap';
 import {withRouter,Prompt} from 'react-router-dom'
-import WebcamStreamCapture from './WebcamStreamCapture';
+// import WebcamStreamCapture from './WebcamStreamCapture';
 import '../docs/css/dashboard.css'
 
 export class Dashboard extends Component {
@@ -24,11 +24,7 @@ export class Dashboard extends Component {
         this.state = {
             user : JSON.parse(localStorage.getItem('user')),
             courses : [],
-            //time : {},
-            seconds : 200
         }
-        //this.timer = 0;
-        //this.countDown = this.countDown.bind(this);
     }
 
     logout = ()=>{
@@ -62,6 +58,7 @@ export class Dashboard extends Component {
         })
     }
 
+    
     render() {
         const user = JSON.parse(localStorage.getItem('user'));
         const popover = (
@@ -76,10 +73,11 @@ export class Dashboard extends Component {
               </Popover.Content>
             </Popover>
           );
+
+        
         return (
             <div>
                 <div id="dh" className="home-header-section">
-                
                     <Prompt message={(location,action)=>{
                         return location.pathname==='/login'?"Do you want to logout?":true;
                     }}></Prompt>
@@ -110,6 +108,7 @@ export class Dashboard extends Component {
                 <h1>Courses</h1>
                 <br/>
                 {/* <WebcamStreamCapture></WebcamStreamCapture> */}
+                
                 <ul>
                     {this.state.courses.map((course,index)=>{
                         return <li className="mask rgba-red-strong  course col-xl-5 col-lg-5 col-sm-8 col-10 my-auto" key={index}
@@ -122,6 +121,7 @@ export class Dashboard extends Component {
                         //return <li><a href="/course">{course.courseName} </a></li>
                     })}
                 </ul>
+                
                 </div>
                 {/* <Button className="m-1" onClick={()=>this.props.history.push('/student/ViewProfile')}>View Profile</Button> */}
             </div>

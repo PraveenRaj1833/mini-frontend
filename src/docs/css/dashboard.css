@@ -66,16 +66,15 @@ img {
 .course:hover{
     text-decoration: underline;
 }
+
+
+
 @media screen and (max-width :500px) {
     .course{
         font-size: 20px;
     }
-}
-
-.webcam{
-    position: fixed;
-    bottom: 0;
-    right: 0;
-    width: 40%;
-    height: 20%;
+    /* .webcam{
+        width: 150;
+        height: 100;
+    } */
 }
