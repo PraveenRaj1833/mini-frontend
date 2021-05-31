@@ -86,15 +86,29 @@ class StudentCourse extends Component {
     }
 
     render() {
+        const user = JSON.parse(localStorage.getItem('user'));
+        const popover = (
+            <Popover id="popover-basic">
+              <Popover.Title as="h3">{localStorage.getItem("role")==="student"?"Student":"Teacher"} Details</Popover.Title>
+              <Popover.Content>
+                <b className="h5">{user.studentId}</b> <br/>
+                {user.name} <br/>
+                <Button onClick={()=>this.props.history.push("/student/ViewProfile")} className="w-100 m-1">View Profile</Button>
+                <Button onClick={()=>this.props.history.push("/student/updateProfile")} className="w-100 m-1">Edit Profile</Button>
+                <Button onClick={()=>this.props.history.push("/student/updatePassword")} className="w-100 m-1"> Edit Password </Button>
+              </Popover.Content>
+            </Popover>
+          );
+          
         return (
-            <div id="str" className="m-1">
+            <div id="str" className="m-1 ml-2">
                 
                 {this.state.loader===true?<Spinner></Spinner>:null}
                 <br/>
                 <h1 id="sch1" className=" text-center">{this.state.course.courseName} </h1>
                 <br/>
                 <div id="tablepad">
-                    <Table  striped bordered hover size="sm" id="users" className="m-2 w-100 table table-striped table-bordered dt-responsive nowrap">
+                    <Table  striped bordered hover size="sm" id="users" className="m-3 w-100 table table-striped table-bordered dt-responsive nowrap">
                         <Thead>
                             <Tr>
                                 <Th>Test Name</Th>

@@ -46,49 +46,65 @@ class Register extends Component {
     }
 
     handleSubmit = () => {
-        this.setState({
-            loader : true
-        });
-        const role = localStorage.getItem('role')
-        fetch(`https://online-exam-back.herokuapp.com/student/addStudent`,{
-            method : 'post',
-            body : JSON.stringify({
-                studentId : this.state.studentId,
-                name : this.state.name,
-                email : this.state.email,
-                branchId : this.state.branchId,
-                houseNo : this.state.houseNo,
-                city : this.state.city,
-                district : this.state.district,
-                state : this.state.state,
-                pincode : this.state.pincode,
-                phone : this.state.phone,
-                role : this.state.role,
-                gender : this.state.gender,
-                year : this.state.year,
-                class : this.state.class,
-                password : this.state.password
-            }),
-            headers : {
-                'Content-Type': 'application/json'
-            }
-        }).then(res => {
-            return res.json();
-        }).then(res=>{
-            
-            console.log(res);
-            if(res.status===200) {
-              alert("registered successfully")
-            }
+        var f=0;
+        if(this.state.studentId.trim()===""){
+            alert("Student Id cannot be empty!");
+            f=1;
+        }
+        else if(this.state.email.trim()===""){
+            alert("Email cannot be empty!");
+            f=1;
+        }
+        else if(this.state.name.trim()===""){
+            alert("Name cannot be empty!");
+            f=1;
+        }
+        if(f===0){
             this.setState({
-                loader : false
+                loader : true
+            });
+            const role = localStorage.getItem('role')
+            fetch(`https://online-exam-back.herokuapp.com/student/addStudent`,{
+                method : 'post',
+                body : JSON.stringify({
+                    studentId : this.state.studentId,
+                    name : this.state.name,
+                    email : this.state.email,
+                    branchId : this.state.branchId,
+                    houseNo : this.state.houseNo,
+                    city : this.state.city,
+                    district : this.state.district,
+                    state : this.state.state,
+                    pincode : this.state.pincode,
+                    phone : this.state.phone,
+                    role : this.state.role,
+                    gender : this.state.gender,
+                    year : this.state.year,
+                    class : this.state.class,
+                    password : this.state.password
+                }),
+                headers : {
+                    'Content-Type': 'application/json'
+                }
+            }).then(res => {
+                return res.json();
+            }).then(res=>{
+                
+                console.log(res);
+                if(res.status===200) {
+                  alert("registered successfully")
+                }
+                this.setState({
+                    loader : false
+                })
+            }).catch(err => {
+                this.setState({
+                    loader : false
+                })
+                console.log(err);
             })
-        }).catch(err => {
-            this.setState({
-                loader : false
-            })
-            console.log(err);
-        })
+        }
+        
     }
 
     render() {
