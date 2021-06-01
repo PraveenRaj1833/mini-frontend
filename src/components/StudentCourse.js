@@ -87,18 +87,18 @@ class StudentCourse extends Component {
 
     render() {
         const user = JSON.parse(localStorage.getItem('user'));
-        const popover = (
-            <Popover id="popover-basic">
-              <Popover.Title as="h3">{localStorage.getItem("role")==="student"?"Student":"Teacher"} Details</Popover.Title>
-              <Popover.Content>
-                <b className="h5">{user.studentId}</b> <br/>
-                {user.name} <br/>
-                <Button onClick={()=>this.props.history.push("/student/ViewProfile")} className="w-100 m-1">View Profile</Button>
-                <Button onClick={()=>this.props.history.push("/student/updateProfile")} className="w-100 m-1">Edit Profile</Button>
-                <Button onClick={()=>this.props.history.push("/student/updatePassword")} className="w-100 m-1"> Edit Password </Button>
-              </Popover.Content>
-            </Popover>
-          );
+        // const popover = (
+        //     <Popover id="popover-basic">
+        //       <Popover.Title as="h3">{localStorage.getItem("role")==="student"?"Student":"Teacher"} Details</Popover.Title>
+        //       <Popover.Content>
+        //         <b className="h5">{user.studentId}</b> <br/>
+        //         {user.name} <br/>
+        //         <Button onClick={()=>this.props.history.push("/student/ViewProfile")} className="w-100 m-1">View Profile</Button>
+        //         <Button onClick={()=>this.props.history.push("/student/updateProfile")} className="w-100 m-1">Edit Profile</Button>
+        //         <Button onClick={()=>this.props.history.push("/student/updatePassword")} className="w-100 m-1"> Edit Password </Button>
+        //       </Popover.Content>
+        //     </Popover>
+        //   );
           
         return (
             <div id="str" className="m-1 ml-2">

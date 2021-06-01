@@ -46,9 +46,61 @@ class UpdateStudent extends Component {
     }
 
     handleSubmit = () => {
+        var f=0;
+        if(this.state.name.trim()===""){
+            alert("Name cannot be empty!");
+            f=1;
+        }
+        else if(this.state.email.trim()===""){
+            alert("Email cannot be empty!");
+            f=1;
+        }  
+        else if(this.state.branchId.trim()===""){
+            alert("Branch Name cannot be empty!");
+            f=1;
+        }
+        else if(this.state.phone.trim()===""){
+            alert("Phone Number cannot be empty!");
+            f=1;
+        }
+        else if(this.state.gender.trim()===""){
+            alert("gender cannot be empty!");
+            f=1;
+        }
+        else if(this.state.class.trim()===""){
+            alert("class cannot be empty!");
+            f=1;
+        }
+        else if(this.state.year.trim()===""){
+            alert("Year cannot be empty!");
+            f=1;
+        }
+        else if(this.state.houseNo.trim()===""){
+            alert("House no. cannot be empty!");
+            f=1;
+        }
+        else if(this.state.city.trim()===""){
+            alert("City Name cannot be empty!");
+            f=1;
+        }
+        else if(this.state.district.trim()===""){
+            alert("District Name cannot be empty!");
+            f=1;
+        }
+        else if(this.state.state.trim()===""){
+            alert("State Name cannot be empty!");
+            f=1;
+        }
+        else if(this.state.pincode.trim()===""){
+            alert("Pincode cannot be empty!");
+            f=1;
+        }
+
+        if(f===0){
         this.setState({
             loader : true
         });
+        }
         const role = localStorage.getItem('role')
         fetch(`https://online-exam-back.herokuapp.com/student/updateStudent`,{
             method : 'post',
