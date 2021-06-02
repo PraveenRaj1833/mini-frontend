@@ -215,7 +215,7 @@ class TeacherProfile extends Component {
                 </FormGroup>
                 <p id="login" className="warning"/>
                 <Button className="m-1" onClick={()=>this.props.history.push('/teacher/updateProfile')}>Update Profile</Button>
-                <Button className="m-1" onClick={()=>this.props.history.push('/teacher/updateTeacherPassword')}>Update Password</Button>
+                <Button className="m-1" onClick={()=>this.props.history.push('/teacher/updatePassword')}>Update Password</Button>
                 </div>
 
             </div>

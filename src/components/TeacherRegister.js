@@ -29,7 +29,7 @@ class TeacherRegister extends Component {
              state : '',
              pincode : '',
              phone : '' ,
-             role : '',
+             role : 'teacher',
              gender : '' ,
              password : '',
              loader : false
@@ -45,6 +45,10 @@ class TeacherRegister extends Component {
 
     handleSubmit = () => {
         var f=0;
+        // var mobileRegex=/^[5-9][0-9]{9}$/;
+        let regexEmail=/^([a-zA-Z0-9\.-]+)@([a-zA-Z0-9-]+)\.([a-z]{2,20})(.[a-z]{2,20})?$/;
+        // let regexPassword=/^(?=.?[A-Za-z])(?=.?[0-9]).{8,20}$/;
+        let regexPhn=/^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
         if(this.state.teacherId.trim()===""){
             alert("Teacher Id cannot be empty!");
             f=1;
@@ -56,6 +60,10 @@ class TeacherRegister extends Component {
         else if(this.state.email.trim()===""){
             alert("Email cannot be empty!");
             f=1;
+        } 
+        else if(!regexEmail.test(this.state.email.trim())){
+            alert(" Enter a valid Email address!");
+            f=1;
         }  
         else if(this.state.branchId.trim()===""){
             alert("Branch Name cannot be empty!");
@@ -63,6 +71,10 @@ class TeacherRegister extends Component {
         }
         else if(this.state.phone.trim()===""){
             alert("Phone Number cannot be empty!");
+            f=1;
+        }
+        else if(!regexPhn.test(this.state.phone.trim())){
+            alert(" Enter a valid Mobile number!");
             f=1;
         }
         else if(this.state.role.trim()===""){
@@ -99,48 +111,48 @@ class TeacherRegister extends Component {
         }
 
         if(f===0){
-        this.setState({
-            loader : true
-        });
+            this.setState({
+                loader : true
+            });
+            const role = localStorage.getItem('role')
+            fetch(`https://online-exam-back.herokuapp.com/teacher/add`,{
+                method : 'post',
+                body : JSON.stringify({
+                    teacherId : this.state.teacherId,
+                    name : this.state.name,
+                    email : this.state.email,
+                    branchId : this.state.branchId,
+                    houseNo : this.state.houseNo,
+                    city : this.state.city,
+                    district : this.state.district,
+                    state : this.state.state,
+                    pincode : this.state.pincode,
+                    phone : this.state.phone,
+                    role : this.state.role,
+                    gender : this.state.gender,
+                    password : this.state.password
+                }),
+                headers : {
+                    'Content-Type': 'application/json'
+                }
+            }).then(res => {
+                return res.json();
+            }).then(res=>{
+                
+                console.log(res);
+                if(res.status===200) {
+                alert("registered successfully")
+                }
+                this.setState({
+                    loader : false
+                })
+            }).catch(err => {
+                this.setState({
+                    loader : false
+                })
+                console.log(err);
+            })
         }
-        const role = localStorage.getItem('role')
-        fetch(`https://online-exam-back.herokuapp.com/teacher/add`,{
-            method : 'post',
-            body : JSON.stringify({
-                teacherId : this.state.teacherId,
-                name : this.state.name,
-                email : this.state.email,
-                branchId : this.state.branchId,
-                houseNo : this.state.houseNo,
-                city : this.state.city,
-                district : this.state.district,
-                state : this.state.state,
-                pincode : this.state.pincode,
-                phone : this.state.phone,
-                role : this.state.role,
-                gender : this.state.gender,
-                password : this.state.password
-            }),
-            headers : {
-                'Content-Type': 'application/json'
-            }
-        }).then(res => {
-            return res.json();
-        }).then(res=>{
-            
-            console.log(res);
-            if(res.status===200) {
-              alert("registered successfully")
-            }
-            this.setState({
-                loader : false
-            })
-        }).catch(err => {
-            this.setState({
-                loader : false
-            })
-            console.log(err);
-        })
     }
 
     render() {
@@ -208,7 +220,7 @@ class TeacherRegister extends Component {
                     className="input col-xl-8 m-2"
                     />
                 </FormGroup>
-                <FormGroup className="form-inline">
+                {/* <FormGroup className="form-inline">
                     <FormLabel className="form-label">role</FormLabel>
                     <FormControl
                     type="text"
@@ -222,7 +234,7 @@ class TeacherRegister extends Component {
                    // </select>
                     className="input col-xl-8 m-2"
                     />
-                </FormGroup>
+                </FormGroup> */}
                 <FormGroup className="form-inline">
                     <FormLabel className="form-label">gender</FormLabel>
                     <FormControl

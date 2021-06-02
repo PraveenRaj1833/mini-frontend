@@ -5,6 +5,9 @@
     background-size: cover;
     padding-top: 15px;
     padding-bottom: 15px;
+    position: sticky;
+    top: 0;
+    z-index: 2;
 }
 .set-logo-shape
 {
@@ -67,6 +70,7 @@
         font-size: x-large;
         padding-right: 10px;
         padding-top: 0px;
+        font-weight: bold;
     }
     #head-of-a1
     {

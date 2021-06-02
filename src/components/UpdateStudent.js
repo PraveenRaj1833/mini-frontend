@@ -30,7 +30,7 @@ class UpdateStudent extends Component {
             state : '',
             pincode : '',
             phone : '' ,
-            role : '',
+            role : 'student',
             gender : '' ,
             year : '' ,
             class : '' ,
@@ -47,6 +47,10 @@ class UpdateStudent extends Component {
 
     handleSubmit = () => {
         var f=0;
+        // var mobileRegex=/^[5-9][0-9]{9}$/;
+        let regexEmail=/^([a-zA-Z0-9\.-]+)@([a-zA-Z0-9-]+)\.([a-z]{2,20})(.[a-z]{2,20})?$/;
+        // let regexPassword=/^(?=.?[A-Za-z])(?=.?[0-9]).{8,20}$/;
+        let regexPhn=/^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
         if(this.state.name.trim()===""){
             alert("Name cannot be empty!");
             f=1;
@@ -55,12 +59,20 @@ class UpdateStudent extends Component {
             alert("Email cannot be empty!");
             f=1;
         }  
+        else if(!regexEmail.test(this.state.email.trim())){
+            alert(" Enter a valid Email address!");
+            f=1;
+        } 
         else if(this.state.branchId.trim()===""){
             alert("Branch Name cannot be empty!");
             f=1;
         }
         else if(this.state.phone.trim()===""){
             alert("Phone Number cannot be empty!");
+            f=1;
+        }
+        else if(!regexPhn.test(this.state.phone.trim())){
+            alert(" Enter a valid Mobile number!");
             f=1;
         }
         else if(this.state.gender.trim()===""){
@@ -97,52 +109,52 @@ class UpdateStudent extends Component {
         }
 
         if(f===0){
-        this.setState({
-            loader : true
-        });
+            this.setState({
+                loader : true
+            });
+            const role = localStorage.getItem('role')
+            fetch(`https://online-exam-back.herokuapp.com/student/updateStudent`,{
+                method : 'post',
+                headers : {
+                    'Content-Type': 'application/json',
+                    Authorization : localStorage.getItem('token')
+                },
+                body : JSON.stringify({
+                    studentId : this.state.studentId,
+                    name : this.state.name,
+                    email : this.state.email,
+                    branchId : this.state.branchId,
+                    houseNo : this.state.houseNo,
+                    city : this.state.city,
+                    district : this.state.district,
+                    state : this.state.state,
+                    pincode : this.state.pincode,
+                    phone : this.state.phone,
+                    role : this.state.role,
+                    gender : this.state.gender,
+                    year : this.state.year,
+                    class : this.state.class,
+                    password : this.state.password
+                })
+            }).then(res => {
+                console.log(res)
+                return res.json();
+            }).then(res=>{
+                
+                console.log(res);
+                if(res.status===200) {
+                alert("Updated successfully")
+                }
+                this.setState({
+                    loader : false
+                })
+            }).catch(err => {
+                this.setState({
+                    loader : false
+                })
+                console.log(err);
+            })
         }
-        const role = localStorage.getItem('role')
-        fetch(`https://online-exam-back.herokuapp.com/student/updateStudent`,{
-            method : 'post',
-            headers : {
-                'Content-Type': 'application/json',
-                 Authorization : localStorage.getItem('token')
-            },
-            body : JSON.stringify({
-                studentId : this.state.studentId,
-                name : this.state.name,
-                email : this.state.email,
-                branchId : this.state.branchId,
-                houseNo : this.state.houseNo,
-                city : this.state.city,
-                district : this.state.district,
-                state : this.state.state,
-                pincode : this.state.pincode,
-                phone : this.state.phone,
-                role : this.state.role,
-                gender : this.state.gender,
-                year : this.state.year,
-                class : this.state.class,
-                password : this.state.password
-            })
-        }).then(res => {
-            console.log(res)
-            return res.json();
-        }).then(res=>{
-            
-            console.log(res);
-            if(res.status===200) {
-              alert("Updated successfully")
-            }
-            this.setState({
-                loader : false
-            })
-        }).catch(err => {
-            this.setState({
-                loader : false
-            })
-            console.log(err);
-        })
     }
     
     componentDidMount = ()=>{
@@ -231,7 +243,7 @@ class UpdateStudent extends Component {
                     className="input col-xl-8 m-2 border border-dark"
                     />
                 </FormGroup>
-                <FormGroup className="form-inline">
+                {/* <FormGroup className="form-inline">
                     <FormLabel className="form-label">role</FormLabel>
                     <FormControl
                     type="text"
@@ -246,7 +258,7 @@ class UpdateStudent extends Component {
                    // </select>
                     className="input col-xl-8 m-2 border border-dark"
                     />
-                </FormGroup>
+                </FormGroup> */}
                 <FormGroup className="form-inline">
                     <FormLabel className="form-label">gender</FormLabel>
                     <FormControl

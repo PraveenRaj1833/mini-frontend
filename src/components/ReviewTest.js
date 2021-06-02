@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import {withRouter} from 'react-router-dom'
 import { FormGroup,FormControl,FormLabel,FormCheck,Button,Form} from 'react-bootstrap'
 import '../docs/css/review.css'
+import Spinner from './Spinner'
 class ReviewTest extends Component {
     constructor(props) {
         super(props)
@@ -23,6 +24,7 @@ class ReviewTest extends Component {
             marks : [],
             correct : [],
             courseId : localStorage.getItem('courseId'),
+            edit : false,
         }
     }
 
@@ -126,7 +128,8 @@ class ReviewTest extends Component {
                     }
                     this.setState({
                         marks : marks,
-                        correct : correct
+                        correct : correct,
+                        loader : false
                     })
                 })
             }
@@ -237,7 +240,14 @@ class ReviewTest extends Component {
         }
         return (
             <div className="ml-2">
+                {this.state.loader?<Spinner/>:null}
                 <br/>
+                {this.state.evaluated===true?<Button className="m-2 float-right" 
+                   onClick={()=>{
+                       this.setState({
+                           edit : true,
+                       })
+                   }} >Edit Result</Button>:null}
                 <h1 id="rth1" className="mx-auto mb-2 text-center">{this.state.testName}</h1>
                 
                 {/* <h2>{this.state.studentId}</h2> */}
@@ -465,7 +475,7 @@ class ReviewTest extends Component {
                                                                 <FormLabel className="m-1">Marks Awarded</FormLabel>
                                                                 <FormControl
                                                                 className="m-2"
-                                                                readOnly={this.state.evaluated}
+                                                                readOnly={this.state.evaluated===true?(this.state.edit===true?false:true):false}
                                                                 name="marks"
                                                                 value = {this.state.marks[index]}
                                                                 onChange = {(e)=>this.handleChange(e,index)}
@@ -483,7 +493,9 @@ class ReviewTest extends Component {
                 </div>
                 <div className="text-center row">
                 {this.state.evaluated===false?
-                    <Button className="mx-auto mt-3 mb-5 " onClick={()=>this.handleSubmit()}>Upload Results</Button>:null
+                    <Button className="mx-auto mt-3 mb-5 " onClick={()=>this.handleSubmit()}>Upload Results</Button>
+                    :(this.state.edit===true?
+                    <Button className="mx-auto mt-3 mb-5 " onClick={()=>this.handleSubmit()}>Upload Results</Button>:null)
                 }
                     <Button className="mx-auto mt-3 mb-5 " onClick={()=>this.props.history.goBack()}>Back</Button>
                 </div>

@@ -29,7 +29,7 @@ class Register extends Component {
              state : '',
              pincode : '',
              phone : '' ,
-             role : '',
+             role : 'student',
              gender : '' ,
              year : '' ,
              class : '' ,
@@ -47,6 +47,10 @@ class Register extends Component {
 
     handleSubmit = () => {
         var f=0;
+        // var mobileRegex=/^[5-9][0-9]{9}$/;
+        let regexEmail=/^([a-zA-Z0-9\.-]+)@([a-zA-Z0-9-]+)\.([a-z]{2,20})(.[a-z]{2,20})?$/;
+        // let regexPassword=/^(?=.?[A-Za-z])(?=.?[0-9]).{8,20}$/;
+        let regexPhn=/^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
         if(this.state.studentId.trim()===""){
             alert("Student Id cannot be empty!");
             f=1;
@@ -58,6 +62,10 @@ class Register extends Component {
         else if(this.state.email.trim()===""){
             alert("Email cannot be empty!");
             f=1;
+        }
+        else if(!regexEmail.test(this.state.email.trim())){
+            alert(" Enter a valid Email address!");
+            f=1;
         }  
         else if(this.state.branchId.trim()===""){
             alert("Branch Name cannot be empty!");
@@ -65,6 +73,10 @@ class Register extends Component {
         }
         else if(this.state.phone.trim()===""){
             alert("Phone Number cannot be empty!");
+            f=1;
+        }
+        else if(!regexPhn.test(this.state.phone.trim())){
+            alert(" Enter a valid Mobile number!");
             f=1;
         }
         else if(this.state.role.trim()===""){
@@ -221,7 +233,7 @@ class Register extends Component {
                     className="input col-xl-8 m-2"
                     />
                 </FormGroup>
-                <FormGroup className="form-inline">
+                {/* <FormGroup className="form-inline">
                     <FormLabel className="form-label">role</FormLabel>
                     <FormControl
                     type="text"
@@ -235,7 +247,7 @@ class Register extends Component {
                    // </select>
                     className="input col-xl-8 m-2"
                     />
-                </FormGroup>
+                </FormGroup> */}
                 <FormGroup className="form-inline">
                     <FormLabel className="form-label">gender</FormLabel>
                     <FormControl

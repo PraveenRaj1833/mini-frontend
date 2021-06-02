@@ -36,40 +36,59 @@ class UpdateTeacherPassword extends Component {
     }
 
     handleSubmit = () => {
-        this.setState({
-            loader : true
-        });
-        const role = localStorage.getItem('role')
-        fetch(`https://online-exam-back.herokuapp.com/teacher/updatePassword`,{
-            method : 'post',
-            headers : {
-                'Content-Type': 'application/json',
-                 Authorization : localStorage.getItem('token')
-            },
-            body : JSON.stringify({
-                userId : this.state.userId,
-                currentPassword : this.state.currentPassword,
-                newPassword : this.state.newPassword,
-                confirmPassword : this.state.confirmPassword
-            })
-        }).then(res => {
-            console.log(res)
-            return res.json();
-        }).then(res=>{
-            
-            console.log(res);
-            if(res.status===200) {
-              alert("Updated successfully")
-            }
+        var f=0;
+        if(this.state.currentPassword===""){
+            alert("Current Password Cannot be empty");
+            f=1;
+        }
+        else if(this.state.newPassword===""){
+            alert("New Password Cannot be empty");
+            f=1;
+        }
+        else if(this.state.confirmPassword===""){
+            alert("Confirm Password Cannot be empty");
+            f=1;
+        }
+        else if(this.state.newPassword!==this.state.confirmPassword){
+            alert("New Password and Confirm Password doesn't match");
+            f=1;
+        }
+        if(f===0){
             this.setState({
-                loader : false
+                loader : true
+            });
+            const role = localStorage.getItem('role')
+            fetch(`https://online-exam-back.herokuapp.com/teacher/updatePassword`,{
+                method : 'post',
+                headers : {
+                    'Content-Type': 'application/json',
+                     Authorization : localStorage.getItem('token')
+                },
+                body : JSON.stringify({
+                    userId : this.state.userId,
+                    currentPassword : this.state.currentPassword,
+                    newPassword : this.state.newPassword,
+                    confirmPassword : this.state.confirmPassword
+                })
+            }).then(res => {
+                console.log(res)
+                return res.json();
+            }).then(res=>{
+                
+                console.log(res);
+                if(res.status===200) {
+                  alert("Updated successfully")
+                }
+                this.setState({
+                    loader : false
+                })
+            }).catch(err => {
+                this.setState({
+                    loader : false
+                })
+                console.log(err);
             })
-        }).catch(err => {
-            this.setState({
-                loader : false
-            })
-            console.log(err);
-        })
+        }
     }
     
     componentDidMount = ()=>{

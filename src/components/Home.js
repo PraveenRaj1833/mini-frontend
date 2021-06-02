@@ -28,11 +28,11 @@ class Home extends Component{
                 <Button onClick={()=>{
                         localStorage.setItem('role',"student")
                         this.props.history.push('/login')
-                    }}  className="homebtn btn btn-primary col-xm-6 col-sm-6 col-md-4 col-lg-4 col-xl-4 m-3 border border-2 p-2"> As Student</Button>
+                    }}  className="homebtn btn btn-primary col-8 col-sm-6 col-md-4 col-lg-4 col-xl-4 border border-2 p-2"> As Student</Button>
                 <Button onClick={()=>{
                         localStorage.setItem('role',"teacher")
                         this.props.history.push('/login')
-                    }}  className="homebtn btn btn-primary col-xm-6 col-sm-6 col-md-4 col-lg-4 col-xl-4 m-3 border border-2 p-2"> As Faculty</Button>
+                    }}  className="homebtn btn btn-primary col-8 col-sm-6 col-md-4 col-lg-4 col-xl-4 border border-2 p-2"> As Faculty</Button>
             </div>
         )
     }

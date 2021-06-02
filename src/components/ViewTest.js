@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
 import {withRouter} from 'react-router-dom'
-import { Button } from 'reactstrap'
+import {  } from 'reactstrap'
 import Spinner from './Spinner'
-import { FormGroup,FormControl,FormLabel,FormCheck } from 'react-bootstrap'
+import { FormGroup,FormControl,FormLabel,FormCheck,Button,Form,Modal } from 'react-bootstrap'
 
 class ViewTest extends Component {
     constructor(props) {
@@ -15,12 +15,30 @@ class ViewTest extends Component {
             courseId : localStorage.getItem('courseId'),
             time : '',
             dateTime : '',
-            questions : [],
-            loader : true
+            questions : [
+                {
+                    des:'',
+                    qType : '',
+                    options:[{
+                        desc : '',
+                        optionId : ''
+                    }]
+                }],
+            chgAns : false,
+            chgIndex : 0,
+            loader : true,
+            right : ''
         }
     }
     
     componentDidMount = ()=>{
+        this.fetchAllQuestions();
+    }
+
+    fetchAllQuestions = ()=>{
+        this.setState({
+            loader : true
+        })
         fetch('https://online-exam-back.herokuapp.com/teacher/getTestDetails',{
             method : 'post',
             headers : {
@@ -48,8 +66,22 @@ class ViewTest extends Component {
                     questions : res.result.questions,
                     loader : false
                 },()=>{
-                    console.log('done');
-                    console.log(this.state);
+                    const Questions = this.state.questions.map((question,index)=>{
+                        if(question.qType==="desc")
+                            return {
+                                ...question,
+                                options :[]
+                            }
+                        else
+                            return question;
+                    });
+                    this.setState({
+                        questions : Questions
+                    },()=>{
+                        console.log("woohooo");
+                        console.log(this.state.questions);
+                    })
+                    
                 });
             }
             else{
@@ -66,6 +98,110 @@ class ViewTest extends Component {
         })
     }
 
+    handleChange = (e)=>{
+        var value = e.target.value;
+        const Questions = this.state.questions;
+        const index = this.state.chgIndex;
+        var right;
+        if(e.target.name==="right"){
+            if(Questions[index].qType==="mcqs"){
+                if(e.target.value!==''){
+                    right= parseInt(e.target.value.trim());
+                }
+                else{
+                    right = (e.target.value.trim()); 
+                }
+            }
+            else if(Questions[index].qType==="checkBox"){
+                right = e.target.value.split(",").map((r,i)=>{
+                    if(Number.isInteger(parseInt(r)))
+                        return parseInt(r);
+                });
+            }
+            this.setState({
+                right : right
+            })
+        }
+    }
+
+    closeModal = ()=>{
+        this.setState({
+            chgAns : false,
+            right : ''
+        });
+    }
+
+    openModel = (index)=>{
+        this.setState({
+            chgIndex : index
+        },()=>{
+            this.setState({
+                chgAns : true
+            });
+        })
+    }
+
+    changeAnswer = ()=>{
+        var index=this.state.chgIndex;
+        const Questions = this.state.questions;
+        const quesn = Questions[index];
+        var f=0;
+        if(Questions[index].qType==="mcqs"){
+            if(this.state.right===""){
+                alert("please mention a right answer");
+                f=1;
+            }
+        }
+        else{
+            if(this.state.right.length===0){
+                alert("please mention a right answer");
+                f=1;
+            }
+        }
+        if(f===0){
+            this.setState({
+                loader : true,
+                chgAns : false
+            });
+            console.log(quesn);
+            // http://localhost:4000
+            // https://online-exam-back.herokuapp.com
+            fetch('https://online-exam-back.herokuapp.com/teacher/changeAnswer',{
+                method : 'post',
+                headers : {
+                    'Content-type' : 'application/json',
+                    Authorization : localStorage.getItem('token')
+                },
+                body : JSON.stringify({
+                    pquestion : quesn,
+                    newRight : this.state.right,
+                    testId : this.state.testId
+                })
+            }).then(res=>{
+                return res.json();
+            }).then(res=>{
+                console.log(res);
+                if(res.status===200){
+                    console.log("success");
+                    alert(res.msg);
+                }
+                else{
+                    console.log("failure");
+                    alert(res.msg);
+                }
+                this.fetchAllQuestions();
+                // this.setState({
+                //     loader : false
+                // })
+            }).catch(err=>{
+                console.log(err);
+                this.setState({
+                    loader : false
+                })
+            })
+        }
+    }
+
     render=()=> {
         const date = new Date(this.state.dateTime);
         const pdate = new Date();
@@ -75,6 +211,50 @@ class ViewTest extends Component {
             
             <div className="m-4 mb-5">
                 {this.state.loader===true?<Spinner></Spinner>:null}
+                <Modal show={this.state.chgAns} onHide={this.closeModal}>
+                    <Modal.Header closeButton>
+                        <Modal.Title>Change Answer</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                        {this.state.questions[this.state.chgIndex].qType==="mcqs" || 
+                        this.state.questions[this.state.chgIndex].qType==="checkBox"?
+                        <div className="m-2">
+                            <i>{this.state.questions[this.state.chgIndex].desc}</i>
+                            {
+                                this.state.questions[this.state.chgIndex].options.map((option,optIndex)=>{ return (
+                                    <div key={optIndex} className="row ">
+                                        <Form.Check 
+                                            key={optIndex}
+                                            type={this.state.questions[this.state.chgIndex].qType==="mcqs"?"radio":"checkbox"}
+                                            label={option.desc}
+                                            name={"namee"}
+                                            // onChange={(e)=>this.handleChange(e,index)}
+                                            value={option.optionId}
+                                            readOnly
+                                        />
+                                    </div>
+                                    )
+                                })
+                            }
+                            <FormGroup className="form-inline col-12 m-1 mt-2">
+                                <FormLabel className="m-1">Right Option</FormLabel>
+                                <FormControl
+                                type="text"
+                                className="col-lg-6 m-2"
+                                name="right"
+                                value = {this.state.right}
+                                placeholder = "index from 0..."
+                                onChange={(e)=>this.handleChange(e)}
+                                /> 
+                            </FormGroup>
+                        </div>:"Not an mcq or checkbox question"}
+                        
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Button variant="secondary" onClick={()=>this.closeModal()}>Cancel</Button>
+                        <Button variant="primary" onClick={()=>this.changeAnswer()}>Update</Button>
+                    </Modal.Footer>
+                </Modal>
                 {edit===true?
                 <Button className="btn btn-light text-primary float-right m-2 mr-5" 
                 onClick={()=>{this.props.history.push('/teacher/editTest');}}>Edit &nbsp; 
@@ -87,9 +267,9 @@ class ViewTest extends Component {
                 {/* <span className="col-xm-12 col-md-6 col-lg-3 m-2">Test Name : <i className="border border-1 p-1">{this.state.testName}</i></span> */}
                     
                 <div className="row m-2 mb-4">
-                    <span className="col-xm-12 col-md-6 col-lg-3 m-2">Total Marks : <i className="border border-1 p-1">{this.state.totalMarks}</i></span>
-                    <span className="col-xm-12 col-md-6 col-lg-3 m-2">Duration : <i className="border border-1 p-1">{this.state.duration}</i></span>
-                    <span className="col-xm-12 col-md-12 col-lg-5 m-2">Scheduled At : <i className="border border-1 p-1">{dt}</i></span>
+                    <span className="col-xs-12 col-md-6 col-lg-3 m-2">Total Marks : <i className="border border-1 p-1">{this.state.totalMarks}</i></span>
+                    <span className="col-xs-12 col-md-6 col-lg-3 m-2">Duration : <i className="border border-1 p-1">{this.state.duration}</i></span>
+                    <span className="col-xs-12 col-md-12 col-lg-5 m-2">Scheduled At : <i className="border border-1 p-1">{dt}</i></span>
                     {/* <span>Total Marks : <i className="border border-1">{this.state.totalMarks}</i></span> */}
                 </div>
                 {
@@ -117,6 +297,9 @@ class ViewTest extends Component {
                             {
                                 question.qType==="mcqs"?
                                 <div>
+                                    {edit===false?<i class="ui pen square icon big blue float-right" title="click to edit right option"
+                                    onClick={()=>this.openModel(index)}></i>:null}
+                                    
                                     {question.options.map((option,optIndex)=>{
                                         return (
                                             <div key={optIndex} className="ml-5">
@@ -131,6 +314,8 @@ class ViewTest extends Component {
                                 </div>
                                 :question.qType==="checkBox"?
                                     <div>
+                                        {edit===false?<i class="ui pen square icon big blue float-right" title="click to edit right option"
+                                        onClick={()=>this.openModel(index)}></i>:null}
                                         {question.options.map((option,optIndex)=>{
                                             return (
                                                 <div key={optIndex} className="ml-5">

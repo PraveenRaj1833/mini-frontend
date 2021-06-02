@@ -41,55 +41,66 @@ class Login extends Component {
     }
 
     handleSubmit = () => {
-        this.setState({
-            loader : true
-        });
-        const role = localStorage.getItem('role')
-        fetch(`https://online-exam-back.herokuapp.com/${role}/login`,{
-            method : 'post',
-            body : JSON.stringify({
-                userId : this.state.userId,
-                password : this.state.password
-            }),
-            headers : {
-                'Content-Type': 'application/json'
-            }
-        }).then(res => {
-            return res.json();
-        }).then(res=>{
-            
-            console.log(res);
-            if(res.status===200) {
-                localStorage.setItem('token',`Bearer ${res.token}`);
-                localStorage.setItem('user',JSON.stringify(res[role]));
-                if(role==="student")
-                    localStorage.setItem('userId',res[role]['studentId']);
-                else
-                    localStorage.setItem('userId',res[role]['teacherId']);
-                console.log(localStorage.getItem('userId'));
+        var f=0;
+        if(this.state.userId===""){
+            alert("UserId cannot be null");
+            f=1;
+        }
+        else if(this.state.password===""){
+            alert("Password Cannot be empty");
+            f=1;
+        }
+        if(f===0){       
+            this.setState({
+                loader : true
+            });
+            const role = localStorage.getItem('role')
+            fetch(`https://online-exam-back.herokuapp.com/${role}/login`,{
+                method : 'post',
+                body : JSON.stringify({
+                    userId : this.state.userId,
+                    password : this.state.password
+                }),
+                headers : {
+                    'Content-Type': 'application/json'
+                }
+            }).then(res => {
+                return res.json();
+            }).then(res=>{
+                
+                console.log(res);
+                if(res.status===200) {
+                    localStorage.setItem('token',`Bearer ${res.token}`);
+                    localStorage.setItem('user',JSON.stringify(res[role]));
+                    if(role==="student")
+                        localStorage.setItem('userId',res[role]['studentId']);
+                    else
+                        localStorage.setItem('userId',res[role]['teacherId']);
+                    console.log(localStorage.getItem('userId'));
 
-                // console.log("in login")
-                // console.log(res[role])
-                // console.log(localStorage.getItem('user'))
-                // console.log("in login 2")
-                // this.setState({
-                //     loader : false
-                // })
-                // alert("login succesful");
-                this.props.history.push(`/${role}/dashboard`);
-            }
-            else{
-                alert(res.msg);
-            }
-            this.setState({
-                loader : false
+                    // console.log("in login")
+                    // console.log(res[role])
+                    // console.log(localStorage.getItem('user'))
+                    // console.log("in login 2")
+                    // this.setState({
+                    //     loader : false
+                    // })
+                    // alert("login succesful");
+                    this.props.history.push(`/${role}/dashboard`);
+                }
+                else{
+                    alert(res.msg);
+                }
+                this.setState({
+                    loader : false
+                })
+            }).catch(err => {
+                this.setState({
+                    loader : false
+                })
+                console.log(err);
             })
-        }).catch(err => {
-            this.setState({
-                loader : false
-            })
-            console.log(err);
-        })
+        }
     }
 
     handleKeyPress = (e)=>{
@@ -106,7 +117,7 @@ class Login extends Component {
                 <div id="fb" className="text-center">
                       
                     {this.state.loader?<Spinner></Spinner>:null}
-                <div id="form" className="form  col-xl-5 col-lg-5 col-md-6 col-sm-8 col-10 m-auto my-auto">
+                <div id="form" className="form  col-xl-5 col-lg-5 col-md-6 col-sm-8 col-11 m-auto my-auto text-center">
                     {/* col-xl-5 col-lg-6 col-md-7 col-sm-8 col-10 */}
                     <h1 className="m-3 mb-4">{localStorage.getItem('role')==='student'?"Student":"Faculty"} Login</h1>
                     <div>
@@ -119,7 +130,7 @@ class Login extends Component {
                         onChange={this.handleChange}
                         onKeyPress = {(e)=>this.handleKeyPress(e)}
                         value={this.state.userId}
-                        className="input1 col-xl-8 m-2 border border-dark"
+                        className="input1 col-7 col-sm-7 col-xl-8 m-2 border border-dark"
                         />
                     </FormGroup >
                     <p id="mail" className="warning"></p>
@@ -132,7 +143,7 @@ class Login extends Component {
                         onChange={this.handleChange}
                         placeholder="Password"
                         onKeyPress = {(e)=>this.handleKeyPress(e)}
-                        className="input col-xl-8 m-2 border border-dark"
+                        className="input col-7 col-sm-7 col-xl-8 m-2 border border-dark"
                         />
                     </FormGroup>
                     <p id="login" className="warning"/>

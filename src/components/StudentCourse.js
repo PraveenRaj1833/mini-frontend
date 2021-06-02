@@ -1,9 +1,11 @@
 import React, { Component } from 'react'
 import {withRouter} from 'react-router-dom'
 import { Table, Thead, Tbody, Tr, Th, Td } from 'react-super-responsive-table';
+import {OverlayTrigger,Popover,Button} from 'react-bootstrap'
 import Spinner from './Spinner'
 import 'react-super-responsive-table/dist/SuperResponsiveTableStyle.css';
 import '../docs/css/review.css'
+import Header from './Header';
 
 class StudentCourse extends Component {
     constructor(props) {
@@ -86,24 +88,12 @@ class StudentCourse extends Component {
     }
 
     render() {
-        const user = JSON.parse(localStorage.getItem('user'));
-        // const popover = (
-        //     <Popover id="popover-basic">
-        //       <Popover.Title as="h3">{localStorage.getItem("role")==="student"?"Student":"Teacher"} Details</Popover.Title>
-        //       <Popover.Content>
-        //         <b className="h5">{user.studentId}</b> <br/>
-        //         {user.name} <br/>
-        //         <Button onClick={()=>this.props.history.push("/student/ViewProfile")} className="w-100 m-1">View Profile</Button>
-        //         <Button onClick={()=>this.props.history.push("/student/updateProfile")} className="w-100 m-1">Edit Profile</Button>
-        //         <Button onClick={()=>this.props.history.push("/student/updatePassword")} className="w-100 m-1"> Edit Password </Button>
-        //       </Popover.Content>
-        //     </Popover>
-        //   );
           
         return (
             <div id="str" className="m-1 ml-2">
                 
                 {this.state.loader===true?<Spinner></Spinner>:null}
+                <Header/>
                 <br/>
                 <h1 id="sch1" className=" text-center">{this.state.course.courseName} </h1>
                 <br/>

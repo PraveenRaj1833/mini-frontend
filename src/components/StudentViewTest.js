@@ -2,6 +2,8 @@ import { Button } from 'react-bootstrap'
 import React, { Component } from 'react'
 import {withRouter} from 'react-router-dom'
 import '../docs/css/viewTest.css'
+import Header from './Header'
+import Spinner from './Spinner'
 
 class StudentViewTest extends Component {
     constructor(props) {
@@ -20,7 +22,8 @@ class StudentViewTest extends Component {
             testType : '',
             attempted : false,
             result : false,
-            marks : 0
+            marks : 0,
+            loader : true
             //questions : []
         }
     }
@@ -55,7 +58,8 @@ class StudentViewTest extends Component {
                     const testDate = new Date(this.state.dateTime);
                     if(date.getTime()<testDate.getTime()){
                         this.setState({
-                            stage : -1
+                            stage : -1,
+                            loader : false
                         })
                     }
                     else{
@@ -67,13 +71,15 @@ class StudentViewTest extends Component {
                         if(date.getTime()>compDate.getTime()){
                             this.setState({
                                 completeDate : compDate,
-                                stage : 1
+                                stage : 1,
+                                loader : false
                             });
                         }
                         else{
                             this.setState({
                                 completeDate : compDate,
-                                stage : 0
+                                stage : 0,
+                                loader : false
                             });
                         }
                     }
@@ -82,6 +88,9 @@ class StudentViewTest extends Component {
             else if(res.status===400){
                 console.log(res.err)
                 alert(res.msg);
+                this.setState({
+                    loader : false
+                })
             }
             if(res.status===203){
                 this.setState({
@@ -110,7 +119,8 @@ class StudentViewTest extends Component {
                                 if(res.eval===true){
                                     this.setState({
                                         result : true,
-                                        marks : parseInt(res.result.marks)
+                                        marks : parseInt(res.result.marks),
+                                        loader : false
                                     })
                                 }
                             }
@@ -119,15 +129,24 @@ class StudentViewTest extends Component {
                         else{
                             console.log(res.msg);
                             alert(res.msg);
+                            this.setState({
+                                loader : false
+                            })
                         }
                     }).catch(err=>{
                         console.log(err);
+                        this.setState({
+                            loader : false
+                        })
                     })
                 }
                 
             }
         })
         .catch(err=>{
+            this.setState({
+                loader : false
+            })
             console.log(err);
         })
         // const test = JSON.parse(localStorage.getItem('test'))
@@ -150,50 +169,55 @@ class StudentViewTest extends Component {
             compDate = compDate.toString().split("G")[0];
         }
         return (
-            <div id="svt">
             <div>
-            <br/>
-            <br/>
-                <h1 id="vth1" className="text-center">{this.state.testName}</h1>
-            <br/>
-            <br/>
-
-                <div id="board" className="text-center">
-                    <label>Attempts Allowed : </label>
-                    <span>1</span>
-                    <br></br>
-                    <label>Time Limit : </label>
-                    <span>{this.state.duration} Min</span>
-                    <br></br>
-                    <br/>
-                    {this.state.attempted===true?
-                        <div>
-                            <h4>You Have already attempted the test<br></br>No More attempts Allowed </h4>
-                            {this.state.result===true?
-                            <div>
-                                <h4>Your Score is {this.state.marks}/{this.state.totalMarks}</h4>
-                                <Button onClick={()=>{
-                                    this.props.history.push('/student/review');
-                                }}>Review</Button>
-                            </div>
-                            : <h4>Results will be declared soon</h4>}
-                        </div>
-                        
-                    :
-                    this.state.stage==-1 ? 
-                    <span>Test will open at {date}</span>:
-                    this.state.stage===0 ? <Button onClick={()=>this.props.history.push("/student/attemptTest")}>Attempt Quiz Now</Button> : 
+                {this.state.loader?<Spinner/>:null}
+                 <Header/>
+                <div id="svt">
+                   
                     <div>
-                        <span>Test was closed at {compDate}</span>
-                        <br/>
-                        <br/>
-                        <Button onClick={()=>{
-                                    this.props.history.push('/student/review');
-                        }}>View Questions</Button>
+                    <br/>
+                    <br/>
+                        <h1 id="vth1" className="text-center">{this.state.testName}</h1>
+                    <br/>
+                    <br/>
+
+                        <div id="board" className="text-center">
+                            <label>Attempts Allowed : </label>
+                            <span>1</span>
+                            <br></br>
+                            <label>Time Limit : </label>
+                            <span>{this.state.duration} Min</span>
+                            <br></br>
+                            <br/>
+                            {this.state.attempted===true?
+                                <div>
+                                    <h4>You Have already attempted the test<br></br>No More attempts Allowed </h4>
+                                    {this.state.result===true?
+                                    <div>
+                                        <h4>Your Score is {this.state.marks}/{this.state.totalMarks}</h4>
+                                        <Button onClick={()=>{
+                                            this.props.history.push('/student/review');
+                                        }}>Review</Button>
+                                    </div>
+                                    : <h4>Results will be declared soon</h4>}
+                                </div>
+                                
+                            :
+                            this.state.stage==-1 ? 
+                            <span>Test will open at {date}</span>:
+                            this.state.stage===0 ? <Button onClick={()=>this.props.history.push("/student/attemptTest")}>Attempt Quiz Now</Button> : 
+                            <div>
+                                <span>Test was closed at {compDate}</span>
+                                <br/>
+                                <br/>
+                                <Button onClick={()=>{
+                                            this.props.history.push('/student/review');
+                                }}>View Questions</Button>
+                            </div>
+                            }
+                        </div>
                     </div>
-                    }
                 </div>
-            </div>
             </div>
         )
     }

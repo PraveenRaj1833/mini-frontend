@@ -65,7 +65,7 @@ class App extends Component {
                   <Route exact path="/teacher/updateProfile">
                     <UpdateTeacher/>
                   </Route>
-                  <Route exact path="/teacher/updateTeacherPassword">
+                  <Route exact path="/teacher/updatePassword">
                     <UpdateTeacherPassword/>
                   </Route>
                   <Route exact path="/teacher/course">

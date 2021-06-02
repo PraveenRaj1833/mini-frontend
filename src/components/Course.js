@@ -14,6 +14,7 @@ import {
   Modal
 } from 'react-bootstrap';
 import '../docs/css/review.css'
+import Header from './Header';
 
 export class Course extends Component {
     constructor(props) {
@@ -127,8 +128,8 @@ export class Course extends Component {
         return (
             <div className="m-2">
                 {this.state.loader===true?<Spinner></Spinner>:null}
-
-                <h1 id="tch1" className="m-1 text-center">{this.state.course.courseName} </h1>
+                <Header/>
+                <h1 id="tch1" className="m-1 text-center pr-5">{this.state.course.courseName} </h1>
                 <Button className="float-right" onClick={()=>{
                     this.props.history.push('/teacher/createTest');
                 }}>Create Test</Button>
