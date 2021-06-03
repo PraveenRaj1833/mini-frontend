@@ -3,13 +3,21 @@
   /* background-image: url('./clsimg.png'); */
 }
 
+.idlabel {
+  width: 10px;
+}
+
+.codelabel{
+  width: 10px;
+}
+
 .form{
 position: static;
 /* margin-top: 2.5cm;
 margin-left: 9cm; */
 /* align-self: center; */
 margin: auto;
-margin-top: 3cm;
+margin-top: 1cm;
 border:  solid black;
 width: 600px;
 height: auto;
@@ -45,8 +53,18 @@ z-index: 1;
   
 }
 
+#forgot{
+  text-decoration: underline;
+  color: blue;
+  cursor: pointer;
+}
+
 @media screen and (max-width:455px) {
   .form-label{
     width: 15px;
   }
+}
+
+.mauto{
+  margin: auto;
 }

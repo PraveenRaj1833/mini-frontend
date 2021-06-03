@@ -27,6 +27,7 @@ import ViewSubmissions from './components/ViewSubmissions';
 import ReviewTest from './components/ReviewTest';
 import ViewProfile from './components/ViewProfile';
 import TeacherProfile from './components/TeacherProfile';
+import ForgotPassword from './components/ForgotPassword';
 
 
 class App extends Component {
@@ -106,6 +107,9 @@ class App extends Component {
                   </Route>
                   <Route exact path="/student/review">
                     <StudentReview/>
+                  </Route>
+                  <Route exact path="/forgotPassword">
+                    <ForgotPassword/>
                   </Route>
                 </Switch>
               </div>

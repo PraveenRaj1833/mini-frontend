@@ -103,7 +103,7 @@ class UpdateStudent extends Component {
             alert("State Name cannot be empty!");
             f=1;
         }
-        else if(this.state.pincode.trim()===""){
+        else if(this.state.pincode.toString().trim()===""){
             alert("Pincode cannot be empty!");
             f=1;
         }

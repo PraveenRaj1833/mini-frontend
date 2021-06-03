@@ -152,6 +152,8 @@ class Login extends Component {
                         <Button className="m-2" onClick={() => this.props.history.push (`/${localStorage.getItem('role')}/register`)}>
                             SignUp
                         </Button>
+                        <br></br>
+                        <span id="forgot" onClick={()=>this.props.history.push(`/forgotPassword`)}>Forgot Password?</span>
                     </FormGroup>
                     </div>
 
