@@ -350,7 +350,7 @@ class Register extends Component {
                 </FormGroup>
                 <p id="login" className="warning"/>
                 <Button className="m-2" onClick={() => this.handleSubmit()}>Register</Button>
-                <Button className="m-2" onClick={() => this.props.history.goback()}>
+                <Button className="m-2" onClick={() => this.props.history.goBack()}>
                     Cancel
                 </Button>
                 </div>

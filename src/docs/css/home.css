@@ -30,7 +30,7 @@ font-size: xx-large;
 
 @media screen and (max-width:576px){
     .homebtn{
-        width: 30px;
+        display: block;
         margin-left: 2px;
         margin-right: 2px;
         margin-top: 5px;

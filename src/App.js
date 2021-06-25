@@ -31,6 +31,57 @@ import ForgotPassword from './components/ForgotPassword';
 
 
 class App extends Component {
+
+  // componentDidMount = ()=>{
+  //   window.addEventListener("beforeunload",this.clearDetails);
+  // }
+
+  // componentWillUnmount = ()=>{
+  //   alert("hello");
+  //   // if(window.confirm("Do you want to close?")){
+  //   //   return true;
+  //   // }
+  //   // else{
+  //   //   return false;
+  //   // }
+  //   // if(localStorage.getItem('token')){
+      
+  //   // }
+  //   window.removeEventListener("beforeunload",this.clearDetails);
+  // }
+
+  // clearDetails = (ev)=>{
+  //   console.log(ev);
+  //   // ev.preventDefault();
+  //   // alert("fdgfgd");
+  //   console.log("ggg");
+  //   fetch("https://online-exam-back.herokuapp.com/course/add",{
+  //       method : 'post',
+  //       body : JSON.stringify({
+  //         courseId : "CS3002",
+  //         courseName : "CN",
+  //         credits : 3
+  //       }),
+  //       headers : {
+  //           'Content-type' : 'application/json',
+  //           // Authorization : localStorage.getItem('token')
+  //       }
+  //     }).then(res=>res.json())
+  //     .then(res=>{
+  //       console.log(res);
+  //       if(res.msg==="Course Created Susscesfully"){
+  //          alert("success");
+  //       }
+  //     })
+  //     console.log("not logged out");
+  //     var i;
+  //     for(i=0;i<500000000000;i++){
+  //       // console.log("1");
+  //     }
+  //   return ev.returnValue = "are you sure you want to close?";
+  //   // return "are you sure you want to close?";
+  // }
+
   render(){
     
       return (
