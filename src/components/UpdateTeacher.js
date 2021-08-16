@@ -180,7 +180,7 @@ class UpdateTeacher extends Component {
                     disabled = {true}
                     placeholder="teacherId"
                     onChange={this.handleChange}
-                    value={this.state.studentId}
+                    value={this.state.teacherId}
                     className="input1 col-xl-8 m-2 border border-dark"
                     />
                 </FormGroup >

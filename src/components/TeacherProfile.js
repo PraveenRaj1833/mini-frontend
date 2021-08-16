@@ -72,7 +72,7 @@ class TeacherProfile extends Component {
                     disabled = {true}
                     placeholder="teacherId"
                    // onChange={this.handleChange}
-                    value={this.state.studentId}
+                    value={this.state.teacherId}
                     className="input1 col-xl-8 m-2 border border-dark"
                     />
                 </FormGroup >
@@ -130,7 +130,7 @@ class TeacherProfile extends Component {
                     type="text"
                     name="role"
                     disabled = {true}
-                    value={this.state.role}
+                    value={"teacher"}
                     //onChange={this.handleChange}
                     placeholder="role"
                    // <select value={this.state.role} onChange={this.handleChange}> 
